@@ -11,6 +11,14 @@ module Rig
         Rig::Model.all
       end
 
+      def create(form)
+        if form.valid?
+          Rig::Model.create! form.attributes
+        else
+          form
+        end
+      end
+
     end
 
   end

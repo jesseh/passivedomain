@@ -46,4 +46,29 @@ describe Api::RigsController do
       it { should respond_with(:not_found) }
     end
   end
+
+  describe "POST #create" do
+    let(:model){ double "model", persisted?: valid }
+    let(:rig_form){ double "rig form" }
+    let(:rig_params){ {'stuff' => 'abc'} }
+    let(:valid){ true }
+
+    before do
+      allow( Rig::Form ).to receive(:new){ rig_form }
+      allow( Rig::Store ).to receive(:create){ model }
+
+      post :create, :rig => rig_params
+    end
+
+    context "for a valid rig" do
+      it { should respond_with(:success) }
+      it { expect(Rig::Form).to have_received(:new).with(rig_params) }
+      it { expect(Rig::Store).to have_received(:create).with(rig_form) }
+    end
+
+    context "for an invalid rig" do
+      let(:valid){ false }
+      it { should respond_with(:not_acceptable) }
+    end
+  end
 end

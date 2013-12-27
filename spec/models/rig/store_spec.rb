@@ -32,4 +32,29 @@ describe Rig::Store do
     it { expect(Rig::Model).to have_received(:find_by_id).with(id) }
   end
 
+  describe ".create" do
+    let(:valid){ true }
+    let(:attributes){ {some: 'things'} }
+    let(:model){ double("Model") }
+    let(:form){ double("Form", valid?: valid, attributes: attributes) }
+
+    before do
+      allow(Rig::Model).to receive(:create!).and_return(model)
+    end
+
+    subject! { described_class.create form }
+
+    context "when form is valid" do
+      it { expect(Rig::Model).to have_received(:create!).with(attributes) }
+      it { should equal(model) }
+    end
+
+    context "when form is invalid" do
+      let(:valid){ false }
+      it { expect(Rig::Model).to_not have_received(:create!) }
+      it { should equal(form) }
+    end
+
+  end
+
 end
