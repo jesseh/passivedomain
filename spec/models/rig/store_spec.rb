@@ -32,6 +32,20 @@ describe Rig::Store do
     it { expect(Rig::Model).to have_received(:find_by_id).with(id) }
   end
 
+  describe ".find_by_name" do
+    before do
+      allow(Rig::Model).to receive(:find_by_name).and_return(model)
+    end
+
+    let(:model){ double("Model") }
+    let(:name){ "Deep blue" }
+
+    subject! { described_class.find_by_name name  }
+
+    it { should eql(model) }
+    it { expect(Rig::Model).to have_received(:find_by_name).with(name) }
+  end
+
   describe ".create" do
     let(:valid){ true }
     let(:attributes){ {some: 'things'} }

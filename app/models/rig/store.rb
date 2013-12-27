@@ -7,6 +7,10 @@ module Rig
         Rig::Model.find_by_id(id)
       end
 
+      def find_by_name(name)
+        Rig::Model.find_by_name(name)
+      end
+
       def find_all
         Rig::Model.all
       end
