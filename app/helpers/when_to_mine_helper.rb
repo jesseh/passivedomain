@@ -1,0 +1,2 @@
+module WhenToMineHelper
+end
