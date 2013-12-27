@@ -29,7 +29,7 @@ private
   end
 
   def store
-    Rig::Store
+    Rig::Store.build
   end
 
 end
