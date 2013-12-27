@@ -3,6 +3,7 @@ require "spec_helper"
 describe Api::RigsController do
 
   it { should route(:get, '/api/rigs').to(controller: 'api/rigs', action: 'index') }
+  it { should route(:get, '/api/rigs/1').to(controller: 'api/rigs', action: 'show', id: '1') }
 
   before do
     stub_const('Rig::Store', double('Rig::Store'))
