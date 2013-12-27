@@ -32,7 +32,15 @@ group :doc do
 end
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 3.0.0.beta1'
+end
+
+group :development do
+  gem 'guard-rspec', require: false
+end
+
+group :test do
+  gem 'shoulda'
 end
 
 # Use ActiveModel has_secure_password
