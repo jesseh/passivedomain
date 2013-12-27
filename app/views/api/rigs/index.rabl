@@ -1,3 +1,3 @@
-object @rigs
+object @objects
 
 extends "rigs/show"

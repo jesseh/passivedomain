@@ -2,6 +2,7 @@ Afterburner::Application.routes.draw do
 
   namespace 'api' do
     resources :rigs
+    resources :problems
   end
 
   get "when_to_mine/index"
