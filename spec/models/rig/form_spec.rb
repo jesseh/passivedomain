@@ -3,19 +3,37 @@ require "spec_helper"
 describe Rig::Form do
 
   describe ".new" do
-    let(:params){ {
-      name:             'name',
-      hash_rate:        'hash_rate',
-      power:            'power',
-      price_fractional: 'price_fractional'
-    } }
+    context "with symbol keys" do
+      let(:params){ {
+        name:             'name',
+        hash_rate:        'hash_rate',
+        power:            'power',
+        price_fractional: 'price_fractional'
+      } }
 
-    subject { described_class.new params }
+      subject { described_class.new params }
 
-    its(:name) { should eql(params[:name]) }
-    its(:hash_rate) { should eql(params[:hash_rate]) }
-    its(:power) { should eql(params[:power]) }
-    its(:price_fractional) { should eql(params[:price_fractional]) }
+      its(:name) { should eql(params[:name]) }
+      its(:hash_rate) { should eql(params[:hash_rate]) }
+      its(:power) { should eql(params[:power]) }
+      its(:price_fractional) { should eql(params[:price_fractional]) }
+    end
+
+    context "with string keys" do
+      let(:params){ {
+        'name'             => 'name',
+        'hash_rate'        => 'hash_rate',
+        'power'            => 'power',
+        'price_fractional' => 'price_fractional'
+      } }
+
+      subject { described_class.new params }
+
+      its(:name) { should eql(params['name']) }
+      its(:hash_rate) { should eql(params['hash_rate']) }
+      its(:power) { should eql(params['power']) }
+      its(:price_fractional) { should eql(params['price_fractional']) }
+    end
   end
 
   describe "#name" do

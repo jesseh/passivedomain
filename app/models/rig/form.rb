@@ -12,10 +12,12 @@ module Rig
     validates_numericality_of :power, only_integer: true, greater_than: 0
 
     def initialize(params={})
-      self.name             = params[:name]
-      self.price_fractional = params[:price_fractional]
-      self.power            = params[:power]
-      self.hash_rate        = params[:hash_rate]
+      hash = params.with_indifferent_access
+
+      self.name             = hash[:name]
+      self.price_fractional = hash[:price_fractional]
+      self.power            = hash[:power]
+      self.hash_rate        = hash[:hash_rate]
     end
 
     def attributes
