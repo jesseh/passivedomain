@@ -97,100 +97,105 @@
 
       <div class="panel">
         <a name="your_rig"></a>
-        <h3>Calculator</h3>
-        <p>Details here.</p>
-        <div class="calculation">
-          <div class="section">
-            <label>Scale</label>
-            <div class="line">
-              <div class="operation">.</div>
-              <div class="item">capacity of your rig</div>
-              <div class="value">1,980,000</div>
-              <div class="unit">gigahash / hour</div>
-            </div>
-            <div class="line">
-              <div class="operation">.</div>
-              <div class="item">efficiency of your rig</div>
-              <div class="value">0.000002</div>
-              <div class="unit">kilowatt-hour / gigahash</div>
-            </div>
-            <div class="line">
-              <div class="operation">.</div>
-              <div class="item">utilization of your rig</div>
-              <div class="value">100%</div>
-              <div class="unit"></div>
-            </div>
-          </div>
-          <div class="section">
-            <label>Mining</label>
-            <div class="line">
-              <div class="operation">=</div>
-              <div class="item">revenue</div>
-              <div class="value">0.06617</div>
-              <div class="unit">US$ / hour or Bitcoin / hour</div>
-            </div>
-            <div class="line">
-              <div class="operation">-</div>
-              <div class="item">electricity cost</div>
-              <div class="value">0.06617</div>
-              <div class="unit">US$ / hour or Bitcoin / hour (depends on objective)</div>
-            </div>
-            <div class="line">
-              <div class="operation">-</div>
-              <div class="item">pool cost</div>
-              <div class="value">0.000015</div>
-              <div class="unit">US$ / hour or Bitcoin / hour</div>
-            </div>
+        <h3>Current result</h3>
+        <h3><small>If the current environment were to remain stable for a month here is what you would earn.</small></h3>
+
+        <table class="calculation">
+          <tbody>
+            <tr class="section">
+              <td>Scale</td>
+            </tr>
+            <tr class="line">
+              <td class="operation"></td>
+              <td class="item">capacity of your rig</td>
+              <td class="value">1,980,000</td>
+              <td class="unit">gigahash / hour</td>
+            </tr>
+            <tr class="line">
+              <td class="operation"></td>
+              <td class="item">efficiency of your rig</td>
+              <td class="value">0.000002</td>
+              <td class="unit">kilowatt-hour / gigahash</td>
+            </tr>
+            <tr class="line">
+              <td class="operation"></td>
+              <td class="item">utilization of your rig</td>
+              <td class="value">100%</td>
+              <td class="unit"></td>
+            </tr>
+
+            <tr class="section">
+              <td>Mining</td>
+            </tr>
+
+            <tr class="line">
+              <td class="operation"></td>
+              <td class="item">revenue</td>
+              <td class="value">0.06617</td>
+              <td class="unit">US$</td>
+            </tr>
+            <tr class="line">
+              <td class="operation">-</td>
+              <td class="item">electricity cost</td>
+              <td class="value">0.06617</td>
+              <td class="unit">US$</td>
+            </tr>
+            <tr class="line">
+              <td class="operation">-</td>
+              <td class="item">pool cost</td>
+              <td class="value">0.000015</td>
+              <td class="unit">US$</td>
+            </tr>
             <%# If objective is 'extract' %>
-            <div class="line">
-              <div class="operation">-</div>
-              <div class="item">exchange transaction fees</div>
-              <div class="value">0</div>
-              <div class="unit">US$ / hour or Bitcoin / hour</div>
-            </div>
-            <div class="line">
-              <div class="operation">=</div>
-              <div class="item">gross margin (hourly)</div>
-              <div class="value">0.06</div>
-              <div class="unit">US$ / hour or Bitcoin / hour</div>
-            </div>
-            <div class="line">
-              <div class="operation">=</div>
-              <div class="item">gross margin (monthly)</div>
-              <div class="value">41</div>
-              <div class="unit">US$ / month or Bitcoin / month</div>
-            </div>
-          </div>
-          <div class="section">
-            <label>Operating</label>
-            <div class="line">
-              <div class="operation">-</div>
-              <div class="item">recuring facility fees</div>
-              <div class="value">0</div>
-              <div class="unit">US$ / hour or Bitcoin / hour</div>
-            </div>
+            <tr class="line">
+              <td class="operation">-</td>
+              <td class="item">exchange transaction fees</td>
+              <td class="value">0</td>
+              <td class="unit">US$</td>
+            </tr>
+            <tr class="line result">
+              <td class="operation">=</td>
+              <td class="item">gross margin</td>
+              <td class="value">41</td>
+              <td class="unit">US$</td>
+            </tr>
+
+            <tr class="section">
+              <td>Operating</td>
+            </tr>
+
+            <tr class="line">
+              <td class="operation">-</td>
+              <td class="item">recuring facility fees</td>
+              <td class="value">0</td>
+              <td class="unit">US$</td>
+            </tr>
+            <tr class="line">
+              <td class="operation">-</td>
+              <td class="item">other operating costs</td>
+              <td class="value">0</td>
+              <td class="unit">US$</td>
+            </tr>
             <%# If objective is 'retain' %>
-            <div class="line">
-              <div class="operation">-</div>
-              <div class="item">exchange transaction fees</div>
-              <div class="value">0</div>
-              <div class="unit">US$ / hour or Bitcoin / hour</div>
-            </div>
-            <div class="line">
-              <div class="operation">-</div>
-              <div class="item">other operating costs</div>
-              <div class="value">0</div>
-              <div class="unit">US$ / hour or Bitcoin / hour</div>
-            </div>
-            <div class="line">
-              <div class="operation">=</div>
-              <div class="item">earnings <small>before tax, interest, depreciation and amortization</small></div>
-              <div class="value">0</div>
-              <div class="unit">US$ / hour or Bitcoin / hour</div>
-            </div>
-          </div>
-        </div>
+            <tr class="line">
+              <td class="operation">-</td>
+              <td class="item">exchange transaction fees</td>
+              <td class="value">0</td>
+              <td class="unit">US$</td>
+            </tr>
+            <tr class="line result">
+              <td class="operation">=</td>
+              <td class="item">earnings <br /><small>before tax, interest, depreciation and amortization</small></td>
+              <td class="value">0</td>
+              <td class="unit">US$</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+      <div class="panel">
+        <h3>Conclusion</h3>
+        <p>You should not be mining....</p>
+
     </div>
     
     

@@ -5,38 +5,28 @@
 @import 'foundation_and_overrides';
 
 .calculation {
-    .section {
-        .line {
-            @extend .row;
+    .line {
+        @extend .row;
 
-            .operation {
-                @extend .small-1;
-                @extend .column;
-            }
-            .item {
-                @extend .small-3;
-                @extend .column;
-            }
-            .value {
-                @extend .small-3;
-                @extend .column;
-                text-align: right;
-            }
-
-            .unit {
-                @extend .small-2;
-                @extend .column;
-                @extend small;
-            }
-
+        .operation {
         }
-        
-        .result {
-            font-weight: bold;
+        .item {
+        }
+        .value {
+            text-align: right;
+        }
 
-            .value {
-                border-top: 1px solid #000;
-            }
+        .unit {
+            @extend small;
+        }
+
+    }
+    
+    .result {
+        font-weight: bold;
+
+        .value {
+            border-top: 1px solid #000;
         }
     }
 }
