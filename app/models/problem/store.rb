@@ -1,8 +1,8 @@
-module Rig
+module Problem
   class Store < ::Store
 
     def self.build
-      self.new(Rig::Model)
+      self.new(Problem::Model)
     end
 
   end
