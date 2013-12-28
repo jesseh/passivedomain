@@ -12,11 +12,33 @@
     <div class="large-9 push-3 columns">
       
       <h1>When to Mine</h1>
-      <h2 class="subheader">Power your rig <em>or</em> simply buy Bitcoin?</h2>
+      <h2 class="subheader">Power your rig <em>or</em> not?</h2>
       
-        <h3>0. Inputs</h3>
-        <p>These are all the inputs to the calculation.</p>
-      <form>
+      <form id="inputs">
+        <fieldset>
+          <legend>Your objective</legend>
+          <p>This calculator adjusts based on what you aim to achieve by mining.</p>
+          <div class="row">
+            <div class="columns">
+              <div>
+                <input type="radio" name="objective" value="acquire" id="earning-bitcoin">
+                <label for="objective-acquire">Acquire Bitcoins</label>
+                <p>You hold onto all the Bitcoin you receive from mining. You are mining to acquire Bitcoin for less than it would cost to simply buy them from an exchange.</p>
+              </div>
+              <div>
+                <input type="radio" name="objective" value="retain" id="earning-bitcoin">
+                <label for="objective-retain">Retain mining profit as Bitcoin</label>
+                <p>You use mining proceeds to pay for mining expenses, but otherwise retain the profit as an investment in Bitcoin.</p>
+              </div>
+              <div>
+                <input type="radio" name="objective" value="extract" id="earning-fiat">
+                <label for="objective-extract">Extract mining profit</label>
+                <p>Your are mining for immediate profit, not as a means to invest in Bitcoing. Therefore you regularly convert all mining proceeds to a fiat currency</p>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
         <fieldset>
           <legend>Your rig</legend>
           <p>Your rig is a sunk cost. These attributes will not change unless you sink more money into it.</p>
@@ -46,6 +68,11 @@
           <label>Recuring facility fees (US$ / month)
             <input name="facility_fees" type="text" input_mode="numeric" >
           </label>
+          <label>Bitcoing exchange 
+            <select name="exchange">
+              <option value="mtgox">Mt.Gox</option>
+            </select>
+          </label>
           <label>Other operating costs (US$ / month)
             <input name="other_operating_costs" type="text" input_mode="numeric" >
           </label>
@@ -65,30 +92,71 @@
           </label>
         </fieldset>
 
-        <fieldset>
-          <legend>The alternative</legend>
-          <p>Mining is only worthwhile if it is the least expensive way for you to acquire Bitcoin. This is the cost assumptions for the alternative of simply buying Bitcoin (or simply not losing money).</p>
-          <div class="row">
-            <div class="columns">
-              <label>My approach is to</label> 
-              <input type="radio" name="goal" value="hold" id="goal-hold"><label for="goal-hold">Hold on to Bitcoin</label>
-              <input type="radio" name="goal" value="cash_out" id="goal-cash-out"><label for="goal-cash-out">Immediately cash out to a fiat currency</label>
-            </div>
-          </div>
-          <label>Exchange transaction fee - fixed (US$ / transaction)
-            <input name="exchange_fee_fixed" type="text" input_mode="numeric" required >
-          </label>
-          <label>Exchange transaction fee - variable (%)
-            <input name="exchange_fee_variable" type="text" input_mode="numeric" required >
-          </label>
-          <label>Exchange transaction frequency (days) [if approach is to cash out]
-            <input name="exchange_fee_variable" type="text" input_mode="numeric" required >
-          </label>
-          <em>I still need to research this section.</em>
-        </fieldset>
       </form>
       
 
+      <div class="panel">
+        <a name="your_rig"></a>
+        <h3>Calculator</h3>
+        <p>Details here.</p>
+        <div class="calculation">
+          <div class="line">
+            <div class="operation">=</div>
+            <div class="item">capacity of your rig</div>
+            <div class="value">1,980,000</div>
+            <div class="unit">gigahash / hour</div>
+          </div>
+          <div class="line">
+            <div class="operation">=</div>
+            <div class="item">efficiency of your rig</div>
+            <div class="value">0.000002</div>
+            <div class="unit">kilowatt-hour / gigahash</div>
+          </div>
+          <div class="line">
+            <div class="operation">=</div>
+            <div class="item">revenue</div>
+            <div class="value">0.06617</div>
+            <div class="unit">US$ / hour or Bitcoin / hour</div>
+          </div>
+          <div class="line">
+            <div class="operation">-</div>
+            <div class="item">electricity cost</div>
+            <div class="value">0.06617</div>
+            <div class="unit">US$ / hour or Bitcoin / hour (depends on objective)</div>
+          </div>
+          <div class="line">
+            <div class="operation">-</div>
+            <div class="item">pool cost</div>
+            <div class="value">0.000015</div>
+            <div class="unit">US$ / hour or Bitcoin / hour</div>
+          </div>
+          <div class="line">
+            <div class="operation">=</div>
+            <div class="item">gross margin (hourly)</div>
+            <div class="value">0.06</div>
+            <div class="unit">US$ / hour or Bitcoin / hour</div>
+          </div>
+          <div class="line">
+            <div class="operation">=</div>
+            <div class="item">gross margin (monthly)</div>
+            <div class="value">41</div>
+            <div class="unit">US$ / month or Bitcoin / month</div>
+          </div>
+          <div class="line">
+            <div class="operation">-</div>
+            <div class="item">Recuring facility fees</div>
+            <div class="value">0</div>
+            <div class="unit">US$ / hour or Bitcoin / hour</div>
+          </div>
+          <div class="line">
+            <div class="operation">-</div>
+            <div class="item">Other operating costs</div>
+            <div class="value">0</div>
+            <div class="unit">US$ / hour or Bitcoin / hour</div>
+          </div>
+        </div>
+      </div>
+ 
       <div class="panel">
         <a name="your_rig"></a>
         <h3>1. Your rig</h3>
