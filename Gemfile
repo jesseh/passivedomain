@@ -59,3 +59,8 @@ end
 
 # Use foundation as the css framework
 gem 'foundation-rails'
+
+# Send logs to stdout for Heroku
+group :production do
+    gem 'rails_12factor'
+end
