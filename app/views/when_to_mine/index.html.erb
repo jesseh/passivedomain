@@ -100,131 +100,97 @@
         <h3>Calculator</h3>
         <p>Details here.</p>
         <div class="calculation">
-          <div class="line">
-            <div class="operation">=</div>
-            <div class="item">capacity of your rig</div>
-            <div class="value">1,980,000</div>
-            <div class="unit">gigahash / hour</div>
+          <div class="section">
+            <label>Scale</label>
+            <div class="line">
+              <div class="operation">.</div>
+              <div class="item">capacity of your rig</div>
+              <div class="value">1,980,000</div>
+              <div class="unit">gigahash / hour</div>
+            </div>
+            <div class="line">
+              <div class="operation">.</div>
+              <div class="item">efficiency of your rig</div>
+              <div class="value">0.000002</div>
+              <div class="unit">kilowatt-hour / gigahash</div>
+            </div>
+            <div class="line">
+              <div class="operation">.</div>
+              <div class="item">utilization of your rig</div>
+              <div class="value">100%</div>
+              <div class="unit"></div>
+            </div>
           </div>
-          <div class="line">
-            <div class="operation">=</div>
-            <div class="item">efficiency of your rig</div>
-            <div class="value">0.000002</div>
-            <div class="unit">kilowatt-hour / gigahash</div>
+          <div class="section">
+            <label>Mining</label>
+            <div class="line">
+              <div class="operation">=</div>
+              <div class="item">revenue</div>
+              <div class="value">0.06617</div>
+              <div class="unit">US$ / hour or Bitcoin / hour</div>
+            </div>
+            <div class="line">
+              <div class="operation">-</div>
+              <div class="item">electricity cost</div>
+              <div class="value">0.06617</div>
+              <div class="unit">US$ / hour or Bitcoin / hour (depends on objective)</div>
+            </div>
+            <div class="line">
+              <div class="operation">-</div>
+              <div class="item">pool cost</div>
+              <div class="value">0.000015</div>
+              <div class="unit">US$ / hour or Bitcoin / hour</div>
+            </div>
+            <%# If objective is 'extract' %>
+            <div class="line">
+              <div class="operation">-</div>
+              <div class="item">exchange transaction fees</div>
+              <div class="value">0</div>
+              <div class="unit">US$ / hour or Bitcoin / hour</div>
+            </div>
+            <div class="line">
+              <div class="operation">=</div>
+              <div class="item">gross margin (hourly)</div>
+              <div class="value">0.06</div>
+              <div class="unit">US$ / hour or Bitcoin / hour</div>
+            </div>
+            <div class="line">
+              <div class="operation">=</div>
+              <div class="item">gross margin (monthly)</div>
+              <div class="value">41</div>
+              <div class="unit">US$ / month or Bitcoin / month</div>
+            </div>
           </div>
-          <div class="line">
-            <div class="operation">=</div>
-            <div class="item">revenue</div>
-            <div class="value">0.06617</div>
-            <div class="unit">US$ / hour or Bitcoin / hour</div>
-          </div>
-          <div class="line">
-            <div class="operation">-</div>
-            <div class="item">electricity cost</div>
-            <div class="value">0.06617</div>
-            <div class="unit">US$ / hour or Bitcoin / hour (depends on objective)</div>
-          </div>
-          <div class="line">
-            <div class="operation">-</div>
-            <div class="item">pool cost</div>
-            <div class="value">0.000015</div>
-            <div class="unit">US$ / hour or Bitcoin / hour</div>
-          </div>
-          <div class="line">
-            <div class="operation">=</div>
-            <div class="item">gross margin (hourly)</div>
-            <div class="value">0.06</div>
-            <div class="unit">US$ / hour or Bitcoin / hour</div>
-          </div>
-          <div class="line">
-            <div class="operation">=</div>
-            <div class="item">gross margin (monthly)</div>
-            <div class="value">41</div>
-            <div class="unit">US$ / month or Bitcoin / month</div>
-          </div>
-          <div class="line">
-            <div class="operation">-</div>
-            <div class="item">Recuring facility fees</div>
-            <div class="value">0</div>
-            <div class="unit">US$ / hour or Bitcoin / hour</div>
-          </div>
-          <div class="line">
-            <div class="operation">-</div>
-            <div class="item">Other operating costs</div>
-            <div class="value">0</div>
-            <div class="unit">US$ / hour or Bitcoin / hour</div>
+          <div class="section">
+            <label>Operating</label>
+            <div class="line">
+              <div class="operation">-</div>
+              <div class="item">recuring facility fees</div>
+              <div class="value">0</div>
+              <div class="unit">US$ / hour or Bitcoin / hour</div>
+            </div>
+            <%# If objective is 'retain' %>
+            <div class="line">
+              <div class="operation">-</div>
+              <div class="item">exchange transaction fees</div>
+              <div class="value">0</div>
+              <div class="unit">US$ / hour or Bitcoin / hour</div>
+            </div>
+            <div class="line">
+              <div class="operation">-</div>
+              <div class="item">other operating costs</div>
+              <div class="value">0</div>
+              <div class="unit">US$ / hour or Bitcoin / hour</div>
+            </div>
+            <div class="line">
+              <div class="operation">=</div>
+              <div class="item">earnings <small>before tax, interest, depreciation and amortization</small></div>
+              <div class="value">0</div>
+              <div class="unit">US$ / hour or Bitcoin / hour</div>
+            </div>
           </div>
         </div>
       </div>
- 
-      <div class="panel">
-        <a name="your_rig"></a>
-        <h3>1. Your rig</h3>
-        <p>Details here.</p>
-        <div class="calculation">
-          <div class="line">
-            <div class="operation">&nbsp;</div>
-            <div class="item">hash rate</div>
-            <div class="value">550.0</div>
-            <div class="unit">GHash / Second</div>
-          </div>
-          <div class="line">
-            <div class="operation">*</div>
-            <div class="item">unit conversion</div>
-            <div class="value">3,600</div>
-            <div class="unit">Second / Hour</div>
-          </div>
-          <div class="line result">
-            <div class="operation">=</div>
-            <div class="item">capacity</div>
-            <div class="value">1,980,000</div>
-            <div class="unit">GHash / Hour</div>
-          </div>
-        </div>
-      </div>
- 
-      <div class="panel">
-        <a name="reward_rate" />
-        <h3>2. Reward rate</h3>
-        <p>Details here.</p>
-      </div>
-            
-      <div class="panel">
-        <a name="revenue" />
-        <h3>3. Revenue</h3>
-        <p>Details here.</p>
-      </div>
-            
-      <div class="panel">
-        <a name="cost_structure" />
-        <h3>4. Cost structure</h3>
-        <p>Details here.</p>
-      </div>
-            
-      <div class="panel">
-        <a name="cost_of_actively_mining" />
-        <h3>5. Cost of actively mining</h3>
-        <p>Details here.</p>
-      </div>
-            
-      <div class="panel">
-        <a name="gross_margin" />
-        <h3>6. Gross margin</h3>
-        <p>Details here.</p>
-      </div>
-            
-      <div class="panel">
-        <a name="rig_utilization" />
-        <h3>7. Rig utilization</h3>
-        <p>Details here.</p>
-      </div>
-            
-      <div class="panel">
-        <a name="operating_profit" />
-        <h3>8. Operating profit</h3>
-        <p>Details here.</p>
-      </div>
-            
     </div>
     
     
