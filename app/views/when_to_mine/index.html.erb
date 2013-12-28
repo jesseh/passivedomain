@@ -14,20 +14,65 @@
       <h1>When to Mine</h1>
       <h2 class="subheader">Power your rig <em>or</em> simply buy Bitcoin?</h2>
       
-      <div class="panel">
-        <a name="inputs"></a>
         <h3>0. Inputs</h3>
         <p>These are all the inputs to the calculation.</p>
-        <h4>Your rig</h4>
-        <h4><small>Your rig is a sunk cost. These attributes will not change unless you invest more money in your rig.</small></h4>
-        <h4>Your operating environment</h4>
-        <h4><small>Your operating environment is generally stable, although you may be able to improve it by, for example, relocating your rig.</small></h4>
-        <h4>External environment</h4>
-        <h4><small>The external environment is out of your control. It changes continuously, and largely determines when you should mine.</small></h4>
-        <h4>The alternative - buying Bitcoin (or just not losing money)</h4>
-        <h4><small>Mining is only worthwhile if it is the least expensive way for you to acquire Bitcoin. This is the cost assumptions for the alternative of simply buying Bitcoin (or simply not losing money).</small></h4>
+      <form>
+        <fieldset>
+          <legend>Your rig</legend>
+          <p>Your rig is a sunk cost. These attributes will not change unless you sink more money into it.</p>
+          <label>Hash rate (gigahash / second)
+              <input name="hash_rate" type="text" input_mode="numeric" required >
+          </label>
+          <label>Electricity to mine (watts)
+            <input name="mining_electricity" type="text" input_mode="numeric" required >
+          </label>
+          <label>Electricity to cool while mining (watts)
+            <input name="cooling_electricity" type="text" input_mode="numeric" required >
+          </label>
+        </fieldset>
 
-      </div>
+        <fieldset>
+          <legend>Your operating environment</legend>
+          <p>Your operating environment is generally stable, although you may be able to improve it by, for example, relocating your rig.</p>
+          <label>Electricity rate (US$ / kWh)
+            <input name="electricity_rate" type="text" input_mode="numeric" required >
+          </label>
+          <label>Rig utilization (%)
+            <input name="rig_utilization" type="text" input_mode="numeric" required >
+          </label>
+          <label>Pool fee percentage (%)
+            <input name="pool_percentage" type="text" input_mode="numeric" >
+          </label>
+          <label>Recuring facility fees (US$ / month)
+            <input name="facility_fees" type="text" input_mode="numeric" >
+          </label>
+          <label>Other operating costs (US$ / month)
+            <input name="other_operating_costs" type="text" input_mode="numeric" >
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>The external environment</legend>
+          <p>The external environment is out of your control. It changes continuously, and largely determines when you should mine.</p>
+          <label>Bitcoin mining difficulty
+            <input name="difficulty" type="text" input_mode="numeric" required >
+          </label>
+          <label>Bitcoin reward amount (Bitcoin)
+            <input name="reward" type="text" input_mode="numeric" required >
+          </label>
+          <label>Bitcoin exchange rate (US$ / Bitcoin)
+            <input name="exchange_rate" type="text" input_mode="numeric" required >
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>The alternative</legend>
+          <p>Mining is only worthwhile if it is the least expensive way for you to acquire Bitcoin. This is the cost assumptions for the alternative of simply buying Bitcoin (or simply not losing money).</p>
+          <em>I still need to research this.</em>
+        </fieldset>
+      </form>
+      
+
       <div class="panel">
         <a name="your_rig"></a>
         <h3>1. Your rig</h3>
