@@ -9,9 +9,13 @@
         @extend .row;
 
         .operation {
+            text-align: right;
         }
+
         .item {
+            text-align: left;
         }
+
         .value {
             text-align: right;
         }
@@ -25,14 +29,20 @@
     .result {
         font-weight: bold;
 
-        .value {
+        .operation, .item, .value, .unit {
             border-top: 1px solid #000;
         }
+    }
+
+    .section {
+      font-style: italic;
     }
 }
 
 
-
+.panel legend {
+  background: $panel-bg;
+}
 
 
 

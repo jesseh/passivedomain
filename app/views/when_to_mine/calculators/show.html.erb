@@ -4,101 +4,109 @@
     
     <!-- Main Content Section -->
     <!-- This has been source ordered to come first in the markup (and on small devices) but to be to the right of the nav on larger screens -->
-    <div class="large-8 push-2 columns">
-      
-      <h1>When to Mine</h1>
-      <h2 class="subheader">Power your rig <em>or</em> not?</h2>
-      
-      <form id="inputs">
-        <fieldset>
-          <legend>Your objective</legend>
-          <p>This calculator adjusts based on what you aim to achieve by mining.</p>
-          <div class="row">
-            <div class="columns">
-              <div>
-                <input type="radio" name="objective" value="acquire" id="earning-bitcoin">
-                <label for="objective-acquire">Acquire Bitcoins</label>
-                <p>You hold onto all the Bitcoin you receive from mining. You are mining to acquire Bitcoin for less than it would cost to simply buy them from an exchange.</p>
-              </div>
-              <div>
-                <input type="radio" name="objective" value="retain" id="earning-bitcoin">
-                <label for="objective-retain">Retain mining profit as Bitcoin</label>
-                <p>You use mining proceeds to pay for mining expenses, but otherwise retain the profit as an investment in Bitcoin.</p>
-              </div>
-              <div>
-                <input type="radio" name="objective" value="extract" id="earning-fiat">
-                <label for="objective-extract">Extract mining profit</label>
-                <p>Your are mining for immediate profit, not as a means to invest in Bitcoing. Therefore you regularly convert all mining proceeds to a fiat currency</p>
+    <div class="large-12 columns">
+      <h1>When to mine?</h1>
+      <h2 class="subheader">Will you earn a return by powering your rig <em>right now</em>?</h2>
+    </div>
+  </div>
+  <div class="row">    
+    <div class="large-6 columns">
+      <div class="panel">
+        <h3>Inputs</h3>
+        <form id="inputs">
+          <fieldset>
+            <legend>Your objective</legend>
+            <p>This calculator adjusts based on what you aim to achieve by mining.</p>
+            <div class="row">
+              <div class="columns">
+                <div>
+                  <input type="radio" name="objective" value="acquire" id="earning-bitcoin">
+                  <label for="objective-acquire">Acquire Bitcoins</label>
+                  <p>You hold onto all the Bitcoin you receive from mining. You are mining to acquire Bitcoin for less than it would cost to simply buy them from an exchange.</p>
+                </div>
+                <div>
+                  <input type="radio" name="objective" value="retain" id="earning-bitcoin">
+                  <label for="objective-retain">Retain mining profit as Bitcoin</label>
+                  <p>You use mining proceeds to pay for mining expenses, but otherwise retain the profit as an investment in Bitcoin.</p>
+                </div>
+                <div>
+                  <input type="radio" name="objective" value="extract" id="earning-fiat">
+                  <label for="objective-extract">Extract mining profit</label>
+                  <p>Your are mining for immediate profit, not as a means to invest in Bitcoing. Therefore you regularly convert all mining proceeds to a fiat currency</p>
+                </div>
               </div>
             </div>
-          </div>
-        </fieldset>
+          </fieldset>
 
-        <fieldset>
-          <legend>Your rig</legend>
-          <p>Your rig is a sunk cost. These attributes will not change unless you sink more money into it.</p>
-          <label>Hash rate (gigahash / second)
-              <input name="hash_rate" type="text" input_mode="numeric" required >
-          </label>
-          <label>Electricity to mine (watts)
-            <input name="mining_electricity" type="text" input_mode="numeric" required >
-          </label>
-          <label>Electricity to cool while mining (watts)
-            <input name="cooling_electricity" type="text" input_mode="numeric" required >
-          </label>
-        </fieldset>
+          <fieldset>
+            <legend>Your rig</legend>
+            <p>Your rig is a sunk cost. These attributes will not change unless you sink more money into it.</p>
+            <label>Hash rate (gigahash / second)
+                <input name="hash_rate" type="text" input_mode="numeric" required >
+            </label>
+            <label>Electricity to mine (watts)
+              <input name="mining_electricity" type="text" input_mode="numeric" required >
+            </label>
+            <label>Electricity to cool while mining (watts)
+              <input name="cooling_electricity" type="text" input_mode="numeric" required >
+            </label>
+          </fieldset>
 
-        <fieldset>
-          <legend>Your operating environment</legend>
-          <p>Your operating environment is generally stable, although you may be able to improve it by, for example, relocating your rig.</p>
-          <label>Electricity rate (US$ / kWh)
-            <input name="electricity_rate" type="text" input_mode="numeric" required >
-          </label>
-          <label>Rig utilization (%)
-            <input name="rig_utilization" type="text" input_mode="numeric" required >
-          </label>
-          <label>Pool fee percentage (%)
-            <input name="pool_percentage" type="text" input_mode="numeric" >
-          </label>
-          <label>Recuring facility fees (US$ / month)
-            <input name="facility_fees" type="text" input_mode="numeric" >
-          </label>
-          <label>Bitcoing exchange 
-            <select name="exchange">
-              <option value="mtgox">Mt.Gox</option>
-            </select>
-          </label>
-          <label>Other operating costs (US$ / month)
-            <input name="other_operating_costs" type="text" input_mode="numeric" >
-          </label>
-        </fieldset>
+          <fieldset>
+            <legend>Your operating environment</legend>
+            <p>Your operating environment is generally stable, although you may be able to improve it by, for example, relocating your rig.</p>
+            <label>Electricity rate (US$ / kWh)
+              <input name="electricity_rate" type="text" input_mode="numeric" required >
+            </label>
+            <label>Rig utilization (%)
+              <input name="rig_utilization" type="text" input_mode="numeric" required >
+            </label>
+            <label>Pool fee percentage (%)
+              <input name="pool_percentage" type="text" input_mode="numeric" >
+            </label>
+            <label>Recuring facility fees (US$ / month)
+              <input name="facility_fees" type="text" input_mode="numeric" >
+            </label>
+            <label>Bitcoing exchange 
+              <select name="exchange">
+                <option value="mtgox">Mt.Gox</option>
+              </select>
+            </label>
+            <label>Other operating costs (US$ / month)
+              <input name="other_operating_costs" type="text" input_mode="numeric" >
+            </label>
+          </fieldset>
 
-        <fieldset>
-          <legend>The external environment</legend>
-          <p>The external environment is out of your control. It changes continuously, and largely determines when you should mine.</p>
-          <label>Bitcoin mining difficulty
-            <input name="difficulty" type="text" input_mode="numeric" required >
-          </label>
-          <label>Bitcoin reward amount (Bitcoin)
-            <input name="reward" type="text" input_mode="numeric" required >
-          </label>
-          <label>Bitcoin exchange rate (US$ / Bitcoin)
-            <input name="exchange_rate" type="text" input_mode="numeric" required >
-          </label>
-        </fieldset>
+          <fieldset>
+            <legend>The external environment</legend>
+            <p>The external environment is out of your control. It changes continuously, and largely determines when you should mine.</p>
+            <label>Bitcoin mining difficulty
+              <input name="difficulty" type="text" input_mode="numeric" required >
+            </label>
+            <label>Bitcoin reward amount (Bitcoin)
+              <input name="reward" type="text" input_mode="numeric" required >
+            </label>
+            <label>Bitcoin exchange rate (US$ / Bitcoin)
+              <input name="exchange_rate" type="text" input_mode="numeric" required >
+            </label>
+          </fieldset>
+        </form>
+      </div>
+    </div>
 
-      </form>
-      
-
+    <div class="large-6 columns">
       <div class="panel">
-        <a name="your_rig"></a>
-        <h3>Current result</h3>
-        <h3><small>If the current environment were to remain stable for a month here is what you would earn.</small></h3>
+        <h3>Result</h3>
+        <p>You should not be mining....</p>
+      
+        <p>If the current environment were to remain stable for a month you would earn ____.</p>
+        
+        <h3>Cash flow projection</h3>
 
         <table class="calculation">
           <tbody>
             <tr class="section">
-              <td>Scale</td>
+              <td colspan="5">Scale</td>
             </tr>
             <tr class="line">
               <td class="operation"></td>
@@ -119,16 +127,22 @@
               <td class="unit"></td>
             </tr>
 
+            <tr class="spacer"><td></td></tr>
             <tr class="section">
-              <td>Mining</td>
+              <td colspan="5">Revenue</td>
             </tr>
 
             <tr class="line">
               <td class="operation"></td>
-              <td class="item">revenue</td>
+              <td class="item">mining rewards</td>
               <td class="value">0.06617</td>
               <td class="unit">US$</td>
             </tr>
+            <tr class="spacer"><td></td></tr>
+            <tr class="section">
+              <td colspan="5">Mining costs</td>
+            </tr>
+
             <tr class="line">
               <td class="operation">-</td>
               <td class="item">electricity cost</td>
@@ -155,8 +169,9 @@
               <td class="unit">US$</td>
             </tr>
 
+            <tr class="spacer"><td></td></tr>
             <tr class="section">
-              <td>Operating</td>
+              <td colspan="5">Operating costs</td>
             </tr>
 
             <tr class="line">
@@ -186,10 +201,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-      <div class="panel">
-        <h3>Conclusion</h3>
-        <p>You should not be mining....</p>
       </div>
     </div>
   </div>
