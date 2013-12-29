@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe WhenToMineController do
+describe HomeController do
 
-  it { should route(:get, 'when_to_mine').to(controller: 'when_to_mine', action: 'index') }
+  it { should route(:get, '/').to(controller: 'home', action: 'index') }
 
   describe "on GET to #index" do
     before { get :index }
