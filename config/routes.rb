@@ -1,17 +1,20 @@
 Afterburner::Application.routes.draw do
 
-  namespace 'api' do
-    resources :rigs
-    resources :problems
-  end
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
   root 'home#index'
 
-  get 'when_to_mine' => 'when_to_mine#index'
+  namespace 'api' do
+    resources :rigs
+    resources :problems
+  end
+
+  namespace 'when_to_mine' do
+    resource :calculator
+  end
+    
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
