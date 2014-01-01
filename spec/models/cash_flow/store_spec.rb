@@ -6,4 +6,6 @@ describe CashFlow::Store do
     let(:active_record_class_name){ 'CashFlow::Model' }
   end
 
+  # TODO: add tests for the precision of money fractional fields
+
 end
