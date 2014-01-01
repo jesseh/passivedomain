@@ -1,8 +1,8 @@
-module Problem
+module WhenToMine
   class Store < ::Store
 
     def self.build
-      self.new(Problem::Model)
+      self.new(WhenToMine::Model)
     end
 
   end

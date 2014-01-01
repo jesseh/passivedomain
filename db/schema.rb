@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131227012926) do
+ActiveRecord::Schema.define(version: 20140101025112) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "rigs", force: true do |t|
     t.string  "name"
@@ -19,6 +22,25 @@ ActiveRecord::Schema.define(version: 20131227012926) do
     t.string  "price_currency"
     t.integer "power"
     t.float   "hash_rate"
+  end
+
+  create_table "when_to_mines", force: true do |t|
+    t.string   "fiat_currency"
+    t.decimal  "exchange_rate"
+    t.string   "objective"
+    t.float    "rig_hash_rate"
+    t.float    "watts_to_mine"
+    t.float    "watts_to_cool"
+    t.decimal  "electricity_rate"
+    t.float    "rig_utilization"
+    t.float    "pool_fee_percent"
+    t.decimal  "facility_cost"
+    t.string   "exchange_provider"
+    t.decimal  "other_operating_costs"
+    t.float    "mining_difficulty"
+    t.decimal  "reward_amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

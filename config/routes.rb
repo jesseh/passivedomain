@@ -8,7 +8,7 @@ Afterburner::Application.routes.draw do
 
   namespace 'api' do
     resources :rigs
-    resources :problems
+    resources :when_to_mines
   end
 
   namespace 'when_to_mine' do
