@@ -1,8 +1,8 @@
-module WhenToMine
+module CashFlow
   class Store < ::Store
 
     def self.build
-      self.new(WhenToMine::Model)
+      self.new(CashFlow::Model)
     end
 
   end

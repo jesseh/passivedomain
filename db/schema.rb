@@ -16,15 +16,7 @@ ActiveRecord::Schema.define(version: 20140101025112) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "rigs", force: true do |t|
-    t.string  "name"
-    t.integer "price_fractional"
-    t.string  "price_currency"
-    t.integer "power"
-    t.float   "hash_rate"
-  end
-
-  create_table "when_to_mines", force: true do |t|
+  create_table "cash_flows", force: true do |t|
     t.string   "fiat_currency"
     t.decimal  "exchange_rate"
     t.string   "objective"
@@ -41,6 +33,14 @@ ActiveRecord::Schema.define(version: 20140101025112) do
     t.decimal  "reward_amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "rigs", force: true do |t|
+    t.string  "name"
+    t.integer "price_fractional"
+    t.string  "price_currency"
+    t.integer "power"
+    t.float   "hash_rate"
   end
 
 end

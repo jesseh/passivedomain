@@ -1,6 +1,6 @@
-class CreateWhenToMines < ActiveRecord::Migration
+class CreateCashFlows < ActiveRecord::Migration
   def change
-    create_table :when_to_mines do |t|
+    create_table :cash_flows do |t|
       t.string :fiat_currency
       t.decimal :exchange_rate
       t.string :objective
