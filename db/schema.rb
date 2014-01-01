@@ -18,19 +18,19 @@ ActiveRecord::Schema.define(version: 20140101025112) do
 
   create_table "cash_flows", force: true do |t|
     t.string   "fiat_currency"
-    t.decimal  "exchange_rate"
+    t.decimal  "exchange_rate",               precision: 10, scale: 6
     t.string   "objective"
-    t.float    "rig_hash_rate"
+    t.decimal  "rig_hash_rate",               precision: 10, scale: 4
     t.float    "watts_to_mine"
     t.float    "watts_to_cool"
-    t.decimal  "electricity_rate"
+    t.decimal  "electricity_rate_fractional", precision: 10, scale: 4
     t.float    "rig_utilization"
-    t.float    "pool_fee_percent"
-    t.decimal  "facility_cost"
+    t.decimal  "pool_fee_percent",            precision: 4,  scale: 2
+    t.decimal  "facility_cost_fractional",    precision: 10, scale: 4
     t.string   "exchange_provider"
-    t.decimal  "other_operating_costs"
+    t.decimal  "other_cost_fractional",       precision: 10, scale: 4
     t.float    "mining_difficulty"
-    t.decimal  "reward_amount"
+    t.decimal  "reward_amount_fractional",    precision: 10, scale: 4
     t.datetime "created_at"
     t.datetime "updated_at"
   end
