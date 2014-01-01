@@ -82,38 +82,48 @@ describe CashFlow::Model do
     its(:reward_amount_fractional) { should eql(5.0e09) }
   end
 
+  describe "currency fields" do
+    let(:money){ double("Money") }
+    let(:money_class){ double("Money class", :new => money) }
+    let(:instance){ described_class.new }
 
-  # describe "#power" do
-  #   before{ subject.power = 30 }
-  #   its(:power) { should eql(30) }
-  # end
+    before do
+      instance.fiat_currency = "USD"
+      allow( described_class ).to receive(:money_builder){ money_class }
+    end
 
-  # describe "#price_fractional" do
-  #   before{ subject.price_fractional = 50_00 }
-  #   its(:price_fractional) { should eql(50_00) }
-  # end
+    describe "#electricity_rate" do
+      before   { instance.electricity_rate_fractional = 30_00 }
+      subject! { instance.electricity_rate }
 
-  # describe "#price_currency" do
-  #   before{ subject.price_currency = 'USD' }
-  #   its(:price_currency){ should eql('USD') }
-  # end
+      it{ expect( money_class ).to have_received(:new).with(30_00, "USD") }
+      it{ should eql(money) }
+    end
 
-  # describe "#price" do
-  #   let(:money){ double("Money") }
-  #   let(:money_class){ double("Money class", :new => money) }
+    describe "#facility_cost" do
+      before   { instance.facility_cost_fractional = 30_00 }
+      subject! { instance.facility_cost }
 
-  #   let(:instance){ described_class.new }
+      it{ expect( money_class ).to have_received(:new).with(30_00, "USD") }
+      it{ should eql(money) }
+    end
+    
+    describe "#other_cost" do
+      before   { instance.other_cost_fractional = 30_00 }
+      subject! { instance.other_cost }
 
-  #   before do
-  #     allow( described_class ).to receive(:money_builder){ money_class }
-  #     allow( instance ).to receive(:price_fractional){ 30_00 }
-  #     allow( instance ).to receive(:price_currency){ "GBP" }
-  #   end
+      it{ expect( money_class ).to have_received(:new).with(30_00, "USD") }
+      it{ should eql(money) }
+    end
 
-  #   subject! { instance.price }
+    describe "#reward_amount" do
+      # NOTE: the reward is always in BTC
+      before   { instance.reward_amount_fractional = 30_00 }
+      subject! { instance.reward_amount }
 
-  #   it{ expect( money_class ).to have_received(:new).with(30_00, "GBP") }
-  #   it{ should eql(money) }
-  # end
+      it{ expect( money_class ).to have_received(:new).with(30_00, "BTC") }
+      it{ should eql(money) }
+    end
+  end
 
 end
