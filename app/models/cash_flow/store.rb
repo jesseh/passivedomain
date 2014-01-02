@@ -2,7 +2,7 @@ module CashFlow
   class Store < ::Store
 
     def self.build
-      self.new(CashFlow::Model)
+      self.new(CashFlow::Record)
     end
 
   end

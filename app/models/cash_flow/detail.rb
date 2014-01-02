@@ -10,30 +10,21 @@ KILOWATT_PER_WATT        = 1.0 / 1000
 
 module CashFlow
 
-  class Model < ActiveRecord::Base
+  class Detail
+    attr_accessor   :rig_hash_rate,
+                    :watts_to_mine,
+                    :watts_to_cool,
+                    :mining_difficulty,
+                    :reward_amount,
+                    :fiat_currency,
+                    :electricity_rate,
+                    :pool_fee_percent,
+                    :facility_cost,
+                    :other_cost,
+                    :exchange_fee_percent, 
+                    :exchange_rate,
+                    :rig_utilization
 
-    self.table_name = "cash_flows"
-
-    def self.money_builder
-      Money
-    end
-
-
-    def electricity_rate
-      money_builder.new(electricity_rate_fractional, fiat_currency)
-    end
-
-    def facility_cost
-      money_builder.new facility_cost_fractional, fiat_currency
-    end
-
-    def other_cost
-      money_builder.new other_cost_fractional, fiat_currency
-    end
-
-    def reward_amount
-      money_builder.new reward_amount_fractional, BITCOIN_CURRENCY
-    end
 
     def rig_capacity
       # unit: hash / hour

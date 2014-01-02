@@ -1,6 +1,6 @@
 class Store
   def self.build
-    self.new(Rig::Model)
+    raise "Build method must be over-ridden by a subclass"
   end
 
   def initialize(active_record_class)
