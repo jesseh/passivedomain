@@ -90,12 +90,13 @@ describe CashFlow::Model do
   end
 
   describe "currency fields" do
-    let(:money){ double("Money") }
-    let(:money_class){ double("Money class", :new => money) }
+    let(:money){ double("Money").as_null_object }
+    let(:money_class){ double("Money class", :new => money, :add_rate => nil) }
     let(:instance){ described_class.new }
 
     before do
       instance.fiat_currency = "USD"
+      instance.exchange_rate = 1
       allow( described_class ).to receive(:money_builder){ money_class }
     end
 
@@ -146,6 +147,8 @@ describe CashFlow::Model do
       subject.facility_cost_fractional    = 7300
       subject.other_cost_fractional       = 9700
       subject.exchange_fee_percent        = 0.07
+      subject.exchange_rate               = 1
+      subject.rig_utilization             = 0.50 
     end
 
     describe "#rig_capacity" do
@@ -176,9 +179,14 @@ describe CashFlow::Model do
       it { expect(subject.pool_cost.currency_as_string).to eq("BTC") }
     end
 
-    describe "#exchange_transaction_cost" do
-      it { expect(subject.exchange_transaction_cost.amount.round(5)).to eq(0.00015) }
-      it { expect(subject.exchange_transaction_cost.currency_as_string).to eq("BTC") }
+    describe "#revenue_exchange_cost" do
+      it { expect(subject.revenue_exchange_cost.amount.round(5)).to eq(1.74999) }
+      it { expect(subject.revenue_exchange_cost.currency_as_string).to eq("BTC") }
+    end
+
+    describe "#operations_exchange_cost" do
+      it { expect(subject.operations_exchange_cost.amount.round(5)).to eq(12.62818) }
+      it { expect(subject.operations_exchange_cost.currency_as_string).to eq("USD") }
     end
     
   end
