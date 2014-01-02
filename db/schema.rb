@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20140101025112) do
     t.string   "fiat_currency"
     t.decimal  "exchange_rate",               precision: 10, scale: 6
     t.string   "objective"
-    t.decimal  "rig_hash_rate",               precision: 10, scale: 4
+    t.float    "rig_hash_rate"
     t.float    "watts_to_mine"
     t.float    "watts_to_cool"
     t.decimal  "electricity_rate_fractional", precision: 10, scale: 4
