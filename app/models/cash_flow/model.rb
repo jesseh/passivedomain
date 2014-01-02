@@ -1,9 +1,9 @@
 BITCOIN_CURRENCY         = "BTC"
 SECONDS_PER_HOUR         = 60 * 60
-KILOWATT_PER_WATT        = 1.0 / 1000
 GHASH_PER_HASH           = 1.0 / 1E9
 HASH_SEARCH_SPACE        = 2**256
 OFFSET_AT_MIN_DIFFICULTY = 0xffff * 2**208
+KILOWATT_PER_WATT        = 1.0 / 1000
 
 
 
@@ -35,26 +35,44 @@ module CashFlow
     end
 
     def rig_capacity
-      # unit: GHash / hour
+      # unit: hash / hour
       rig_hash_rate * SECONDS_PER_HOUR
     end
 
     def rig_efficiency
-      # unit: kWh / GHash
-      KILOWATT_PER_WATT * (watts_to_mine + watts_to_cool) / rig_capacity
+      # unit: watt / hash
+      (watts_to_mine + watts_to_cool) / rig_capacity
     end
 
     def expected_reward_rate
       # unit: Bitcoin / hour
+      reward_amount * rig_capacity / expected_hash_to_find_block
+    end
 
-      reward_amount * rig_capacity / expected_ghash_per_block
+    def revenue
+      # unit: Bitcoin / hour
+      expected_reward_rate
+    end
+
+    def electricity_cost
+      #unit: fiat_currency / hour
+      electricity_rate * KILOWATT_PER_WATT * rig_efficiency * rig_capacity
+    end
+
+    def pool_cost
+      #unit: Bitcoin / hour
+       expected_reward_rate * pool_fee_percent
+    end
+
+    def exchange_transaction_cost
+      #unit: Bitcoin
+      expected_reward_rate * exchange_fee_percent
     end
 
     private
 
-    def expected_ghash_per_block 
-        GHASH_PER_HASH     \
-       * mining_difficulty \
+    def expected_hash_to_find_block 
+         mining_difficulty \
        * HASH_SEARCH_SPACE \
        / OFFSET_AT_MIN_DIFFICULTY # vim syntax coloring fix /
     end

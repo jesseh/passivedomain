@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20140101025112) do
     t.decimal  "pool_fee_percent",            precision: 4,  scale: 2
     t.decimal  "facility_cost_fractional",    precision: 10, scale: 4
     t.string   "exchange_provider"
+    t.decimal  "exchange_fee_percent",        precision: 4,  scale: 4
     t.decimal  "other_cost_fractional",       precision: 10, scale: 4
     t.float    "mining_difficulty"
     t.decimal  "reward_amount_fractional",    precision: 10, scale: 4

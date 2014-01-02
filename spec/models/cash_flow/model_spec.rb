@@ -68,6 +68,11 @@ describe CashFlow::Model do
       its(:exchange_provider) { should eql('some_provider') }
     end
 
+    describe "#exchange_fee_percent" do
+      before{ subject.exchange_fee_percent = 0.123 }
+      its(:exchange_fee_percent) { should eql(0.123) }
+    end
+
     describe "#other_cost_fractional" do
       before{ subject.other_cost_fractional = 5.0e09 }
       its(:other_cost_fractional) { should eql(5.0e09) }
@@ -130,22 +135,51 @@ describe CashFlow::Model do
 
   describe "outputs" do
     before do
-      subject.rig_hash_rate = 123
-      subject.watts_to_mine = 33
-      subject.watts_to_cool = 81
-      subject.mining_difficulty = 1180923195.25800
-      subject.reward_amount_fractional = 25
+      subject.rig_hash_rate               = 123E9
+      subject.watts_to_mine               = 33
+      subject.watts_to_cool               = 81
+      subject.mining_difficulty           = 1180923195.25800
+      subject.reward_amount_fractional    = 25
+      subject.fiat_currency               = "USD"
+      subject.electricity_rate_fractional = 25
+      subject.pool_fee_percent            = 0.07
+      subject.facility_cost_fractional    = 7300
+      subject.other_cost_fractional       = 9700
+      subject.exchange_fee_percent        = 0.07
     end
+
     describe "#rig_capacity" do
-      its(:rig_capacity) { should eq(123 * 60 * 60) } 
+      its(:rig_capacity) { should eq(123E9 * 60 * 60) } 
     end
 
     describe "#rig_efficiency" do
-      its(:rig_efficiency) { should eq(2.574525745257453e-07) } 
+      its(:rig_efficiency) { should eq(2.5745257452574526e-13) } 
     end
 
     describe "#expected_reward_rate" do
       it { expect(subject.expected_reward_rate.fractional.round(5)).to eq(0.00218) }
+      it { expect(subject.expected_reward_rate.currency_as_string).to eq("BTC") }
     end
+    
+    describe "#revenue" do
+      it { expect(subject.revenue.fractional.round(5)).to eq(0.00218) }
+      it { expect(subject.revenue.currency_as_string).to eq("BTC") }
+    end
+
+    describe "#electricity_cost" do
+      it { expect(subject.electricity_cost.amount.round(5)).to eq(0.0285) }
+      it { expect(subject.electricity_cost.currency_as_string).to eq("USD") }
+    end
+
+    describe "#pool_cost" do
+      it { expect(subject.pool_cost.amount.round(5)).to eq(0.00015) }
+      it { expect(subject.pool_cost.currency_as_string).to eq("BTC") }
+    end
+
+    describe "#exchange_transaction_cost" do
+      it { expect(subject.exchange_transaction_cost.amount.round(5)).to eq(0.00015) }
+      it { expect(subject.exchange_transaction_cost.currency_as_string).to eq("BTC") }
+    end
+    
   end
 end
