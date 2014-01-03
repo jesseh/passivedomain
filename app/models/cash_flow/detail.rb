@@ -1,7 +1,5 @@
-BITCOIN_CURRENCY         = "BTC"
 SECONDS_PER_HOUR         = 60 * 60
 HOURS_PER_MONTH          = 24 * 365 / 12
-GHASH_PER_HASH           = 1.0 / 1E9
 HASH_SEARCH_SPACE        = 2**256
 OFFSET_AT_MIN_DIFFICULTY = 0xffff * 2**208
 KILOWATT_PER_WATT        = 1.0 / 1000
@@ -11,19 +9,20 @@ KILOWATT_PER_WATT        = 1.0 / 1000
 module CashFlow
 
   class Detail
-    attr_accessor   :rig_hash_rate,
-                    :watts_to_mine,
-                    :watts_to_cool,
-                    :mining_difficulty,
-                    :reward_amount,
-                    :fiat_currency,
-                    :electricity_rate,
-                    :pool_fee_percent,
-                    :facility_cost,
-                    :other_cost,
-                    :exchange_fee_percent, 
-                    :exchange_rate,
-                    :rig_utilization
+
+    attr_accessor :rig_hash_rate,
+                  :watts_to_mine,
+                  :watts_to_cool,
+                  :mining_difficulty,
+                  :reward_amount,
+                  :fiat_currency,
+                  :electricity_rate,
+                  :pool_fee_percent,
+                  :facility_cost,
+                  :other_cost,
+                  :exchange_fee_percent,
+                  :exchange_rate,
+                  :rig_utilization
 
 
     def rig_capacity
@@ -47,7 +46,7 @@ module CashFlow
     end
 
     def electricity_cost
-      #unit: Bitcoin / hour
+      #unit: USD / hour
       electricity_rate * KILOWATT_PER_WATT * rig_efficiency * rig_capacity
     end
 

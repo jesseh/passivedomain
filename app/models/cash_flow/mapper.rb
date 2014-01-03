@@ -1,6 +1,3 @@
-BITCOIN_CURRENCY = "BTC"
-
-
 module CashFlow
   class Mapper 
 
@@ -27,7 +24,7 @@ module CashFlow
     end
 
     def reward_amount
-      money_builder.new record.reward_amount_fractional, BITCOIN_CURRENCY
+      money_builder.new record.reward_amount_fractional, "BTC"
     end
 
     def method_missing(method_name, *args, &block)
