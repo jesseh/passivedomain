@@ -1,8 +1,10 @@
+
 shared_examples "a store" do
 
-  let(:active_record_class){ double("active record class") }
+  let(:active_record_class){ double("active record class").as_null_object }
+  let(:record){ double("Record").as_null_object }
 
-  subject(:instance){ described_class.new active_record_class }
+  subject(:instance){ described_class.new(active_record_class) }
 
   describe ".build" do
 
@@ -13,11 +15,11 @@ shared_examples "a store" do
 
     subject!{ described_class.build }
 
-    it { expect(described_class).to have_received(:new).with(active_record_class_name.constantize)}
+    it { expect(described_class).to have_received(:new) }
   end
 
   describe "#find_all" do
-    let(:results){ double("Results") }
+    let(:results){ [double("Results").as_null_object] }
 
     before do
       allow(active_record_class).to receive(:all).and_return(results)
@@ -25,52 +27,52 @@ shared_examples "a store" do
 
     subject { instance.find_all }
 
-    it { should eql(results) }
+    it { should eq(results) }
   end
 
   describe "#find_by_id" do
     before do
-      allow(active_record_class).to receive(:find_by_id).and_return(model)
+      allow(active_record_class).to receive(:find_by_id).and_return(record)
     end
 
-    let(:model){ double("Model") }
+    let(:model){ double("Model").as_null_object }
     let(:id){ '10' }
 
     subject! { instance.find_by_id id }
 
-    it { should eql(model) }
+    it { should eq(record) }
     it { expect(active_record_class).to have_received(:find_by_id).with(id) }
   end
 
   describe "#find_by_name" do
     before do
-      allow(active_record_class).to receive(:find_by_name).and_return(model)
+      allow(active_record_class).to receive(:find_by_name).and_return(record)
     end
 
-    let(:model){ double("Model") }
+    let(:model){ double("Model").as_null_object }
     let(:name){ "Deep blue" }
 
     subject! { instance.find_by_name name  }
 
-    it { should eql(model) }
+    it { should eq(record) }
     it { expect(active_record_class).to have_received(:find_by_name).with(name) }
   end
 
   describe "#create" do
     let(:valid){ true }
     let(:attributes){ {some: 'things'} }
-    let(:model){ double("Model") }
+    let(:model){ double("Model").as_null_object }
     let(:form){ double("Form", valid?: valid, attributes: attributes) }
 
     before do
-      allow(active_record_class).to receive(:create!).and_return(model)
+      allow(active_record_class).to receive(:create!).and_return(record)
     end
 
     subject! { instance.create form }
 
     context "when form is valid" do
+      it { should eq(record) }
       it { expect(active_record_class).to have_received(:create!).with(attributes) }
-      it { should equal(model) }
     end
 
     context "when form is invalid" do

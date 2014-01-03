@@ -2,16 +2,6 @@ require "spec_helper"
 
 describe CashFlow::Record do
 
-  describe ".money_builder" do
-    let(:money_class){ double("Money class") }
-
-    before { stub_const("Money", money_class) }
-
-    subject { described_class.money_builder }
-
-    it { should eql(money_class) }
-  end
-
   describe "inputs" do
     describe "#fiat_currency" do
       before{ subject.fiat_currency = 'usd' }
@@ -89,48 +79,4 @@ describe CashFlow::Record do
     end
   end
 
-  describe "currency fields" do
-    let(:money){ double("Money").as_null_object }
-    let(:money_class){ double("Money class", :new => money, :add_rate => nil) }
-    let(:instance){ described_class.new }
-
-    before do
-      instance.fiat_currency = "USD"
-      instance.exchange_rate = 1
-      allow( described_class ).to receive(:money_builder){ money_class }
-    end
-
-    describe "#electricity_rate" do
-      before   { instance.electricity_rate_fractional = 30_00 }
-      subject! { instance.electricity_rate }
-
-      it{ expect( money_class ).to have_received(:new).with(30_00, "USD") }
-      it{ should eql(money) }
-    end
-
-    describe "#facility_cost" do
-      before   { instance.facility_cost_fractional = 30_00 }
-      subject! { instance.facility_cost }
-
-      it{ expect( money_class ).to have_received(:new).with(30_00, "USD") }
-      it{ should eql(money) }
-    end
-    
-    describe "#other_cost" do
-      before   { instance.other_cost_fractional = 30_00 }
-      subject! { instance.other_cost }
-
-      it{ expect( money_class ).to have_received(:new).with(30_00, "USD") }
-      it{ should eql(money) }
-    end
-
-    describe "#reward_amount" do
-      # NOTE: the reward is always in BTC
-      before   { instance.reward_amount_fractional = 30_00 }
-      subject! { instance.reward_amount }
-
-      it{ expect( money_class ).to have_received(:new).with(30_00, "BTC") }
-      it{ should eql(money) }
-    end
-  end
 end
