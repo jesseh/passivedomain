@@ -14,10 +14,6 @@ module CashFlow
       Money
     end
 
-    def money_builder
-      self.class.money_builder
-    end
-
     def electricity_rate(record)
       money_builder.new(record.electricity_rate_fractional, record.fiat_currency)
     end
@@ -36,7 +32,11 @@ module CashFlow
 
     private
 
-    def initialize_model(model_instance, record)
+    def money_builder
+      self.class.money_builder
+    end
+
+    def update_model(model_instance, record)
         model_instance.rig_hash_rate        = record.rig_hash_rate
         model_instance.watts_to_mine        = record.watts_to_mine
         model_instance.watts_to_cool        = record.watts_to_cool

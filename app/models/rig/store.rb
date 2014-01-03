@@ -7,7 +7,7 @@ module Rig
       self.new(Rig::Model)
     end
 
-    def initialize_model(model_instance, record)
+    def update_model(model_instance, record)
       record
     end
 

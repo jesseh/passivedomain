@@ -32,14 +32,14 @@ module Store
   def model_from_record(record)
     if model_class
       model_instance = model_class.new
-      initialize_model(model_instance, record)
+      update_model(model_instance, record)
       model_instance
     else
       record
     end
   end
 
-  def initialize_model(instance, record)
+  def update_model(instance, record)
     raise "initialize_record method must be over-ridden by an including class."
   end
 
