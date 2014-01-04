@@ -20,5 +20,8 @@ module Afterburner
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.i18n.enforce_available_locales = true
+
+    # Enable lib directories to be watched for changes to rb files. Use require_dependency for it to work.
+    config.watchable_dirs['lib'] = [:rb]
   end
 end

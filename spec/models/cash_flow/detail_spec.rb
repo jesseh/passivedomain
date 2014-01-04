@@ -1,22 +1,22 @@
 require "spec_helper"
 
 describe CashFlow::Detail do
-
-  before do
-    subject.rig_hash_rate               = 123E9
-    subject.watts_to_mine               = 33
-    subject.watts_to_cool               = 81
-    subject.mining_difficulty           = 1180923195.25800
-    subject.reward_amount               = Money.new(25, "BTC")
-    subject.fiat_currency               = "USD"
-    subject.electricity_rate            = Money.new(25, "USD")
-    subject.pool_fee_percent            = 0.07
-    subject.facility_cost               = Money.new(7300, "USD")
-    subject.other_cost                  = Money.new(9700, "USD")
-    subject.exchange_fee_percent        = 0.07
-    subject.exchange_rate               = 1
-    subject.rig_utilization             = 0.50 
-  end
+  let(:data) { double("Data", { 
+    rig_hash_rate:         123E9,
+    watts_to_mine:         33,
+    watts_to_cool:         81,
+    mining_difficulty:     1180923195.25800,
+    reward_amount:         Money.new(25, "BTC"),
+    fiat_currency:         "USD",
+    electricity_rate:      Money.new(25, "USD"),
+    pool_fee_percent:      0.07,
+    facility_cost:         Money.new(7300, "USD"),
+    other_cost:            Money.new(9700, "USD"),
+    exchange_fee_percent:  0.07,
+    exchange_rate:         1,
+    rig_utilization:       0.50,
+  }) }
+  subject { described_class.new(data) } 
 
   describe "#rig_capacity" do
     its(:rig_capacity) { should eq(123E9 * 60 * 60) } 

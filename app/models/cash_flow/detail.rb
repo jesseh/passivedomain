@@ -1,3 +1,6 @@
+
+require_dependency Rails.root.join('lib', 'custom_initializers').to_s
+
 SECONDS_PER_HOUR         = 60 * 60
 HOURS_PER_MONTH          = 24 * 365 / 12
 HASH_SEARCH_SPACE        = 2**256
@@ -7,22 +10,22 @@ KILOWATT_PER_WATT        = 1.0 / 1000
 
 
 module CashFlow
-
   class Detail
+    extend CustomInitializers
 
-    attr_accessor :rig_hash_rate,
-                  :watts_to_mine,
-                  :watts_to_cool,
-                  :mining_difficulty,
-                  :reward_amount,
-                  :fiat_currency,
-                  :electricity_rate,
-                  :pool_fee_percent,
-                  :facility_cost,
-                  :other_cost,
-                  :exchange_fee_percent,
-                  :exchange_rate,
-                  :rig_utilization
+    private_attr_initializer :rig_hash_rate,
+                             :watts_to_mine,
+                             :watts_to_cool,
+                             :mining_difficulty,
+                             :reward_amount,
+                             :fiat_currency,
+                             :electricity_rate,
+                             :pool_fee_percent,
+                             :facility_cost,
+                             :other_cost,
+                             :exchange_fee_percent,
+                             :exchange_rate,
+                             :rig_utilization
 
 
     def rig_capacity
