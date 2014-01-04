@@ -28,49 +28,49 @@ module CashFlow
                              :rig_utilization
 
 
-    def rig_capacity
+    def hourly_rig_capacity
       # unit: hash / hour
       rig_hash_rate * SECONDS_PER_HOUR
     end
 
     def rig_efficiency
       # unit: watt / hash
-      (watts_to_mine + watts_to_cool) / rig_capacity
+      (watts_to_mine + watts_to_cool) / hourly_rig_capacity
     end
 
-    def expected_reward_rate
+    def hourly_expected_reward_rate
       # unit: Bitcoin / hour
-      reward_amount * rig_capacity / expected_hash_to_find_block
+      reward_amount * hourly_rig_capacity / expected_hash_to_find_block
     end
 
-    def revenue
-      # unit: Bitcoin / hour
-      expected_reward_rate
+    def hourly_revenue
+      # unit: money / hour
+      hourly_expected_reward_rate
     end
 
-    def electricity_cost
-      #unit: USD / hour
-      electricity_rate * KILOWATT_PER_WATT * rig_efficiency * rig_capacity
+    def hourly_electricity_cost
+      #unit: money / hour
+      electricity_rate * KILOWATT_PER_WATT * rig_efficiency * hourly_rig_capacity
     end
 
-    def pool_cost
+    def hourly_pool_cost
       #unit: Bitcoin / hour
-       expected_reward_rate * pool_fee_percent
+       hourly_expected_reward_rate * pool_fee_percent
     end
 
-    def revenue_exchange_cost
+    def hourly_revenue_exchange_cost
       # The cost of converting all Bitcoins earned, after pool fees
       # into the fiat currency.
       #
-      # unit: Bitcoin / hour
-      bitcoin_received * exchange_fee_percent
+      # unit: money / hour
+      hourly_bitcoin_received * exchange_fee_percent
     end
 
-    def operations_exchange_cost
+    def monthly_operations_exchange_cost
       # The cost of converting enough Bitcoins into the fiat 
       # currency to pay for all the fiat-based cost.
       #
-      # unit: USD
+      # unit: money
       monthly_fiat_based_cost * exchange_fee_percent
     end
 
@@ -81,20 +81,20 @@ module CashFlow
       HOURS_PER_MONTH * rig_utilization
     end
 
-    def bitcoin_received
-      reward_amount - pool_cost
+    def hourly_bitcoin_received
+      hourly_expected_reward_rate - hourly_pool_cost
     end
 
-    def fiat_based_mining_cost
-      electricity_cost
+    def hourly_fiat_based_mining_cost
+      hourly_electricity_cost
     end
 
-    def fiat_based_operating_cost
+    def monthly_fiat_based_operating_cost
       facility_cost + other_cost
     end
 
     def monthly_fiat_based_cost
-      fiat_based_mining_cost * monthly_mining_hours + fiat_based_operating_cost
+      hourly_fiat_based_mining_cost * monthly_mining_hours + monthly_fiat_based_operating_cost
     end
 
     def expected_hash_to_find_block 

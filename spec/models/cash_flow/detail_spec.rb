@@ -18,42 +18,42 @@ describe CashFlow::Detail do
   }) }
   subject { described_class.new(data) } 
 
-  describe "#rig_capacity" do
-    its(:rig_capacity) { should eq(123E9 * 60 * 60) } 
+  describe "#hourly_rig_capacity" do
+    its(:hourly_rig_capacity) { should eq(123E9 * 60 * 60) } 
   end
 
   describe "#rig_efficiency" do
     its(:rig_efficiency) { should eq(2.5745257452574526e-13) } 
   end
 
-  describe "#expected_reward_rate" do
-    it { expect(subject.expected_reward_rate.fractional.round(5)).to eq(0.00218) }
-    it { expect(subject.expected_reward_rate.currency_as_string).to eq("BTC") }
+  describe "#hourly_expected_reward_rate" do
+    it { expect(subject.hourly_expected_reward_rate.fractional.round(5)).to eq(0.00218) }
+    it { expect(subject.hourly_expected_reward_rate.currency_as_string).to eq("BTC") }
   end
   
-  describe "#revenue" do
-    it { expect(subject.revenue.fractional.round(5)).to eq(0.00218) }
-    it { expect(subject.revenue.currency_as_string).to eq("BTC") }
+  describe "#hourly_revenue" do
+    it { expect(subject.hourly_revenue.fractional.round(5)).to eq(0.00218) }
+    it { expect(subject.hourly_revenue.currency_as_string).to eq("BTC") }
   end
 
-  describe "#electricity_cost" do
-    it { expect(subject.electricity_cost.amount.round(5)).to eq(0.0285) }
-    it { expect(subject.electricity_cost.currency_as_string).to eq("USD") }
+  describe "#hourly_electricity_cost" do
+    it { expect(subject.hourly_electricity_cost.amount.round(5)).to eq(0.0285) }
+    it { expect(subject.hourly_electricity_cost.currency_as_string).to eq("USD") }
   end
 
-  describe "#pool_cost" do
-    it { expect(subject.pool_cost.amount.round(5)).to eq(0.00015) }
-    it { expect(subject.pool_cost.currency_as_string).to eq("BTC") }
+  describe "#hourly_pool_cost" do
+    it { expect(subject.hourly_pool_cost.amount.round(5)).to eq(0.00015) }
+    it { expect(subject.hourly_pool_cost.currency_as_string).to eq("BTC") }
   end
 
-  describe "#revenue_exchange_cost" do
-    it { expect(subject.revenue_exchange_cost.amount.round(5)).to eq(1.74999) }
-    it { expect(subject.revenue_exchange_cost.currency_as_string).to eq("BTC") }
+  describe "#hourly_revenue_exchange_cost" do
+    it { expect(subject.hourly_revenue_exchange_cost.amount.round(5)).to eq(0.00014) }
+    it { expect(subject.hourly_revenue_exchange_cost.currency_as_string).to eq("BTC") }
   end
 
-  describe "#operations_exchange_cost" do
-    it { expect(subject.operations_exchange_cost.amount.round(5)).to eq(12.62818) }
-    it { expect(subject.operations_exchange_cost.currency_as_string).to eq("USD") }
+  describe "#monthly_operations_exchange_cost" do
+    it { expect(subject.monthly_operations_exchange_cost.amount.round(5)).to eq(12.62818) }
+    it { expect(subject.monthly_operations_exchange_cost.currency_as_string).to eq("USD") }
   end
 
 end
