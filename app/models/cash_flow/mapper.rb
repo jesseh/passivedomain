@@ -1,5 +1,8 @@
+require_dependency 'numbers_with_units'
+
 module CashFlow
   class Mapper 
+    include NumbersWithUnits
 
     attr_reader :record
 
@@ -7,24 +10,24 @@ module CashFlow
       @record = record
     end
 
-    def self.money_builder
-      Money
+    def rig_hash_rate
+      hash_rate.per_second(record.rig_hash_rate)
     end
 
     def electricity_rate
-      money_builder.new(record.electricity_rate_fractional, record.fiat_currency)
+      electricity_cost_rate.us_cents_per_kwh(record.electricity_rate_fractional)
     end
 
     def facility_cost
-      money_builder.new record.facility_cost_fractional, record.fiat_currency
+      us_dollar_rate.per_month(record.facility_cost_fractional)
     end
 
     def other_cost
-      money_builder.new record.other_cost_fractional, record.fiat_currency
+      us_dollar_rate.per_hour(record.other_cost_fractional)
     end
 
     def reward_amount
-      money_builder.new record.reward_amount_fractional, "BTC"
+      reward_rate.bitcoin_per_block(reward_amount_fractional)
     end
 
     def method_missing(method_name, *args, &block)

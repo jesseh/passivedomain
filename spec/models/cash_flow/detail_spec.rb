@@ -1,25 +1,28 @@
 require "spec_helper"
+require_dependency "numbers_with_units"
 
 describe CashFlow::Detail do
+  include NumbersWithUnits
+
   let(:data) { double("Data", { 
-    rig_hash_rate:         123E9,
-    watts_to_mine:         33,
-    watts_to_cool:         81,
+    rig_hash_rate:         hash_rate.per_second(123E9),
+    watts_to_mine:         electricity.watts(33),
+    watts_to_cool:         electricity.watts(81),
     mining_difficulty:     1180923195.25800,
-    reward_amount:         Money.new(25, "BTC"),
-    fiat_currency:         "USD",
-    electricity_rate:      Money.new(25, "USD"),
-    pool_fee_percent:      0.07,
-    facility_cost:         Money.new(7300, "USD"),
-    other_cost:            Money.new(9700, "USD"),
-    exchange_fee_percent:  0.07,
+    reward_amount:         reward_rate.bitcoin_per_block(25),
+    electricity_rate:      electricity_cost_rate.us_cents_per_kwh(25),
+    pool_fee_percent:      percent.decimal(0.07),
+    facility_cost:         us_dollar_rate.per_month(73),
+    other_cost:            us_dollar_rate.per_month(97),
+    exchange_fee_percent:  percent.decimal(0.07),
     exchange_rate:         1,
-    rig_utilization:       0.50,
+    rig_utilization:       percent.decimal(0.50),
   }) }
   subject { described_class.new(data) } 
 
-  describe "#hourly_rig_capacity" do
-    its(:hourly_rig_capacity) { should eq(123E9 * 60 * 60) } 
+
+  describe "#rig_capacity" do
+    its(:rig_capacity) { should eq(data.rig_hash_rate) }
   end
 
   describe "#rig_efficiency" do

@@ -1,57 +1,36 @@
 require "spec_helper"
+require_dependency 'numbers_with_units'
 
 describe CashFlow::Mapper do
-  let(:money){ double("Money").as_null_object }
-  let(:money_class){ double("Money class", 
-    new: money, 
-    add_rate: nil)}
-  let(:model){ double("Detail").as_null_object }
+  include NumbersWithUnits
+
   let(:record) { double("Record") }
   let(:instance) { described_class.new(record) }
 
-  before do
-    allow( described_class ).to receive(:money_builder){ money_class }
-  end
-
-  describe ".money_builder" do
-    before { stub_const("Money", money_class) }
-
-    subject { described_class.money_builder }
-
-    it { should eql(money_class) }
+  describe "#rig_hash_rate" do
+    let(:record){ double("Record",
+      rig_hash_rate: 123
+    )}
+    subject! { instance.rig_hash_rate }
+    it{ should eql(hash_rate.per_second(123)) }
   end
 
   describe "#electricity_rate" do
-    let(:record){ double("Record",
-      fiat_currency: "USD",
-      electricity_rate_fractional: 30_00,
-    )}
+    let(:record){ double("Record", electricity_rate_fractional: 19 )}
     subject! { instance.electricity_rate }
-
-    it{ expect( money_class ).to have_received(:new).with(30_00, "USD") }
-    it{ should eql(money) }
+    it{ should eql(electricity_cost_rate.us_cents_per_kwh(19)) }
   end
 
   describe "#facility_cost" do
-    let(:record){ double("Record",
-      fiat_currency: "USD",
-      facility_cost_fractional: 30_00,
-    )}
+    let(:record){ double("Record", facility_cost_fractional: 30_00 )}
     subject! { instance.facility_cost }
-
-    it{ expect( money_class ).to have_received(:new).with(30_00, "USD") }
-    it{ should eql(money) }
+    it{ should eql(us_dollar_rate.per_month(30_00)) }
   end
   
   describe "#other_cost" do
-    let(:record){ double("Record",
-      fiat_currency: "USD",
-      other_cost_fractional: 30_00,
-    )}
+    let(:record){ double("Record", other_cost_fractional: 30_00 )}
     subject! { instance.other_cost }
-
-    it{ expect( money_class ).to have_received(:new).with(30_00, "USD") }
-    it{ should eql(money) }
+    it{ should eql(us_dollar_rate.per_month(30_00)) }
   end
 
   describe "#reward_amount" do
@@ -59,9 +38,7 @@ describe CashFlow::Mapper do
       reward_amount_fractional: 30_00
     )}
     subject! { instance.reward_amount }
-
-    it{ expect( money_class ).to have_received(:new).with(30_00, "BTC") }
-    it{ should eql(money) }
+    it{ should eql(reward_rate.amount(30_00)) }
   end
 
   describe "a_delegated_method" do
