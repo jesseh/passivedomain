@@ -11,7 +11,7 @@ module CashFlow
     end
 
     def rig_hash_rate
-      hash_rate.per_second(record.rig_hash_rate)
+      hash_rate.hash_per_second(record.rig_hash_rate)
     end
 
     def electricity_rate

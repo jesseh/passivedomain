@@ -13,7 +13,7 @@ module NumbersWithUnits
       subject { described_class.watts(50) / HashRate.hash_per_second(10) }
 
       its(:value) { should eq(5) } 
-      its(:class) { should be(PowerPerHash) }
+      its(:class) { should be(PowerForHashing) }
     end
   end
 end

@@ -14,7 +14,7 @@ describe CashFlow::Mapper do
       rig_hash_rate: 123
     )}
     subject! { instance.rig_hash_rate }
-    it{ should eql(hash_rate.per_second(123)) }
+    it{ should eql(hash_rate.hash_per_second(123)) }
   end
 
   describe "#electricity_rate" do

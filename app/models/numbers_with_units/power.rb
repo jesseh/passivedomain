@@ -11,7 +11,7 @@ module NumbersWithUnits
     end
 
     def /(other)
-      return PowerPerHash.factors(self, other) if other.instance_of?(HashRate)
+      return PowerForHashing.factors(self, other) if other.instance_of?(HashRate)
       super
     end
 

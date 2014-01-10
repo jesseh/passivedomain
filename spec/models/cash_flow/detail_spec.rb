@@ -20,14 +20,7 @@ describe CashFlow::Detail do
   }) }
   subject { described_class.new(data) } 
 
-
-  describe "#rig_capacity" do
-    its(:rig_capacity) { should eq(data.rig_hash_rate) }
-  end
-
-  describe "#rig_efficiency" do
-    its(:rig_efficiency) { should eq(2.5745257452574526e-13) } 
-  end
+  its(:rig) { should == Rig(data) }
 
   describe "#hourly_expected_reward_rate" do
     it { expect(subject.hourly_expected_reward_rate.fractional.round(5)).to eq(0.00218) }
