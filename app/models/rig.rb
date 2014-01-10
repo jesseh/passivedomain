@@ -40,7 +40,7 @@ class Rig
 
   protected
   def specs
-    [rig_hash_rate, watts_to_mine, watts_to_cool]
+    [rig_hash_rate, watts_to_mine, watts_to_cool].freeze
   end
 end
 
