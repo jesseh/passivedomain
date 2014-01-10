@@ -1,5 +1,5 @@
 module NumbersWithUnits
-  class Electricity
+  class Power
     include NumberWithUnits
 
     def self.watts(value)

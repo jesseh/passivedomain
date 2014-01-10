@@ -2,6 +2,8 @@ module NumbersWithUnits
   module NumberWithUnits
     HOURS_PER_MONTH = 24 * 365 / 12 # hours/day * days in year / months in year
 
+    attr_reader :value
+
     # Require the factory methods
     def self.included(cl)
       def cl.from_base_unit(value)
@@ -17,6 +19,10 @@ module NumbersWithUnits
       @value = cast_new_value(value)
     end
 
+    def inspect
+      "#{self.class} value=#{value}, base_unit='#{base_unit}'"
+    end
+    
     def to_s
       join_char = base_unit.blank? ? '' : ' '
       [value, base_unit].join(join_char)
@@ -63,13 +69,6 @@ module NumbersWithUnits
       raise "Including class must set the base unit."
     end
 
-    
-
-
-
-    protected
-
-    attr_reader :value
 
 
     private

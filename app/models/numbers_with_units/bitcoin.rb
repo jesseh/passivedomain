@@ -7,7 +7,7 @@ module NumbersWithUnits
     end
 
     def base_unit
-      "Bitcoin"
+      "BTC"
     end
   end
 end

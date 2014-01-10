@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe NumbersWithUnits::Electricity do
+describe NumbersWithUnits::Power do
 
   subject { described_class.watts(123) }
 

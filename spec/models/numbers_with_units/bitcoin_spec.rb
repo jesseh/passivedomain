@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'spec_helper'
 
 describe NumbersWithUnits::Bitcoin do
 
@@ -6,5 +6,5 @@ describe NumbersWithUnits::Bitcoin do
 
   it_behaves_like 'number with units'
 
-  its(:to_s)  { should eq('1.23 Bitcoin') }
+  its(:to_s)  { should == '1.23 BTC' }
 end

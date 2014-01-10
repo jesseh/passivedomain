@@ -15,6 +15,9 @@ shared_examples "number with units" do
   its(:base_unit) { should be_a_kind_of(String)           }
   its(:to_s)      { should include('987') }
   its(:to_s)      { should include(subject.base_unit) }
+  its(:inspect)   { should include(described_class.to_s) }
+  its(:inspect)   { should include("value") }
+  its(:inspect)   { should include("base_unit") }
 
   it { expect( described_class.from_base_unit(161) == fake ).to be_false }
   
