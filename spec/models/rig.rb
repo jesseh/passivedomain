@@ -6,11 +6,11 @@ describe CashFlow::Detail do
 
   let(:data) { double("Data", { 
     rig_hash_rate:         hash_rate.per_second(123E9),
-    watts_to_mine:         power.watts(33),
-    watts_to_cool:         power.watts(81),
+    watts_to_mine:         electricity.watts(33),
+    watts_to_cool:         electricity.watts(81),
     mining_difficulty:     1180923195.25800,
     reward_amount:         reward_rate.bitcoin_per_block(25),
-    electricity_rate:      power_cost.us_cents_per_kwh(25),
+    electricity_rate:      electricity_cost_rate.us_cents_per_kwh(25),
     pool_fee_percent:      percent.decimal(0.07),
     facility_cost:         us_dollar_rate.per_month(73),
     other_cost:            us_dollar_rate.per_month(97),

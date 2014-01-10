@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Rig::Form do
+describe RigOrig::Form do
 
   describe ".new" do
     context "with symbol keys" do

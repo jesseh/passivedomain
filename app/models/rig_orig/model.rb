@@ -1,4 +1,4 @@
-module Rig
+module RigOrig
 
   class Model < ActiveRecord::Base
 

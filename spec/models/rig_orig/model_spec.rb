@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Rig::Model do
+describe RigOrig::Model do
 
   describe ".money_builder" do
     let(:money_class){ double("Money class") }

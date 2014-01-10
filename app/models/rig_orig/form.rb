@@ -1,4 +1,4 @@
-module Rig
+module RigOrig
 
   class Form
     include ActiveModel::Model

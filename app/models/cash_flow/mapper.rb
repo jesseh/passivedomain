@@ -15,7 +15,7 @@ module CashFlow
     end
 
     def electricity_rate
-      electricity_cost_rate.us_cents_per_kwh(record.electricity_rate_fractional)
+      power_cost.us_cents_per_kwh(record.electricity_rate_fractional)
     end
 
     def facility_cost
@@ -23,7 +23,7 @@ module CashFlow
     end
 
     def other_cost
-      us_dollar_rate.per_hour(record.other_cost_fractional)
+      us_dollar_rate.per_month(record.other_cost_fractional)
     end
 
     def reward_amount

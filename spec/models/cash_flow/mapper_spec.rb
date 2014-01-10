@@ -7,6 +7,8 @@ describe CashFlow::Mapper do
   let(:record) { double("Record") }
   let(:instance) { described_class.new(record) }
 
+  describe "#rig"
+  
   describe "#rig_hash_rate" do
     let(:record){ double("Record",
       rig_hash_rate: 123
@@ -18,7 +20,7 @@ describe CashFlow::Mapper do
   describe "#electricity_rate" do
     let(:record){ double("Record", electricity_rate_fractional: 19 )}
     subject! { instance.electricity_rate }
-    it{ should eql(electricity_cost_rate.us_cents_per_kwh(19)) }
+    it{ should eql(power_cost.us_cents_per_kwh(19)) }
   end
 
   describe "#facility_cost" do
@@ -38,7 +40,7 @@ describe CashFlow::Mapper do
       reward_amount_fractional: 30_00
     )}
     subject! { instance.reward_amount }
-    it{ should eql(reward_rate.amount(30_00)) }
+    it{ should eql(reward_rate.bitcoin_per_block(30_00)) }
   end
 
   describe "a_delegated_method" do

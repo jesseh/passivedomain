@@ -1,4 +1,4 @@
-module Rig
+module RigOrig
   class Store 
 
     include ::Store
