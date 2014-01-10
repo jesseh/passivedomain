@@ -5,7 +5,7 @@ describe CashFlow::Detail do
   include NumbersWithUnits
 
   let(:data) { double("Data", { 
-    rig_hash_rate:         hash_rate.per_second(123E9),
+    rig_hash_rate:         hash_rate.hash_per_second(123E9),
     watts_to_mine:         power.watts(33),
     watts_to_cool:         power.watts(81),
     mining_difficulty:     1180923195.25800,
@@ -20,7 +20,7 @@ describe CashFlow::Detail do
   }) }
   subject { described_class.new(data) } 
 
-  its(:rig) { should == Rig(data) }
+  its(:rig) { should == Rig.new(data) }
 
   describe "#hourly_expected_reward_rate" do
     it { expect(subject.hourly_expected_reward_rate.fractional.round(5)).to eq(0.00218) }

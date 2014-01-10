@@ -27,14 +27,11 @@ module CashFlow
                              :rig_utilization
 
 
-    def rig_capacity
-      rig_hash_rate
+    def initialize(data)
+      initialize_private_attrs(data)
+      @rig = Rig.new(data)
     end
 
-    def rig_efficiency
-      # unit: watt / hash
-      (watts_to_mine + watts_to_cool) / rig_capacity
-    end
 
     def hourly_expected_reward_rate
       # unit: Bitcoin / hour
@@ -74,6 +71,8 @@ module CashFlow
 
 
     private
+
+    attr_reader :rig
 
     def monthly_mining_hours
       HOURS_PER_MONTH * rig_utilization
