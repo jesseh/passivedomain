@@ -30,6 +30,7 @@ module CashFlow
     def initialize(data)
       initialize_private_attrs(data)
       @rig = Rig.new(data)
+      @mine = Mine.new(data)
     end
 
 
@@ -72,7 +73,7 @@ module CashFlow
 
     private
 
-    attr_reader :rig
+    attr_reader :rig, :mine
 
     def monthly_mining_hours
       HOURS_PER_MONTH * rig_utilization

@@ -21,6 +21,7 @@ describe CashFlow::Detail do
   subject { described_class.new(data) } 
 
   its(:rig) { should == Rig.new(data) }
+  its(:mine) { should == Mine.new(data) }
 
   describe "#hourly_expected_reward_rate" do
     it { expect(subject.hourly_expected_reward_rate.fractional.round(5)).to eq(0.00218) }
