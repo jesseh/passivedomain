@@ -11,6 +11,11 @@ module CustomInitializers
   # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
   def private_attr_initializer(*attribute_names)
     define_method(:initialize) do |data_obj|
+      initialize_private_attrs(data_obj)
+    end
+
+    # Call initialize_private_attrs directly if initilize is overridden
+    define_method(:initialize_private_attrs) do |data_obj|
       attribute_names.each do |attribute_name|
         instance_variable_set("@#{attribute_name}", data_obj.send(attribute_name))
       end
