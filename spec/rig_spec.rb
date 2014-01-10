@@ -5,13 +5,14 @@ describe Rig do
   include NumbersWithUnits
 
   let(:data) { double("Data", { 
-    rig_hash_rate:         hash_rate.per_second(123E9),
-    watts_to_mine:         power.watts(33),
-    watts_to_cool:         power.watts(81),
+    rig_hash_rate:         hash_rate.hash_per_second(10),
+    watts_to_mine:         power.watts(40),
+    watts_to_cool:         power.watts(60),
   }) }
   subject { described_class.new(data) } 
 
 
   its(:capacity) { should eq(data.rig_hash_rate) }
-  its(:efficiency) { should eq(2.5745257452574526e-13) } 
+  its("efficiency.value") { should eq(10) } 
+  its("efficiency.class") { should be(NumbersWithUnits::PowerPerHash) }
 end

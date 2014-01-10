@@ -5,7 +5,7 @@ module NumbersWithUnits
     SECONDS_PER_HOUR = 60 * 60
     GHASH_PER_HASH = 1 / 1E9
 
-    def self.per_second(value)
+    def self.hash_per_second(value)
       new(value)
     end
 

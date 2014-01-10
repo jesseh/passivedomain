@@ -10,6 +10,11 @@ module NumbersWithUnits
       "watts"
     end
 
+    def /(other)
+      return PowerPerHash.factors(self, other) if other.instance_of?(HashRate)
+      super
+    end
+
     private
 
     def cast_new_value(value)

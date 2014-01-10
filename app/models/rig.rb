@@ -1,3 +1,4 @@
+
 require_dependency Rails.root.join('lib', 'custom_initializers').to_s
 
 class Rig
@@ -12,7 +13,6 @@ class Rig
   end
 
   def efficiency
-    # unit: watt / hash
     (watts_to_mine + watts_to_cool) / capacity
   end
 
