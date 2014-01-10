@@ -4,6 +4,8 @@ require_dependency "numbers_with_units"
 describe Rig do
   include NumbersWithUnits
 
+  it_behaves_like 'value object'
+
   let(:data) { double("Data", { 
     rig_hash_rate:         hash_rate.hash_per_second(10),
     watts_to_mine:         power.watts(40),
@@ -13,6 +15,5 @@ describe Rig do
 
 
   its(:capacity) { should eq(data.rig_hash_rate) }
-  its("efficiency.value") { should eq(10) } 
-  its("efficiency.class") { should be(NumbersWithUnits::PowerPerHash) }
+  its(:efficiency) { should == NumbersWithUnits::PowerPerHash.from_base_unit(10) } 
 end
