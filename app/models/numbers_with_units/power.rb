@@ -9,5 +9,11 @@ module NumbersWithUnits
     def base_unit
       "watts"
     end
+
+    private
+
+    def cast_new_value(value)
+      value.to_f
+    end
   end
 end

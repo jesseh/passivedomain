@@ -3,7 +3,7 @@ module NumbersWithUnits
     include NumberWithUnits
 
     def self.factors(energy, hash_rate)
-      unless energy.instance_of?(Energy) && hash_rate.instance_of?(HashRate)
+      unless energy.instance_of?(Power) && hash_rate.instance_of?(HashRate)
         raise_uncreatable(energy, hash_rate)
       end
       new(energy.value / hash_rate.value)

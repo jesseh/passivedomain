@@ -6,5 +6,5 @@ describe NumbersWithUnits::Power do
 
   it_behaves_like 'number with units'
 
-  its(:to_s)  { should == '123 watts' }
+  its(:to_s)  { should == '123.0 watts' }
 end
