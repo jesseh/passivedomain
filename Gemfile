@@ -41,6 +41,7 @@ end
 group :development do
   gem 'guard-rspec', require: false
   gem 'terminal-notifier-guard', require: false
+  gem 'pry', require: false
 end
 
 group :test do

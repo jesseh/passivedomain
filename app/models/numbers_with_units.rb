@@ -5,7 +5,7 @@ module NumbersWithUnits
   def percent;                Percent;              end
   def power;                  Power;                end
   def power_cost;             PowerCost;            end
-  def power_per_hash;         PowerPerHash;         end
+  def power_for_hashing;      PowerForHashing;      end
   def reward_rate;            RewardRate;           end
   def us_currency;            UsCurrency;           end
   def us_dollar_rate;         UsDollarRate;         end

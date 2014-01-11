@@ -13,67 +13,59 @@ module CashFlow
   class Detail
     extend CustomInitializers
 
-    private_attr_initializer :rig_hash_rate,
-                             :watts_to_mine,
-                             :watts_to_cool,
-                             :mining_difficulty,
-                             :reward_amount,
-                             :electricity_rate,
-                             :pool_fee_percent,
-                             :facility_cost,
-                             :other_cost,
-                             :exchange_fee_percent,
-                             :exchange_rate,
-                             :rig_utilization
+    attr_reader :rig, :mine, :network, :exchange
+
+    private_attr_initializer 
 
 
     def initialize(data)
       initialize_private_attrs(data)
       @rig = Rig.new(data)
       @mine = Mine.new(data)
+      @network = Network.new(data)
+      @exchange = Exchange.new(data)
     end
 
 
-    def hourly_expected_reward_rate
-      # unit: Bitcoin / hour
-      reward_amount * rig_capacity / expected_hash_to_find_block
-    end
+    # def hourly_expected_reward_rate
+    #   # unit: Bitcoin / hour
+    #   reward_amount * rig_capacity / expected_hash_to_find_block
+    # end
 
-    def hourly_revenue
-      # unit: money / hour
-      hourly_expected_reward_rate
-    end
+    # def hourly_revenue
+    #   # unit: money / hour
+    #   hourly_expected_reward_rate
+    # end
 
-    def hourly_electricity_cost
-      #unit: money / hour
-      electricity_rate * KILOWATT_PER_WATT * rig_efficiency * rig_capacity
-    end
+    # def hourly_electricity_cost
+    #   #unit: money / hour
+    #   electricity_rate * KILOWATT_PER_WATT * rig_efficiency * rig_capacity
+    # end
 
-    def hourly_pool_cost
-      #unit: Bitcoin / hour
-       hourly_expected_reward_rate * pool_fee_percent
-    end
+    # def hourly_pool_cost
+    #   #unit: Bitcoin / hour
+    #    hourly_expected_reward_rate * pool_fee_percent
+    # end
 
-    def hourly_revenue_exchange_cost
-      # The cost of converting all Bitcoins earned, after pool fees
-      # into US Dollars.
-      #
-      # unit: money / hour
-      hourly_bitcoin_received * exchange_fee_percent
-    end
+    # def hourly_revenue_exchange_cost
+    #   # The cost of converting all Bitcoins earned, after pool fees
+    #   # into US Dollars.
+    #   #
+    #   # unit: money / hour
+    #   hourly_bitcoin_received * exchange_fee_percent
+    # end
 
-    def monthly_operations_exchange_cost
-      # The cost of converting enough Bitcoins into US Dollars
-      # to pay for all the US Dollar cost.
-      #
-      # unit: money
-      monthly_fiat_based_cost * exchange_fee_percent
-    end
+    # def monthly_operations_exchange_cost
+    #   # The cost of converting enough Bitcoins into US Dollars
+    #   # to pay for all the US Dollar cost.
+    #   #
+    #   # unit: money
+    #   monthly_fiat_based_cost * exchange_fee_percent
+    # end
 
 
     private
 
-    attr_reader :rig, :mine
 
     def monthly_mining_hours
       HOURS_PER_MONTH * rig_utilization

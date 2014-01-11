@@ -10,6 +10,8 @@
 # which is protected. It's no private because it is useful for testing
 # equality.
 
+require 'pry'
+
 module CustomInitializers
 
   # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
@@ -21,43 +23,46 @@ module CustomInitializers
     end
 
 
-    attrs = parse_targets(attribute_targets)
+    attr_targets = parse_targets(attribute_targets).freeze
+    attrs = attr_targets.values.freeze
 
     define_method(:initialize_private_attrs) do |data_obj|
-      attrs.each do |attr, source_message|
-        instance_variable_set("@#{attr}", data_obj.send(source_message))
+      attr_targets.each do |source_message, target_attr|
+        instance_variable_set("@#{target_attr}", data_obj.send(source_message))
       end
+      instance_variable_set(:@initialized_attrs, attrs)
     end
 
-    @initialized_attrs = attrs.keys.freeze
-    attr_reader :initialized_attrs
-    protected :initialized_attrs
+    attr_reader :initialized_attrs, :initialized_values
+    protected :initialized_attrs, :initialized_values
 
-    @initialized_attrs.each do |attr|
+    attrs.each do |attr|
       attr_reader attr
       private attr
     end
 
     define_method(:inspect) do 
-      "#{self.class} " + initialized_attrs.map{ |a| "#{a}: '#{self.send(a)}'" }.join(", ")
+      self.class.to_s + ': ' + initialized_attrs.zip(initialized_values).map { |a, v| "#{a}=#{v}" }.join(", ")
     end
 
     define_method(:to_s) do
-      demodularized_class = self.class.to_s.gsub(/^.*::/, '')
-      values = initialized_attrs.map{ |a| "'#{self.send(a)}'" }.join(", ")
-      demodularized_class + ": " + values
+      inspect
+    end
+
+    define_method(:initialized_values) do
+      initialized_attrs.map{ |a| "'#{self.send(a)}'" }
     end
 
     define_method(:==) do |other|
-      self.class == other.class && initialized_attrs == other.initialized_attrs
+      other.instance_of?(self.class) && initialized_values == other.initialized_values
     end
 
     define_method(:eql?) do |other|
-      self == other
+      self.send(:==, other)
     end
 
     define_method(:hash) do
-      self.class.hash ^ initialized_attrs.hash
+      self.class.hash ^ initialized_values.hash
     end
   end
 

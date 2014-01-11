@@ -175,6 +175,7 @@ DEPENDENCIES
   jquery-rails
   money
   pg
+  pry
   rabl
   rails (= 4.0.2)
   rails_12factor

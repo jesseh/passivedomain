@@ -1,7 +1,7 @@
 require "spec_helper"
 require_dependency "numbers_with_units"
 
-describe Environment do
+describe Network do
   include NumbersWithUnits
 
   it_behaves_like 'value object'
