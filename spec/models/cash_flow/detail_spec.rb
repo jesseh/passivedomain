@@ -10,7 +10,7 @@ describe CashFlow::Detail do
     watts_to_cool:         power.watts(81),
     mining_difficulty:     1180923195.25800,
     reward_amount:         reward_rate.bitcoin_per_block(25),
-    electricity_rate:      power_cost.us_cents_per_kwh(25),
+    electricity_rate:      energy_cost.us_cents_per_kwh(25),
     pool_fee_percent:      percent.decimal(0.07),
     facility_cost:         us_dollar_rate.per_month(73),
     other_cost:            us_dollar_rate.per_month(97),

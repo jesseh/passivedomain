@@ -7,7 +7,7 @@ describe Mine do
   it_behaves_like 'value object'
 
   let(:data) { double("Data", { 
-    electricity_rate:      power_cost.us_cents_per_kwh(25),
+    electricity_rate:      energy_cost.us_cents_per_kwh(25),
     pool_fee_percent:      percent.decimal(0.07),
     facility_cost:         us_dollar_rate.per_month(73),
     other_cost:            us_dollar_rate.per_month(97),

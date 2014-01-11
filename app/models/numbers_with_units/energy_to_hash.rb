@@ -1,5 +1,5 @@
 module NumbersWithUnits
-  class PowerForHashing
+  class EnergyToHash
     include NumberWithUnits
 
     def self.factors(energy, hash_rate)

@@ -1,5 +1,5 @@
 module NumbersWithUnits
-  class PowerCost
+  class EnergyCost
     include NumberWithUnits
 
     def self.us_cents_per_kwh(value)

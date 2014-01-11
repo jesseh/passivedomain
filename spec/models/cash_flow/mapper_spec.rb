@@ -20,7 +20,7 @@ describe CashFlow::Mapper do
   describe "#electricity_rate" do
     let(:record){ double("Record", electricity_rate_fractional: 19 )}
     subject! { instance.electricity_rate }
-    it{ should eql(power_cost.us_cents_per_kwh(19)) }
+    it{ should eql(energy_cost.us_cents_per_kwh(19)) }
   end
 
   describe "#facility_cost" do

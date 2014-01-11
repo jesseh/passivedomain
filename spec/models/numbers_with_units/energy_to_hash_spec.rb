@@ -2,7 +2,7 @@ require "spec_helper"
 require "numbers_with_units"
 
 module NumbersWithUnits
-  describe NumbersWithUnits::PowerForHashing do
+  describe NumbersWithUnits::EnergyToHash do
     subject { described_class.factors(Power.watts(35), 
                                       HashRate.hash_per_second(10)
                                      )}

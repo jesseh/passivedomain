@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe NumbersWithUnits::PowerCost do
+describe NumbersWithUnits::EnergyCost do
 
   subject { described_class.us_cents_per_kwh(123) }
 

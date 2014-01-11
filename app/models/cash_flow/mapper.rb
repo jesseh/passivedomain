@@ -15,7 +15,7 @@ module CashFlow
     end
 
     def electricity_rate
-      power_cost.us_cents_per_kwh(record.electricity_rate_fractional)
+      energy_cost.us_cents_per_kwh(record.electricity_rate_fractional)
     end
 
     def facility_cost
