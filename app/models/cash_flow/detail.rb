@@ -15,11 +15,8 @@ module CashFlow
 
     attr_reader :rig, :mine, :network, :exchange
 
-    private_attr_initializer 
-
 
     def initialize(data)
-      initialize_private_attrs(data)
       @rig = Rig.new(data)
       @mine = Mine.new(data)
       @network = Network.new(data)

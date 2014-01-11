@@ -3,7 +3,7 @@ require_dependency Rails.root.join('lib', 'custom_initializers').to_s
 class Mine
   extend CustomInitializers
 
-  private_attr_initializer :electricity_rate,
+  value_object_initializer :electricity_rate,
                            :pool_fee_percent,
                            :facility_cost,
                            :other_cost,

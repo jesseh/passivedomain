@@ -15,7 +15,7 @@ require 'pry'
 module CustomInitializers
 
   # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
-  def private_attr_initializer(*attribute_targets)
+  def value_object_initializer(*attribute_targets)
 
     # Call initialize_private_attrs directly if overriding initialize.
     define_method(:initialize) do |data_obj|

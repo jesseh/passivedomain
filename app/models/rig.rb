@@ -3,7 +3,7 @@ require_dependency Rails.root.join('lib', 'custom_initializers').to_s
 class Rig
   extend CustomInitializers
 
-  private_attr_initializer :rig_hash_rate,
+  value_object_initializer :rig_hash_rate,
                            :watts_to_mine,
                            :watts_to_cool
 
