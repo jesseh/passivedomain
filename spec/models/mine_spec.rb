@@ -13,6 +13,13 @@ describe Mine do
     other_cost:            us_dollar_rate.per_month(97),
     rig_utilization:       percent.decimal(0.50),
   }) }
+
   subject { described_class.new(data) } 
+
+  its(:electricity_rate) { should be }
+  its(:pool_fee_percent) { should be }
+  its(:facility_cost) { should be }
+  its(:other_cost) { should be }
+  its(:rig_utilization) { should be }
 
 end
