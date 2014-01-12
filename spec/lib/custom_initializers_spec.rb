@@ -15,6 +15,10 @@ describe CustomInitializers do
 
     subject { fake_class.new(data) }
 
+    it "freezes the instance" do
+      expect(subject.frozen?).to be_true
+    end
+
     it "makes private attr accessors" do
       expect {subject.an_attr}.to raise_error(NoMethodError)
       expect(subject.send(:an_attr)).to eq(123)

@@ -30,6 +30,7 @@ module CustomInitializers
         instance_variable_set("@#{target_attr}", value)
       end
       instance_variable_set(:@initialized_attrs, attrs)
+      freeze
     end
 
     attrs_to_protect = [:initialized_attrs, :initialized_values]
