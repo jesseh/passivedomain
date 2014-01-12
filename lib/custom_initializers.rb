@@ -27,6 +27,12 @@ module CustomInitializers
     define_method(:initialize_attrs) do |data_obj|
       attr_targets.each do |source, target_attr|
         value = source.respond_to?(:new) ? source.new(data_obj) : data_obj.send(source)
+        unless value.frozen? || 
+               value.nil?    || 
+               value.instance_of?(TrueClass) ||
+               value.instance_of?(FalseClass)
+          raise TypeError, "#{self.class} can only be instantiated with frozen data. #{target_attr} has non-frozen value: #{value.inspect}"
+        end
         instance_variable_set("@#{target_attr}", value)
       end
       instance_variable_set(:@initialized_attrs, attrs)
@@ -89,6 +95,9 @@ module CustomInitializers
     gsub(/([a-z\d])([A-Z])/,'\1_\2').
     tr("-", "_").
     downcase
+  end
+
+  def assert_immutable(target, value)
   end
 
 end

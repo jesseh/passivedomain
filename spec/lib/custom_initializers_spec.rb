@@ -15,16 +15,36 @@ describe CustomInitializers do
 
     subject { fake_class.new(data) }
 
-    it "freezes the instance" do
-      expect(subject.frozen?).to be_true
+    it_behaves_like 'value object'
+
+    describe "enforces all attr values are frozen" do
+      context "unfrozen data" do
+        let(:data) { double("Data", an_attr: 'a') }
+        it { expect { fake_class.new(data) }.to raise_error(TypeError) }
+      end
+      context "frozen data" do
+        let(:data) { double("Data", an_attr: 'a'.freeze) }
+        it { expect { fake_class.new(data) }.not_to raise_error }
+      end
+      context "data is nil" do
+        let(:data) { double("Data", an_attr: nil) }
+        it { expect { fake_class.new(data) }.not_to raise_error }
+      end
+      context "data is true" do
+        let(:data) { double("Data", an_attr: true) }
+        it { expect { fake_class.new(data) }.not_to raise_error }
+      end
+      context "data is false" do
+        let(:data) { double("Data", an_attr: false) }
+        it { expect { fake_class.new(data) }.not_to raise_error }
+      end
+
     end
 
     it "makes private attr accessors" do
       expect {subject.an_attr}.to raise_error(NoMethodError)
       expect(subject.send(:an_attr)).to eq(123)
     end
-
-    it_behaves_like 'value object'
 
     it "takes class into account for equality" do
       expect(subject).to_not eq(fake_subclass.new(data)) 
@@ -76,6 +96,7 @@ describe CustomInitializers do
 
           def initialize(data)
             @attr_1 = data.attr_1
+            freeze
           end
 
           def sentinal
@@ -101,6 +122,7 @@ describe CustomInitializers do
 
           def initialize(data)
             @attr_1 = data.attr_1
+            freeze
           end
 
           def sentinal

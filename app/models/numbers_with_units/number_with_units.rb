@@ -17,6 +17,7 @@ module NumbersWithUnits
 
     def initialize(value)
       @value = cast_new_value(value)
+      freeze
     end
 
     def inspect
