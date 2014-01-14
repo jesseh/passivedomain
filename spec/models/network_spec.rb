@@ -1,5 +1,4 @@
 require "spec_helper"
-require_dependency "numbers_with_units"
 
 describe Network do
   include NumbersWithUnits

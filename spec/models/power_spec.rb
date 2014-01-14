@@ -1,5 +1,4 @@
 require "spec_helper"
-require "numbers_with_units"
 
 describe Power do
 

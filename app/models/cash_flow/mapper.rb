@@ -1,5 +1,3 @@
-require_dependency 'numbers_with_units'
-
 module CashFlow
   class Mapper 
 

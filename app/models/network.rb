@@ -1,5 +1,4 @@
 require_dependency Rails.root.join('lib', 'custom_initializers').to_s
-require_dependency "numbers_with_units"
 
 class Network
   extend CustomInitializers
