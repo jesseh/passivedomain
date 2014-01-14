@@ -1,37 +1,16 @@
 require_dependency Rails.root.join('lib', 'custom_initializers').to_s
+require_dependency "numbers_with_units"
 
 class Network
   extend CustomInitializers
 
-  value_object_initializer :mining_difficulty,
-                           :reward_amount
 
+  value_object_initializer :mining_difficulty => :effort,
+                           :reward_amount => :reward
 
-  # Methods to be a value object
-  
-  def inspect
-    "#{self.class} difficulty=#{mining_difficulty}, reward='#{reward_amount}'"
-  end
-  
-  def to_s
-    "Network: #{mining_difficulty}, '#{reward_amount}'"
+  def expected_reward
+    MiningReward.new(reward, effort)
   end
 
-  def ==(other)
-    specs == other.specs
-  end
-
-  def eql?(other)
-    self == other
-  end
-
-  def hash
-    specs.hash
-  end
-
-  protected
-  def specs
-    [mining_difficulty, reward_amount].freeze
-  end
 end
 

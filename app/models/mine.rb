@@ -8,8 +8,5 @@ class Mine
                            :facility_cost,
                            :other_cost,
                            :rig_utilization
-
-
-
 end
 

@@ -4,49 +4,46 @@ require_dependency 'numbers_with_units'
 describe CashFlow::Mapper do
   include NumbersWithUnits
 
+  HOURS_PER_MONTH = 730
+
   let(:record) { double("Record") }
   let(:instance) { described_class.new(record) }
 
   describe "#rig"
   
   describe "#rig_hash_rate" do
-    let(:record){ double("Record",
-      rig_hash_rate: 123
-    )}
-    subject! { instance.rig_hash_rate }
-    it{ should eql(hash_rate.hash_per_second(123)) }
+    let(:record){ double("Record", rig_hash_rate: 123)}
+    it { expect( instance.rig_hash_rate ).to eql(HashRate.from_base_unit(123)) }
   end
 
   describe "#electricity_rate" do
     let(:record){ double("Record", electricity_rate_fractional: 19 )}
-    subject! { instance.electricity_rate }
-    it{ should eql(energy_cost.us_cents_per_kwh(19)) }
+    it { expect( instance.electricity_rate ).to eql(EnergyCost.from_base_unit(0.19)) }
   end
 
   describe "#facility_cost" do
     let(:record){ double("Record", facility_cost_fractional: 30_00 )}
-    subject! { instance.facility_cost }
-    it{ should eql(us_dollar_rate.per_month(30_00)) }
+    it { expect( instance.facility_cost ).to eql(UsDollarRate.from_base_unit(30.00 / HOURS_PER_MONTH)) }
   end
   
   describe "#other_cost" do
     let(:record){ double("Record", other_cost_fractional: 30_00 )}
-    subject! { instance.other_cost }
-    it{ should eql(us_dollar_rate.per_month(30_00)) }
+    it { expect( instance.other_cost ).to eql(UsDollarRate.from_base_unit(30.00 / HOURS_PER_MONTH)) }
   end
 
   describe "#reward_amount" do
-    let(:record){ double("Record",
-      reward_amount_fractional: 30_00
-    )}
-    subject! { instance.reward_amount }
-    it{ should eql(reward_rate.bitcoin_per_block(30_00)) }
+    let(:record){ double("Record", reward_amount_fractional: 30)}
+    it { expect( instance.reward_amount ).to eql(Bitcoin.from_base_unit(30)) }
+  end
+
+  describe "#mining_effort" do
+    let(:record){ double("Record", mining_difficulty: 100)}
+    it { expect( instance.mining_effort ).to eql(MiningEffort.from_base_unit(429503283300.0)) }
   end
 
   describe "a_delegated_method" do
     let(:record) { double("Record", a_delegated_method: "was found") }
-    subject! { instance.a_delegated_method }
-    it{ should eql("was found") }
+    it { expect( instance.a_delegated_method ).to eql("was found") }
   end
 
   describe "#respond_to?" do

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe NumbersWithUnits::Percent do
+describe Percent do
 
   subject { described_class.decimal(0.123) }
 

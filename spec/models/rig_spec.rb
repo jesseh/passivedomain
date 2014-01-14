@@ -7,7 +7,7 @@ describe Rig do
   it_behaves_like 'value object'
 
   let(:data) { double("Data", { 
-    rig_hash_rate:         hash_rate.hash_per_second(10),
+    rig_hash_rate:         HashRate.new(MiningHash.new(1E9)),
     watts_to_mine:         power.watts(40),
     watts_to_cool:         power.watts(60),
   }) }
@@ -15,6 +15,6 @@ describe Rig do
 
 
   its(:capacity) { should eq(data.rig_hash_rate) }
-  its(:efficiency) { should == NumbersWithUnits::EnergyToHash.from_base_unit(10) } 
+  its(:efficiency) { should == EnergyToHash.from_base_unit(1e-07) } 
 
 end

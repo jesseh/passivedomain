@@ -1,7 +1,5 @@
 shared_examples "number with units" do
     
-  subject { described_class.from_base_unit(987) }
-
   let(:fake) do 
     Class.new do
       include NumbersWithUnits::NumberWithUnits
@@ -13,19 +11,14 @@ shared_examples "number with units" do
   it_behaves_like 'value object'
 
   its(:base_unit) { should be_a_kind_of(String)           }
-  its(:to_s)      { should include('987') }
   its(:to_s)      { should include(subject.base_unit) }
   its(:inspect)   { should include(described_class.to_s) }
   its(:inspect)   { should include("value") }
   its(:inspect)   { should include("base_unit") }
   its(:frozen?)   { should be_true }
 
-  it { expect( described_class.from_base_unit(161) == fake ).to be_false }
+  it { expect( subject == fake ).to be_false }
   
-  it "should require a factory method to create" do
-    expect { described_class.new(123) }.to raise_error(NoMethodError)
-  end
-
   describe "math operations" do
     context "with numeric" do
       it( "*" ){ expect(subject * 3).to be_instance_of(described_class) }

@@ -11,23 +11,27 @@ module CashFlow
     end
 
     def rig_hash_rate
-      hash_rate.hash_per_second(record.rig_hash_rate)
+      HashRate.new(MiningHash.new(record.rig_hash_rate), Timespan.second)
     end
 
     def electricity_rate
-      energy_cost.us_cents_per_kwh(record.electricity_rate_fractional)
+      EnergyCost.new(UsCurrency.cents(record.electricity_rate_fractional))
     end
 
     def facility_cost
-      us_dollar_rate.per_month(record.facility_cost_fractional)
+      UsDollarRate.per_month(UsCurrency.cents(record.facility_cost_fractional))
     end
 
     def other_cost
-      us_dollar_rate.per_month(record.other_cost_fractional)
+      UsDollarRate.per_month(UsCurrency.cents(record.other_cost_fractional))
     end
 
     def reward_amount
-      reward_rate.bitcoin_per_block(reward_amount_fractional)
+      Bitcoin.new(record.reward_amount_fractional)
+    end
+
+    def mining_effort
+      MiningEffort.new(record.mining_difficulty)
     end
 
     def method_missing(method_name, *args, &block)

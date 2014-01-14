@@ -9,10 +9,6 @@ module NumbersWithUnits
       def cl.from_base_unit(value)
         new(value)
       end
-
-      class << cl
-        private :new
-      end
     end
 
     def initialize(value)
@@ -42,6 +38,7 @@ module NumbersWithUnits
     end
 
     def *(other)
+      raise_incompatible(other, :*) unless other.kind_of?(Numeric)
       self.class.from_base_unit(operate_on_value(:*, other))
     end
 
@@ -49,6 +46,7 @@ module NumbersWithUnits
       if other.instance_of?(self.class)
         value / other.value
       else
+        raise_incompatible(other, :/) unless other.kind_of?(Numeric)
         self.class.from_base_unit(operate_on_value(:/, other))
       end
     end
@@ -62,7 +60,7 @@ module NumbersWithUnits
     end
 
     def -(other)
-      raise_incompatible(other, 'subtracted') unless other.instance_of?(self.class)
+      raise_incompatible(other, :-) unless other.instance_of?(self.class)
       self.class.from_base_unit(operate_on_value(:-, other.value))
     end
 
