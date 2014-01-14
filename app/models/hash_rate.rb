@@ -1,5 +1,7 @@
+require_dependency Rails.root.join('lib', 'number_with_units').to_s
+
 class HashRate
-  include NumbersWithUnits::NumberWithUnits
+  include NumberWithUnits
 
   SECONDS_PER_HOUR = 60 * 60
 

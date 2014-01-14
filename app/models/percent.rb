@@ -1,5 +1,7 @@
+require_dependency Rails.root.join('lib', 'number_with_units').to_s
+
 class Percent
-  include NumbersWithUnits::NumberWithUnits
+  include NumberWithUnits
 
   def self.decimal(value)
     new(value)

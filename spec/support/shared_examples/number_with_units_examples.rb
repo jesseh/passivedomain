@@ -1,8 +1,10 @@
+require_dependency Rails.root.join('lib', 'number_with_units').to_s
+
 shared_examples "number with units" do
     
   let(:fake) do 
     Class.new do
-      include NumbersWithUnits::NumberWithUnits
+      include NumberWithUnits
 
       def base_unit; "fake"; end
     end.from_base_unit(45)

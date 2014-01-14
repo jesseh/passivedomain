@@ -1,9 +1,10 @@
+require_dependency Rails.root.join('lib', 'number_with_units').to_s
 require 'bigdecimal'
 
 class UsCurrency
   PRECISION = 9
 
-  include NumbersWithUnits::NumberWithUnits
+  include NumberWithUnits
 
   def self.dollars(value)
     new(value)

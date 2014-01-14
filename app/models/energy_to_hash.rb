@@ -1,5 +1,7 @@
+require_dependency Rails.root.join('lib', 'number_with_units').to_s
+
 class EnergyToHash
-  include NumbersWithUnits::NumberWithUnits
+  include NumberWithUnits
 
   def self.power_for_hash_rate(power, hash_rate)
     unless power.instance_of?(Power) && hash_rate.instance_of?(HashRate)

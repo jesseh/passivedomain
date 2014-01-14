@@ -1,5 +1,7 @@
+require_dependency Rails.root.join('lib', 'number_with_units').to_s
+
 class EnergyCost
-  include NumbersWithUnits::NumberWithUnits
+  include NumberWithUnits
 
   def initialize(cost, energy=Energy.kilowatt_hours(1))
     raise_uncreatable(cost, energy) unless cost.instance_of? UsCurrency

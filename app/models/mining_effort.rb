@@ -1,7 +1,9 @@
+require_dependency Rails.root.join('lib', 'number_with_units').to_s
+
 class MiningEffort
   DIGITS = 10
 
-  include NumbersWithUnits::NumberWithUnits
+  include NumberWithUnits
 
   OFFSET_AT_MIN_DIFFICULTY = 0xffff * 2**208
   HASH_SEARCH_SPACE        = 2**256

@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe CashFlow::Mapper do
-  include NumbersWithUnits
 
   HOURS_PER_MONTH = 730
 

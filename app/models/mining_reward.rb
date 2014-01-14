@@ -1,7 +1,9 @@
+require_dependency Rails.root.join('lib', 'number_with_units').to_s
+
 class MiningReward
   DIGITS = 10
 
-  include NumbersWithUnits::NumberWithUnits
+  include NumberWithUnits
 
   attr_reader :value
 

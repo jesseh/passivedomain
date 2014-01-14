@@ -1,5 +1,7 @@
+require_dependency Rails.root.join('lib', 'number_with_units').to_s
+
 class Power
-  include NumbersWithUnits::NumberWithUnits
+  include NumberWithUnits
 
   def self.watts(value)
     new(value)

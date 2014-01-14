@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe Network do
-  include NumbersWithUnits
 
   it_behaves_like 'value object'
 

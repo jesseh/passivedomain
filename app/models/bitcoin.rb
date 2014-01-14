@@ -1,7 +1,9 @@
+require_dependency Rails.root.join('lib', 'number_with_units').to_s
+
 class Bitcoin
   DIGITS = 10
 
-  include NumbersWithUnits::NumberWithUnits
+  include NumberWithUnits
 
   def self.amount(value)
     new(value)

@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe CashFlow::Detail do
-  include NumbersWithUnits
 
   let(:mining_difficulty) { 25 }
   let(:rig_hash_rate)     { 1E12 }

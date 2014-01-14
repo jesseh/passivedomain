@@ -1,14 +1,13 @@
 require "spec_helper"
 
 describe Rig do
-  include NumbersWithUnits
 
   it_behaves_like 'value object'
 
   let(:data) { double("Data", { 
     rig_hash_rate:         HashRate.new(MiningHash.new(1E9)),
-    watts_to_mine:         power.watts(40),
-    watts_to_cool:         power.watts(60),
+    watts_to_mine:         Power.watts(40),
+    watts_to_cool:         Power.watts(60),
   }) }
   subject { described_class.new(data) } 
 
