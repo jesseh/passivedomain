@@ -4,7 +4,8 @@ require_dependency Rails.root.join('lib', 'custom_initializers').to_s
 
 describe CustomInitializers do
   describe "value_object_initializer" do
-    let(:data) { double("Data", an_attr: 123) }
+    let(:an_attr) { 123 } 
+    let(:data) { double("Data", an_attr: an_attr) }
     let(:fake_class) do
       Class.new do
         extend CustomInitializers
@@ -17,25 +18,43 @@ describe CustomInitializers do
 
     it_behaves_like 'value object'
 
+    describe "optionally invokes methods to prepare values" do
+      let(:fake_class) do
+        Class.new do
+          extend CustomInitializers
+          value_object_initializer :an_attr
+
+          private
+
+          def prepare_an_attr data
+            data * 2
+          end
+
+        end
+      end
+      let(:data) { double("Data", an_attr: 2) }
+      its(:an_attr) { should == 4 }
+    end
+
     describe "enforces all attr values are frozen" do
       context "unfrozen data" do
-        let(:data) { double("Data", an_attr: 'a') }
+        let(:an_attr) { 'a' }
         it { expect { fake_class.new(data) }.to raise_error(TypeError) }
       end
       context "frozen data" do
-        let(:data) { double("Data", an_attr: 'a'.freeze) }
+        let(:an_attr) { 'a'.freeze }
         it { expect { fake_class.new(data) }.not_to raise_error }
       end
       context "data is nil" do
-        let(:data) { double("Data", an_attr: nil) }
+        let(:an_attr) { nil }
         it { expect { fake_class.new(data) }.not_to raise_error }
       end
       context "data is true" do
-        let(:data) { double("Data", an_attr: true) }
+        let(:an_attr) { true }
         it { expect { fake_class.new(data) }.not_to raise_error }
       end
       context "data is false" do
-        let(:data) { double("Data", an_attr: false) }
+        let(:an_attr) { false }
         it { expect { fake_class.new(data) }.not_to raise_error }
       end
 

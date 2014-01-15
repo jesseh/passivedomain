@@ -26,7 +26,9 @@ module CustomInitializers
 
     define_method(:initialize_attrs) do |data_obj|
       attr_targets.each do |source, target_attr|
-        value = source.respond_to?(:new) ? source.new(data_obj) : data_obj.send(source)
+        raw_value = source.respond_to?(:new) ? source.new(data_obj) : data_obj.send(source)
+        preparation_method = "prepare_#{target_attr}".to_sym
+        value = self.respond_to?(preparation_method, true) ? self.send(preparation_method, raw_value) : raw_value 
         unless value.frozen? || 
                value.nil?    || 
                value.instance_of?(TrueClass) ||
