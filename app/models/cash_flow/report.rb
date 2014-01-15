@@ -2,7 +2,7 @@
 require_dependency Rails.root.join('lib', 'custom_initializers').to_s
 
 module CashFlow
-  class Detail
+  class Report
     extend CustomInitializers
 
     value_object_initializer Rig, Mine, Network, Exchange

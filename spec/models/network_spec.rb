@@ -5,7 +5,7 @@ describe Network do
   it_behaves_like 'value object'
 
   let(:data) { double("Data", { 
-    mining_difficulty:     MiningEffort.new(1E5),
+    mining_effort:     MiningEffort.new(1E5),
     reward_amount:         Bitcoin.new(1)
   }) }
   

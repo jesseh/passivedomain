@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe CashFlow::Detail do
+describe CashFlow::Report do
 
   let(:mining_difficulty) { 25 }
   let(:rig_hash_rate)     { 1E12 }
@@ -8,7 +8,7 @@ describe CashFlow::Detail do
     rig_hash_rate:         HashRate.from_base_unit(rig_hash_rate),
     watts_to_mine:         Power.from_base_unit(33),
     watts_to_cool:         Power.from_base_unit(81),
-    mining_difficulty:     MiningEffort.from_base_unit(mining_difficulty),
+    mining_effort:         MiningEffort.from_base_unit(mining_difficulty),
     reward_amount:         Bitcoin.from_base_unit(25),
     electricity_rate:      EnergyCost.from_base_unit(25),
     pool_fee_percent:      Percent.from_base_unit(0.07),

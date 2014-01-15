@@ -4,7 +4,7 @@ class Network
   extend CustomInitializers
 
 
-  value_object_initializer :mining_difficulty => :effort,
+  value_object_initializer :mining_effort => :effort,
                            :reward_amount => :reward
 
   def expected_reward
