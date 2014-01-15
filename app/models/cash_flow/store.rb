@@ -7,7 +7,7 @@ module CashFlow
     include ::Store
 
     def self.build
-      self.new(CashFlow::Record, CashFlow::Detail)
+      self.new(CashFlow::Record)
     end
 
     private
