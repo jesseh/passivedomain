@@ -7,6 +7,8 @@ module CashFlow
 
     value_object_initializer Rig, Mine, Network, Exchange
 
+    attr_reader :rig, :mine, :network, :exchange
+
 
     def expected_reward_rate
       network.expected_reward * rig.capacity

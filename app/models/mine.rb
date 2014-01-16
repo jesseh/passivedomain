@@ -8,5 +8,7 @@ class Mine
                            :facility_cost,
                            :other_cost,
                            :rig_utilization
+
+  attr_reader :other_cost
 end
 

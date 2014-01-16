@@ -7,6 +7,6 @@ describe CashFlow::DataSource do
 
   describe "canned data" do
     before { subject.canned }
-    it { expect(mapper).to have_received(:initialize_attrs) }
+    it { expect(mapper).to have_received(:initialize_attrs).with(anything) }
   end
 end

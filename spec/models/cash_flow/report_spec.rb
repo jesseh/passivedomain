@@ -20,10 +20,10 @@ describe CashFlow::Report do
   }) }
   subject { described_class.new(data) } 
 
-  its(:rig)      { should == Rig.new(data)      }
-  its(:mine)     { should == Mine.new(data)     }
-  its(:network)  { should == Network.new(data)  }
-  its(:exchange) { should == Exchange.new(data) }
+  it { expect(subject.rig).to      eq( Rig.new(data) ) }
+  it { expect(subject.mine).to     eq( Mine.new(data) ) }
+  it { expect(subject.network).to  eq( Network.new(data) ) }
+  it { expect(subject.exchange).to eq( Exchange.new(data) ) }
 
 
   describe "#expected_reward_rate" do

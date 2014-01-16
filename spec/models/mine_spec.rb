@@ -19,5 +19,6 @@ describe Mine do
   its(:facility_cost) { should be }
   its(:other_cost) { should be }
   its(:rig_utilization) { should be }
+  it { expect(subject.other_cost.to_s).to      be }
 
 end

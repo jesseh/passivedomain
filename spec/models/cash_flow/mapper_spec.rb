@@ -22,7 +22,7 @@ describe CashFlow::Mapper do
   } }
   let(:record_data){ {} }
 
-  subject { described_class.new(record) }
+  subject { described_class.new.initialize_attrs(record) }
 
   it_behaves_like 'value object'
 
