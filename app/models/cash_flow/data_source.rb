@@ -1,18 +1,15 @@
 module CashFlow
   class DataSource 
 
-    def initialize(mapper)
-      @mapper = mapper
+    def initialize(mapper_class=CashFlow::Mapper)
+      @mapper_class = mapper_class
     end
 
     def canned
-      mapper.initialize_attrs(canned_data)
+      @mapper_class.new(canned_data)
     end
 
-
     private
-
-    attr_reader :mapper
 
     def canned_data
       data = OpenStruct.new
