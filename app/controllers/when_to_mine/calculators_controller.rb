@@ -3,11 +3,12 @@ require 'ostruct'
 class WhenToMine::CalculatorsController < ApplicationController
   
   def show
-    mapper = CashFlow::Mapper.new
-    CashFlow::DataSource.new(mapper).canned
-
-    @report = CashFlow::Report.new(mapper)
-    @yada = 'yeehaa'
+    @report = CashFlow::Report.new(data_source.canned)
   end
 
+  private
+
+  def data_source
+    CashFlow::DataSource.new
+  end
 end
