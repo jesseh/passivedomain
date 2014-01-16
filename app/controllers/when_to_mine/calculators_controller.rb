@@ -3,9 +3,9 @@ require 'ostruct'
 class WhenToMine::CalculatorsController < ApplicationController
   
   def show
-    record = data_source()
-    data = CashFlow::Mapper.new(record)
-    @report = CashFlow::Report.new(data)
+    mapper = CashFlow::Mapper.new
+    CashFlow::DataSource.new(mapper).canned
+    @report = CashFlow::Report.new(mapper)
   end
 
 
