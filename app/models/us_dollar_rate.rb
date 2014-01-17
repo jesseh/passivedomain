@@ -2,6 +2,7 @@ require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class UsDollarRate
   include NumberWithUnits
+  HOURS_PER_MONTH = 730
 
   def self.per_month(value)
     new(value, Timespan.month)
@@ -30,6 +31,14 @@ class UsDollarRate
 
   def to_s
     "%.2f USD / hour" % value
+  end
+
+  def monthly_value
+    value * HOURS_PER_MONTH
+  end
+
+  def monthly_unit
+    'USD / month'
   end
 
   

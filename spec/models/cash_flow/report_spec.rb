@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe CashFlow::Report do
-
   let(:mining_difficulty) { 25 }
   let(:rig_hash_rate)     { 1E12 }
   let(:data) { double("Data", { 
@@ -20,15 +19,6 @@ describe CashFlow::Report do
   }) }
   subject { described_class.new(data) } 
 
-  it { expect(subject.rig).to      eq( Rig.new(data) ) }
-  it { expect(subject.mine).to     eq( Mine.new(data) ) }
-  it { expect(subject.network).to  eq( Network.new(data) ) }
-  it { expect(subject.exchange).to eq( Exchange.new(data) ) }
-
-
-  describe "#expected_reward_rate" do
-    let(:mining_difficulty) { 1E-12 }
-
-    its(:expected_reward_rate) { should == BitcoinRate.from_base_unit(0.006944444) }
-  end
+  its(:other_cost_value) { should == 97 * NumberWithUnits::HOURS_PER_MONTH }
+  its(:other_cost_unit) { should == 'USD / month' }
 end

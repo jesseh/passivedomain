@@ -177,14 +177,14 @@
             <tr class="line">
               <td class="operation">-</td>
               <td class="item">recuring facility fees</td>
-              <td class="value">0</td>
-              <td class="unit">US$</td>
+              <td class="value"><%= @report.facility_cost_value %></td>
+              <td class="unit"><%= @report.facility_cost_unit %>$</td>
             </tr>
             <tr class="line">
               <td class="operation">-</td>
               <td class="item">other operating costs</td>
-              <td class="value"><%= @report.mine.other_cost %></td>
-              <td class="unit">US$</td>
+              <td class="value"><%= @report.other_cost_value %></td>
+              <td class="unit"><%= @report.other_cost_unit %>$</td>
             </tr>
             <%# If objective is 'retain' %>
             <tr class="line">

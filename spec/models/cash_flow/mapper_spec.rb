@@ -2,9 +2,6 @@ require "spec_helper"
 
 describe CashFlow::Mapper do
 
-  HOURS_PER_MONTH = 730
-
-
   let(:record){ double("Record", record_default.merge(record_data)) }
   let(:record_default) { { 
     rig_hash_rate:         25,
@@ -22,7 +19,7 @@ describe CashFlow::Mapper do
   } }
   let(:record_data){ {} }
 
-  subject { described_class.new.initialize_attrs(record) }
+  subject { described_class.new(record) }
 
   it_behaves_like 'value object'
 
@@ -38,12 +35,12 @@ describe CashFlow::Mapper do
 
   describe "#facility_cost" do
     let(:record_data){ {facility_cost_fractional: 30_00} }
-    it { expect( subject.facility_cost ).to eql(UsDollarRate.from_base_unit(30.00 / HOURS_PER_MONTH)) }
+    it { expect( subject.facility_cost ).to eql(UsDollarRate.from_base_unit(30.00 / NumberWithUnits::HOURS_PER_MONTH)) }
   end
   
   describe "#other_cost" do
     let(:record_data){ {other_cost_fractional: 30_00} }
-    it { expect( subject.other_cost ).to eql(UsDollarRate.from_base_unit(30.00 / HOURS_PER_MONTH)) }
+    it { expect( subject.other_cost ).to eql(UsDollarRate.from_base_unit(30.00 / NumberWithUnits::HOURS_PER_MONTH)) }
   end
 
   describe "#reward_amount" do

@@ -34,10 +34,6 @@ module CashFlow
                 :exchange_fee_percent,
                 :exchange_rate
 
-    def initialize
-      # prevent immediate value object initialization
-    end
-
 
     private
 
