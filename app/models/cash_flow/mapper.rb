@@ -8,11 +8,21 @@ module CashFlow
       ask(:rig_hash_rate,               only.positive_number){
         |raw| HashRate.new(MiningHash.new(raw), Timespan.second)
       },
-      ask(:watts_to_mine,               only.positive_number),
-      ask(:watts_to_cool,               only.positive_number),
-      ask(:pool_fee_percent,            only.number_within(0...1)),
-      ask(:rig_utilization,             only.number_within(0...1)),
-      ask(:exchange_fee_percent,        only.number_within(0...1)),
+      ask(:watts_to_mine,               only.positive_number) {
+        |raw| Power.watts(raw)
+      },
+      ask(:watts_to_cool,               only.positive_number) {
+        |raw| Power.watts(raw)
+      },
+      ask(:pool_fee_percent,            only.number_within(0...1)) {
+        |raw| Percent.decimal(raw)
+      },
+      ask(:rig_utilization,             only.number_within(0...1)) {
+        |raw| Percent.decimal(raw)
+      },
+      ask(:exchange_fee_percent,        only.number_within(0...1)) {
+        |raw| Percent.decimal(raw)
+      },
       ask(:exchange_rate,               only.positive_number),
       
       ask(:mining_difficulty,           only.positive_number) {
