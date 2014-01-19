@@ -12,23 +12,104 @@
 
 module CustomInitializers
 
+  class ValidationError < TypeError
+  end
+
+  class Only
+    def anything
+      lambda do |raw_value| 
+      end
+    end
+
+    def instance_of(cls)
+      lambda do |raw_value| 
+        "instance of '#{cls.to_s}' required." unless raw_value.instance_of?(cls)
+      end
+    end
+
+    def number
+      lambda do |raw_value| 
+        "numeric type required." unless raw_value.kind_of?(Numeric)
+      end
+    end
+
+    def string
+      lambda do |raw_value| 
+        "string required." unless raw_value.kind_of?(String)
+      end
+    end
+
+    def positive_integer
+      lambda do |raw_value| 
+        "positive integer required." unless raw_value.kind_of?(Integer) && raw_value >= 0
+      end
+    end
+
+    def positive_number
+      lambda do |raw_value| 
+        "positive number required." unless raw_value.kind_of?(Numeric) && raw_value >= 0
+      end
+    end
+
+    def number_within(range)
+      lambda do |raw_value| 
+        "positive number required." unless raw_value.kind_of?(Numeric) && range.include?(raw_value)
+      end
+    end
+  end
+
+  class Ask
+    def initialize(source, validator, prepare_block)
+      @source        = source
+      @validator     = validator
+      @prepare_block = prepare_block
+    end
+
+    attr_reader :source, :validator, :prepare_block
+
+    def get(data_obj)
+      raw_value = data_obj.send(source)
+
+      validation_message = validator.call(raw_value)
+      raise(ValidationError, validation_message) if validation_message
+
+      prepare_block.nil? ? raw_value : prepare_block.call(raw_value)
+    end
+  end
+
+
+  def ask(source, only=only.anything, &block)
+    Ask.new(source, only, block)
+  end
+
+  def only(*args)
+    Only.new
+  end
+
   # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
   def value_object_initializer(*attribute_targets)
 
-    # Call initialize_attrs directly if overriding initialize.
+
+
+    # When overriding initialize be sure to call initialize_attrs directly 
     define_method(:initialize) do |data_obj|
       initialize_attrs(data_obj)
     end
-
 
     attr_targets = parse_targets(attribute_targets).freeze
     attrs = attr_targets.values.freeze
 
     define_method(:initialize_attrs) do |data_obj|
       attr_targets.each do |source, target_attr|
-        raw_value = source.respond_to?(:new) ? source.new(data_obj) : data_obj.send(source)
-        preparation_method = "prepare_#{target_attr}".to_sym
-        value = self.respond_to?(preparation_method, true) ? self.send(preparation_method, raw_value) : raw_value 
+        value = begin
+          if source.instance_of?(Ask) 
+            source.get(data_obj)
+          elsif source.respond_to?(:new) 
+            source.new(data_obj) 
+          else
+            data_obj.send(source)
+          end
+        end
         unless value.frozen? || 
                value.nil?    || 
                value.instance_of?(TrueClass) ||
@@ -80,11 +161,14 @@ module CustomInitializers
     attrs = {}
     targets.each do |target_or_hash|
       if target_or_hash.respond_to? :each
-        target_or_hash.each do |target, source_message|
-          attrs[target] = underscore(source_message.to_s).to_sym
+        target_or_hash.each do |source_message, target|
+          attrs[source_message] = underscore(target.to_s).to_sym
         end
       else
-        attrs[target_or_hash] = underscore(target_or_hash.to_s).to_sym
+        source = target_or_hash
+        target = source.instance_of?(Ask) ? source.source : source
+
+        attrs[source] = underscore(target.to_s).to_sym
       end
     end
     attrs
@@ -97,9 +181,6 @@ module CustomInitializers
     gsub(/([a-z\d])([A-Z])/,'\1_\2').
     tr("-", "_").
     downcase
-  end
-
-  def assert_immutable(target, value)
   end
 
 end

@@ -22,18 +22,47 @@ describe CustomInitializers do
       let(:fake_class) do
         Class.new do
           extend CustomInitializers
-          value_object_initializer :an_attr
-
-          private
-
-          def prepare_an_attr data
-            data * 2
-          end
-
+          value_object_initializer ask(:an_attr) { |v| v * 2 }
         end
       end
       let(:data) { double("Data", an_attr: 2) }
       its(:an_attr) { should == 4 }
+    end
+
+    describe "ask syntax" do
+      let(:fake_class) do
+        Class.new do
+          extend CustomInitializers
+          value_object_initializer ask(:an_attr)
+        end
+      end
+      let(:data) { double("Data", an_attr: 2) }
+      its(:an_attr) { should == 2 }
+    end
+
+    describe "ask with only.number" do
+      let(:fake_class) do
+        Class.new do
+          extend CustomInitializers
+          value_object_initializer ask(:an_attr, only.number)
+        end
+      end
+      let(:data) { double("Data", an_attr: 2) }
+      its(:an_attr) { should == 2 }
+    end
+
+    describe "ask with only.string" do
+      let(:fake_class) do
+        Class.new do
+          extend CustomInitializers
+          value_object_initializer ask(:an_attr, only.string)
+        end
+      end
+      let(:data) { double("Data", an_attr: 2) }
+
+      subject { }
+
+      it { expect { fake_class.new(data) }.to raise_error }
     end
 
     describe "enforces all attr values are frozen" do

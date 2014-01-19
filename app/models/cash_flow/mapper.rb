@@ -4,18 +4,37 @@ module CashFlow
   class Mapper 
     extend CustomInitializers
 
-    value_object_initializer :rig_hash_rate,
-                             :watts_to_mine,
-                             :watts_to_cool,
-                             :pool_fee_percent,
-                             :rig_utilization,
-                             :exchange_fee_percent,
-                             :exchange_rate,
-                             :mining_difficulty => :mining_effort,
-                             :reward_amount_fractional => :reward_amount,
-                             :other_cost_fractional => :other_cost,
-                             :facility_cost_fractional => :facility_cost,
-                             :electricity_rate_fractional => :electricity_rate
+    value_object_initializer(
+      ask(:rig_hash_rate,               only.positive_number){
+        |raw| HashRate.new(MiningHash.new(raw), Timespan.second)
+      },
+      ask(:watts_to_mine,               only.positive_number),
+      ask(:watts_to_cool,               only.positive_number),
+      ask(:pool_fee_percent,            only.number_within(0...1)),
+      ask(:rig_utilization,             only.number_within(0...1)),
+      ask(:exchange_fee_percent,        only.number_within(0...1)),
+      ask(:exchange_rate,               only.positive_number),
+      
+      ask(:mining_difficulty,           only.positive_number) {
+        |raw| MiningEffort.new(raw)
+      } => :mining_effort,
+
+      ask(:reward_amount_fractional,    only.positive_integer) {
+        |raw| Bitcoin.new(raw) 
+      } => :reward_amount,
+
+      ask(:other_cost_fractional,       only.positive_number) { 
+        |raw| UsDollarRate.per_month(UsCurrency.cents(raw))
+      } => :other_cost,
+
+      ask(:facility_cost_fractional,    only.positive_number) {
+        |raw| UsDollarRate.per_month(UsCurrency.cents(raw))
+      } => :facility_cost,
+
+      ask(:electricity_rate_fractional, only.positive_number) {
+        |raw| EnergyCost.new(UsCurrency.cents(raw))
+      } => :electricity_rate
+    )
 
 
 
@@ -34,32 +53,6 @@ module CashFlow
                 :exchange_fee_percent,
                 :exchange_rate
 
-
-    private
-
-    def prepare_electricity_rate raw_value
-      EnergyCost.new(UsCurrency.cents(raw_value))
-    end
-
-    def prepare_facility_cost raw_value
-      UsDollarRate.per_month(UsCurrency.cents(raw_value))
-    end
-
-    def prepare_other_cost raw_value
-      UsDollarRate.per_month(UsCurrency.cents(raw_value))
-    end
-
-    def prepare_reward_amount raw_value
-      Bitcoin.new(raw_value)
-    end
-
-    def prepare_mining_effort raw_value
-      MiningEffort.new(raw_value)
-    end
-
-    def prepare_rig_hash_rate raw_value
-      HashRate.new(MiningHash.new(raw_value), Timespan.second)
-    end
 
   end
 end
