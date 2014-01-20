@@ -1,5 +1,6 @@
 module NumberWithUnits
   HOURS_PER_MONTH = 24 * 365 / 12 # hours/day * days in year / months in year
+  SECONDS_PER_HOUR = 60 * 60 
 
   attr_reader :value
 

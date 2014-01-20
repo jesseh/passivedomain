@@ -111,14 +111,14 @@
             <tr class="line">
               <td class="operation"></td>
               <td class="item">capacity of your rig</td>
-              <td class="value">1,980,000</td>
-              <td class="unit">gigahash / hour</td>
+              <td class="value"><%= @report.rig_capacity_value %></td>
+              <td class="unit"><%= @report.rig_capacity_unit %></td>
             </tr>
             <tr class="line">
               <td class="operation"></td>
               <td class="item">efficiency of your rig</td>
-              <td class="value">0.000002</td>
-              <td class="unit">kilowatt-hour / gigahash</td>
+              <td class="value"><%= @report.rig_efficiency_value %></td>
+              <td class="unit"><%= @report.rig_efficiency_unit %></td>
             </tr>
             <tr class="line">
               <td class="operation"></td>

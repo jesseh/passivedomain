@@ -10,5 +10,7 @@ describe EnergyToHash do
 
   it_behaves_like 'number with units'
 
-  its(:to_s)  { should == '3.5 (watts / second) / hash' }
+  its(:to_s)  { should == '3.5 (watts seconds) / hash' }
+  its(:kwh_per_ghash)  { 3.5 * 1E9 / (3600 * 1000) }
+  its(:kwh_per_ghash_unit)  { should == 'kwh / gigahash' }
 end

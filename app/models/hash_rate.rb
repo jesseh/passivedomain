@@ -19,6 +19,14 @@ class HashRate
     freeze
   end
 
+  def gigahash_per_second
+    value / 1E9
+  end
+
+  def gigahash_per_second_unit
+    'gigahash / second'
+  end
+
   def hash_per_second
     value
   end

@@ -10,5 +10,7 @@ describe HashRate do
   its(:hash_per_second) { should == 123 }
   its(:gigahash_per_hour) { should == (123.0 * 60 * 60 / 1E9).round(8) }
   its(:base_unit_number) { should == 123 }
+  its(:gigahash_per_second) { should == (123.0 / 1E9) }
+  its(:gigahash_per_second_unit) { should == 'gigahash / second' }
 
 end

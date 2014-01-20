@@ -13,7 +13,15 @@ class EnergyToHash
   end
 
   def base_unit
-    '(watts / second) / hash'
+    '(watts seconds) / hash'
+  end
+
+  def kwh_per_ghash
+    1E9 * value / (NumberWithUnits::SECONDS_PER_HOUR * 1E3)
+  end
+
+  def kwh_per_ghash_unit
+    'kwh / gigahash'
   end
 
   def raise_uncreatable(factor_1, factor_2)
