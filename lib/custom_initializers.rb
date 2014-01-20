@@ -13,9 +13,15 @@
 module CustomInitializers
 
   def self.extended(cl)
-    # The fastest way to get a value object because it pulls from a cache.
-    def cl.produce(data_obj)
-      CustomInitializers.get_or_create(self, data_obj)
+    # Re-use value objects that have not been garbage collected.
+    def cl.new(*args, &block)
+      # TODO: Handle the block
+      instance = CustomInitializers.cache_get(self, *args)
+      if instance.nil?
+        instance = super
+        CustomInitializers.cache_store(instance, *args)
+      end
+      instance
     end
   end
 
@@ -30,22 +36,27 @@ module CustomInitializers
   @@misses = 0
 
   #TODO - catch the weakref kernel error if garbage collected before strong reference created.
-  def self.get_or_create(target_class, data_obj)
-    key = [data_obj, target_class]
-    puts "Key: #{key.inspect}"
+  #TODO - handle block
+  def self.cache_get(target_class, *args)
+    key = args.dup << target_class
     value_wrapper = @@cache[key]
     if value_wrapper.nil?
-      value_wrapper = [target_class.new(data_obj)]
-      puts "just cached: #{value_wrapper.inspect}"
-      @@cache[key] = value_wrapper
-      @@misses += 1
-      puts "miss (#{@@hits}, #{@@misses}, #{(100.0 * @@hits / (@@hits +  @@misses)).round(0)}%)"
-    else
-      @@hits += 1
-      puts "hit (#{@@hits}, #{@@misses}, #{(100.0 * @@hits / (@@hits +  @@misses)).round(0)}%)"
+      #@@misses += 1
+      #puts "miss (#{@@hits}, #{@@misses}, #{(100.0 * @@hits / (@@hits +  @@misses)).round(0)}%)"
+      return nil 
     end
+    #@@hits += 1
+    #puts "hit (#{@@hits}, #{@@misses}, #{(100.0 * @@hits / (@@hits +  @@misses)).round(0)}%)"
     value_wrapper[0]
   end
+
+  def self.cache_store(instance, *args)
+    key = args.dup << instance.class
+    # Array wrapper needed because instance is (should be) frozen.
+    value_wrapper = [instance]
+    @@cache[key] = value_wrapper
+  end
+
 
   class Only
     def anything
@@ -135,8 +146,6 @@ module CustomInitializers
         value = begin
           if source.instance_of?(Ask) 
             source.value(data_obj)
-          elsif source.respond_to?(:produce) 
-            source.produce(data_obj) 
           elsif source.respond_to?(:new) 
             source.new(data_obj) 
           else

@@ -12,7 +12,7 @@ describe Mine do
     rig_utilization:       Percent.decimal(0.50),
   }) }
 
-  subject { described_class.produce(data) } 
+  subject { described_class.new(data) } 
 
   it { expect(subject.other_cost.to_s).to      be }
 

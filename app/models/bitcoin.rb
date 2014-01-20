@@ -1,6 +1,8 @@
 require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class Bitcoin
+  extend CustomInitializers
+
   DIGITS = 10
 
   include NumberWithUnits

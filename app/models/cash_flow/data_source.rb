@@ -6,7 +6,7 @@ module CashFlow
     end
 
     def canned
-      @mapper_class.produce(canned_data)
+      @mapper_class.new(canned_data)
     end
 
     private

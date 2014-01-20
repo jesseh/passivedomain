@@ -1,10 +1,11 @@
+require_dependency Rails.root.join('lib', 'custom_initializers').to_s
 require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class MiningEffort
-  DIGITS = 10
-
+  extend CustomInitializers
   include NumberWithUnits
 
+  DIGITS = 10
   OFFSET_AT_MIN_DIFFICULTY = 0xffff * 2**208
   HASH_SEARCH_SPACE        = 2**256
 

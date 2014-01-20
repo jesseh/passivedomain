@@ -1,6 +1,8 @@
+require_dependency Rails.root.join('lib', 'custom_initializers').to_s
 require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class BitcoinRate
+  extend CustomInitializers
   include NumberWithUnits
 
 

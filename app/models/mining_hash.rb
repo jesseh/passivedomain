@@ -1,6 +1,8 @@
+require_dependency Rails.root.join('lib', 'custom_initializers').to_s
 require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class MiningHash
+  extend CustomInitializers
   include NumberWithUnits
 
   GHASH_PER_HASH = 1 / 1E9
