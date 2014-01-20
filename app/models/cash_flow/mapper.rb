@@ -1,8 +1,8 @@
-require_dependency Rails.root.join('lib', 'custom_initializers').to_s
+require_dependency Rails.root.join('lib', 'passive_domain').to_s
 
 module CashFlow
   class Mapper 
-    extend CustomInitializers
+    extend PassiveDomain
 
     value_object_initializer(
       ask(:rig_hash_rate,               only.positive_number){

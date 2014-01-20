@@ -10,16 +10,16 @@
 # which is protected. It's no private because it is useful for testing
 # equality.
 
-module CustomInitializers
+module PassiveDomain
 
   def self.extended(cl)
     # Re-use value objects that have not been garbage collected.
     def cl.new(*args, &block)
       # TODO: Handle the block
-      instance = CustomInitializers.cache_get(self, *args)
+      instance = PassiveDomain.cache_get(self, *args)
       if instance.nil?
         instance = super
-        CustomInitializers.cache_store(instance, *args)
+        PassiveDomain.cache_store(instance, *args)
       end
       instance
     end

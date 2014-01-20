@@ -1,7 +1,7 @@
-require_dependency Rails.root.join('lib', 'custom_initializers').to_s
+require_dependency Rails.root.join('lib', 'passive_domain').to_s
 
 class Rig
-  extend CustomInitializers
+  extend PassiveDomain
 
   value_object_initializer ask(:rig_hash_rate, only.instance_of(HashRate)),
                            ask(:watts_to_mine, only.instance_of(Power)),

@@ -1,8 +1,8 @@
-require_dependency Rails.root.join('lib', 'custom_initializers').to_s
+require_dependency Rails.root.join('lib', 'passive_domain').to_s
 require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class EnergyToHash
-  extend CustomInitializers
+  extend PassiveDomain
   include NumberWithUnits
 
   def self.power_for_hash_rate(power, hash_rate)

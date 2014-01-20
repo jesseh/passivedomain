@@ -1,14 +1,14 @@
 require "spec_helper"
-require_dependency Rails.root.join('lib', 'custom_initializers').to_s
+require_dependency Rails.root.join('lib', 'passive_domain').to_s
 
 
-describe CustomInitializers do
+describe PassiveDomain do
   describe "value_object_initializer" do
     let(:an_attr) { 123 } 
     let(:data) { double("Data", an_attr: an_attr) }
     let(:fake_class) do
       Class.new do
-        extend CustomInitializers
+        extend PassiveDomain
         value_object_initializer :an_attr
       end
     end
@@ -21,7 +21,7 @@ describe CustomInitializers do
     describe "optionally invokes methods to prepare values" do
       let(:fake_class) do
         Class.new do
-          extend CustomInitializers
+          extend PassiveDomain
           value_object_initializer ask(:an_attr) { |v| v * 2 }
         end
       end
@@ -32,7 +32,7 @@ describe CustomInitializers do
     describe "ask syntax" do
       let(:fake_class) do
         Class.new do
-          extend CustomInitializers
+          extend PassiveDomain
           value_object_initializer ask(:an_attr)
         end
       end
@@ -43,7 +43,7 @@ describe CustomInitializers do
     describe "ask with only.number" do
       let(:fake_class) do
         Class.new do
-          extend CustomInitializers
+          extend PassiveDomain
           value_object_initializer ask(:an_attr, only.number)
         end
       end
@@ -54,7 +54,7 @@ describe CustomInitializers do
     describe "ask with only.string" do
       let(:fake_class) do
         Class.new do
-          extend CustomInitializers
+          extend PassiveDomain
           value_object_initializer ask(:an_attr, only.string)
         end
       end
@@ -102,7 +102,7 @@ describe CustomInitializers do
       let(:data) { double("Data", attr_1: 123, attr_2: 456) }
       let(:fake_class) do
         Class.new do
-          extend CustomInitializers
+          extend PassiveDomain
           value_object_initializer :attr_1, :attr_2
         end
       end
@@ -115,7 +115,7 @@ describe CustomInitializers do
       let(:data) { double("Data", attr_1: 123, attr_2: 456) }
       let(:fake_class) do
         Class.new do
-          extend CustomInitializers
+          extend PassiveDomain
           value_object_initializer :attr_1 => :one, :attr_2 => :two
         end
       end
@@ -127,7 +127,7 @@ describe CustomInitializers do
       let(:data) { double("Data", attr_1: 123, attr_2: 456) }
       let(:fake_class) do
         Class.new do
-          extend CustomInitializers
+          extend PassiveDomain
           value_object_initializer :attr_1, :attr_2 => :two
         end
       end
@@ -153,7 +153,7 @@ describe CustomInitializers do
         end
 
         Class.new do
-          extend CustomInitializers
+          extend PassiveDomain
           value_object_initializer ComposedClass
         end
       end
@@ -179,7 +179,7 @@ describe CustomInitializers do
         end
 
         Class.new do
-          extend CustomInitializers
+          extend PassiveDomain
           value_object_initializer ComposedClass => :attr_from_class
         end
       end
