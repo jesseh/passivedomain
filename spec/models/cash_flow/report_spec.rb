@@ -17,7 +17,7 @@ describe CashFlow::Report do
     exchange_rate:         1,
     rig_utilization:       Percent.from_base_unit(0.50),
   }) }
-  subject { described_class.new(data) } 
+  subject { described_class.produce(data) } 
 
   its(:other_cost_value) { should == 97 * NumberWithUnits::HOURS_PER_MONTH }
   its(:other_cost_unit) { should == 'USD / month' }

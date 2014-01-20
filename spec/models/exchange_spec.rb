@@ -9,7 +9,7 @@ describe Exchange do
     exchange_rate:         193,
   }) }
 
-  subject { described_class.new(data) } 
+  subject { described_class.produce(data) } 
   
   its(:fee)     { should == Percent.decimal(0.07) }
   its(:rate)    { should == 193 }

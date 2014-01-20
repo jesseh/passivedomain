@@ -9,7 +9,7 @@ describe Rig do
     watts_to_mine:         Power.watts(40),
     watts_to_cool:         Power.watts(60),
   }) }
-  subject { described_class.new(data) } 
+  subject { described_class.produce(data) } 
 
 
   its(:capacity) { should eq(data.rig_hash_rate) }

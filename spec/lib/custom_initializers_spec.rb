@@ -14,7 +14,7 @@ describe CustomInitializers do
     end
     let(:fake_subclass) { Class.new(fake_class) }
 
-    subject { fake_class.new(data) }
+    subject { fake_class.produce(data) }
 
     it_behaves_like 'value object'
 
@@ -62,29 +62,29 @@ describe CustomInitializers do
 
       subject { }
 
-      it { expect { fake_class.new(data) }.to raise_error }
+      it { expect { fake_class.produce(data) }.to raise_error }
     end
 
     describe "enforces all attr values are frozen" do
       context "unfrozen data" do
         let(:an_attr) { 'a' }
-        it { expect { fake_class.new(data) }.to raise_error(TypeError) }
+        it { expect { fake_class.produce(data) }.to raise_error(TypeError) }
       end
       context "frozen data" do
         let(:an_attr) { 'a'.freeze }
-        it { expect { fake_class.new(data) }.not_to raise_error }
+        it { expect { fake_class.produce(data) }.not_to raise_error }
       end
       context "data is nil" do
         let(:an_attr) { nil }
-        it { expect { fake_class.new(data) }.not_to raise_error }
+        it { expect { fake_class.produce(data) }.not_to raise_error }
       end
       context "data is true" do
         let(:an_attr) { true }
-        it { expect { fake_class.new(data) }.not_to raise_error }
+        it { expect { fake_class.produce(data) }.not_to raise_error }
       end
       context "data is false" do
         let(:an_attr) { false }
-        it { expect { fake_class.new(data) }.not_to raise_error }
+        it { expect { fake_class.produce(data) }.not_to raise_error }
       end
 
     end

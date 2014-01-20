@@ -12,7 +12,39 @@
 
 module CustomInitializers
 
+  def self.extended(cl)
+    # The fastest way to get a value object because it pulls from a cache.
+    def cl.produce(data_obj)
+      CustomInitializers.get_or_create(self, data_obj)
+    end
+  end
+
+
   class ValidationError < TypeError
+  end
+
+  # This is a hash-like object where the values are weak references that may be collected
+  # by the garbage collector. See https://github.com/bdurand/ref/blob/master/lib/ref/soft_value_map.rb
+  @@cache = Ref::SoftValueMap.new
+  @@hits = 0
+  @@misses = 0
+
+  #TODO - catch the weakref kernel error if garbage collected before strong reference created.
+  def self.get_or_create(target_class, data_obj)
+    key = [data_obj, target_class]
+    puts "Key: #{key.inspect}"
+    value_wrapper = @@cache[key]
+    if value_wrapper.nil?
+      value_wrapper = [target_class.new(data_obj)]
+      puts "just cached: #{value_wrapper.inspect}"
+      @@cache[key] = value_wrapper
+      @@misses += 1
+      puts "miss (#{@@hits}, #{@@misses}, #{(100.0 * @@hits / (@@hits +  @@misses)).round(0)}%)"
+    else
+      @@hits += 1
+      puts "hit (#{@@hits}, #{@@misses}, #{(100.0 * @@hits / (@@hits +  @@misses)).round(0)}%)"
+    end
+    value_wrapper[0]
   end
 
   class Only
@@ -67,7 +99,7 @@ module CustomInitializers
 
     attr_reader :source, :validator, :prepare_block
 
-    def get(data_obj)
+    def value(data_obj)
       raw_value = data_obj.send(source)
 
       validation_message = validator.call(raw_value)
@@ -86,10 +118,9 @@ module CustomInitializers
     Only.new
   end
 
+
   # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
   def value_object_initializer(*attribute_targets)
-
-
 
     # When overriding initialize be sure to call initialize_attrs directly 
     define_method(:initialize) do |data_obj|
@@ -103,7 +134,9 @@ module CustomInitializers
       attr_targets.each do |source, target_attr|
         value = begin
           if source.instance_of?(Ask) 
-            source.get(data_obj)
+            source.value(data_obj)
+          elsif source.respond_to?(:produce) 
+            source.produce(data_obj) 
           elsif source.respond_to?(:new) 
             source.new(data_obj) 
           else

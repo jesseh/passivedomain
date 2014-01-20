@@ -41,6 +41,8 @@ group :development do
   gem 'guard-rspec', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'pry', require: false
+  gem 'pry-debugger', require: false
+  gem 'pry-stack_explorer', require: false
 end
 
 group :test do
