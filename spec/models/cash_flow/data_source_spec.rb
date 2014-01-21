@@ -2,18 +2,16 @@ require "spec_helper"
 
 describe CashFlow::DataSource do
   let(:mapper_class) { Class.new }
+  let(:instance){ described_class.new(mapper_class) }
 
-  before { mapper_class.stub(:new => :mapper_sentinal) }
+  subject { instance }
 
-  subject { described_class.new(mapper_class) }
+  describe "#canned" do
+    before { mapper_class.stub(:new => :mapper_sentinal) }
 
-
-  it "creates a new mapper initialized with data" do
-    subject.canned
-    expect(mapper_class).to have_received(:new).with(anything)
+    subject!{ instance.canned }
+    it { should eq(:mapper_sentinal) }
+    it { expect(mapper_class).to have_received(:new).with(anything) }
   end
 
-  it "returns the new mapper" do
-    expect(subject.canned).to eq(:mapper_sentinal)
-  end
 end

@@ -19,7 +19,8 @@ describe CashFlow::Report do
   }) }
   subject { described_class.new(data) }
 
-  it_should_behave_like "CashFlow::Report interface"
+  it_should_behave_like("CashFlow::Report data"){ subject { data } }
+  it_should_behave_like("CashFlow::Report interface")
 
   its(:other_cost_value) { should == 97 * NumberWithUnits::HOURS_PER_MONTH }
   its(:other_cost_unit) { should == 'USD / month' }
