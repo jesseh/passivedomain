@@ -3,7 +3,7 @@ require "spec_helper"
 describe CashFlow::Mapper do
 
   let(:record){ double("Record", record_default.merge(record_data)) }
-  let(:record_default) { { 
+  let(:record_default) { {
     rig_hash_rate:         25,
     watts_to_mine:         33,
     watts_to_cool:         81,
@@ -21,7 +21,8 @@ describe CashFlow::Mapper do
 
   subject { described_class.new(record) }
 
-  it_behaves_like 'value object'
+  it_behaves_like('value object')
+  it_behaves_like('CashFlow::Report data')
 
   describe "#rig_hash_rate" do
     let(:record_data){ { rig_hash_rate: 123 } }
@@ -37,7 +38,7 @@ describe CashFlow::Mapper do
     let(:record_data){ {facility_cost_fractional: 30_00} }
     it { expect( subject.facility_cost ).to eql(UsDollarRate.from_base_unit(30.00 / NumberWithUnits::HOURS_PER_MONTH)) }
   end
-  
+
   describe "#other_cost" do
     let(:record_data){ {other_cost_fractional: 30_00} }
     it { expect( subject.other_cost ).to eql(UsDollarRate.from_base_unit(30.00 / NumberWithUnits::HOURS_PER_MONTH)) }
