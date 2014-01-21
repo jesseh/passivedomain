@@ -6,9 +6,13 @@
 # the initialized object reveal. Only the readers is set, rather than
 # attr_accessor to encourage the state to be immutable where possible.
 #
-# The values used during initialization are stored in @initializer_values,
+# The values used during initialization are stored in @@initializer_values,
 # which is protected. It's no private because it is useful for testing
 # equality.
+
+require_relative "only"
+require_relative "ask"
+require_relative "instance_methods"
 
 module PassiveDomain
   module ClassMethods
@@ -48,7 +52,6 @@ module PassiveDomain
       Only.new
     end
 
-
     # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
     def value_object_initializer(*attribute_targets)
 
@@ -83,36 +86,10 @@ module PassiveDomain
         freeze
       end
 
-      attrs_to_protect = [:initialized_attrs, :initialized_values]
-      attr_reader *attrs_to_protect
-      protected *attrs_to_protect
+      attr_reader(*attrs)
+      private(*attrs)
 
-      attr_reader *attrs
-      private *attrs
-
-      define_method(:inspect) do
-        self.class.to_s + ': ' + initialized_attrs.zip(initialized_values).map { |a, v| "#{a}=#{v}" }.join(", ")
-      end
-
-      define_method(:to_s) do
-        inspect
-      end
-
-      define_method(:initialized_values) do
-        initialized_attrs.map{ |a| "'#{self.send(a)}'" }
-      end
-
-      define_method(:==) do |other|
-        other.instance_of?(self.class) && initialized_values == other.initialized_values
-      end
-
-      define_method(:eql?) do |other|
-        self.send(:==, other)
-      end
-
-      define_method(:hash) do
-        self.class.hash ^ initialized_values.hash
-      end
+      include InstanceMethods
     end
 
 
