@@ -8,5 +8,7 @@ class Exchange
     ask(:exchange_rate,        only.positive_number)      => :rate
   )
 
+  attr_reader :rate
+
 end
 

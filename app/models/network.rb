@@ -9,6 +9,8 @@ class Network
     ask(:reward_amount, only.instance_of(Bitcoin))      => :reward
   )
 
+  attr_reader :effort, :reward
+
   def expected_reward
     MiningReward.new(reward, effort)
   end

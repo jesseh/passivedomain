@@ -26,8 +26,16 @@ class BitcoinRate
     freeze
   end
 
+  def monthly_value
+    value * HOURS_PER_MONTH
+  end
+
+  def monthly_unit
+    'BTC / month'
+  end
+
   def to_s
-    "%.2f BTC / hour" % value
+    "%.4f BTC / hour" % value
   end
 
   def base_unit

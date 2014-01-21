@@ -14,6 +14,11 @@ class Rig
   def efficiency
     (watts_to_mine + watts_to_cool) / capacity
   end
+
+  def power
+    watts_to_mine + watts_to_cool
+  end
+
   
 end
 

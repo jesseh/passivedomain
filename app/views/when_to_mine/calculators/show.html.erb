@@ -81,13 +81,13 @@
             <legend>The external environment</legend>
             <p>The external environment is out of your control. It changes continuously, and largely determines when you should mine.</p>
             <label>Bitcoin mining difficulty
-              <p>[set by the system]</p>
+                <p><%= @report.network.effort.difficulty %></p>
             </label>
             <label>Bitcoin reward amount (Bitcoin)
-              <p>[set by the system]</p>
+                <p><%= @report.network.reward %></p>
             </label>
             <label>Bitcoin exchange rate (US$ / Bitcoin)
-              <p>[set by the system]</p>
+                <p><%= @report.exchange.rate %></p>
             </label>
           </fieldset>
         </form>
@@ -120,12 +120,6 @@
               <td class="value"><%= @report.rig_efficiency_value %></td>
               <td class="unit"><%= @report.rig_efficiency_unit %></td>
             </tr>
-            <tr class="line">
-              <td class="operation"></td>
-              <td class="item">utilization of your rig</td>
-              <td class="value">100%</td>
-              <td class="unit"></td>
-            </tr>
 
             <tr class="spacer"><td></td></tr>
             <tr class="section">
@@ -135,8 +129,8 @@
             <tr class="line">
               <td class="operation"></td>
               <td class="item">mining rewards</td>
-              <td class="value">0.06617</td>
-              <td class="unit">US$</td>
+              <td class="value"><%= @report.revenue_value %></td>
+              <td class="unit"><%= @report.revenue_unit %></td>
             </tr>
             <tr class="spacer"><td></td></tr>
             <tr class="section">
@@ -152,8 +146,8 @@
             <tr class="line">
               <td class="operation">-</td>
               <td class="item">pool cost</td>
-              <td class="value">0.000015</td>
-              <td class="unit">US$</td>
+              <td class="value"><%= @report.pool_fees_value %></td>
+              <td class="unit"><%= @report.pool_fees_unit %></td>
             </tr>
             <%# If objective is 'extract' %>
             <tr class="line">

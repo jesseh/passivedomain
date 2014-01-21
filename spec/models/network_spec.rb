@@ -12,6 +12,8 @@ describe Network do
   subject { described_class.new(data) } 
 
   # Use 'it', not 'its' because the latter accesses private methods without error.
-  its(:expected_reward) { should eq(MiningReward.from_base_unit(1E-05)) }
+  it { expect(subject.expected_reward).to eq(MiningReward.from_base_unit(1E-05)) }
+  it { expect(subject.effort).to eq(MiningEffort.new(1E5)) }
+  it { expect(subject.reward).to eq(Bitcoin.new(1)) }
 
 end

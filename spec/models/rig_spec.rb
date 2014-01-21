@@ -14,5 +14,6 @@ describe Rig do
 
   its(:capacity) { should eq(data.rig_hash_rate) }
   its(:efficiency) { should == EnergyToHash.from_base_unit(1e-07) } 
+  its(:power) { should == Power.watts(100) } 
 
 end

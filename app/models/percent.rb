@@ -10,7 +10,16 @@ class Percent
   end
 
   def whole
-    "#{value * 100}%"
+    value * 100
+  end
+
+  def whole_unit
+    '%'
+  end
+
+  def *(other)
+    return other.class.from_base_unit(other.value * value) if other.respond_to?(:value)
+    super
   end
 
   def base_unit

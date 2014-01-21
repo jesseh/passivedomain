@@ -21,4 +21,6 @@ describe CashFlow::Report do
 
   its(:other_cost_value) { should == 97 * NumberWithUnits::HOURS_PER_MONTH }
   its(:other_cost_unit) { should == 'USD / month' }
+
+  #TODO - tests are missing here.
 end
