@@ -3,7 +3,7 @@ require "spec_helper"
 describe CashFlow::Report do
   let(:mining_difficulty) { 25 }
   let(:rig_hash_rate)     { 1E12 }
-  let(:data) { double("Data", { 
+  let(:data) { double("Data", {
     rig_hash_rate:         HashRate.from_base_unit(rig_hash_rate),
     watts_to_mine:         Power.from_base_unit(33),
     watts_to_cool:         Power.from_base_unit(81),
@@ -17,7 +17,9 @@ describe CashFlow::Report do
     exchange_rate:         1,
     rig_utilization:       Percent.from_base_unit(0.50),
   }) }
-  subject { described_class.new(data) } 
+  subject { described_class.new(data) }
+
+  it_should_behave_like "CashFlow::Report interface"
 
   its(:other_cost_value) { should == 97 * NumberWithUnits::HOURS_PER_MONTH }
   its(:other_cost_unit) { should == 'USD / month' }
