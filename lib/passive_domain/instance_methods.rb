@@ -1,6 +1,11 @@
 module PassiveDomain
   module InstanceMethods
 
+    # When overriding initialize be sure to call initialize_attrs directly
+    def initialize(data_obj)
+      initialize_attrs(data_obj)
+    end
+
     def inspect
       self.class.to_s + ': ' + initialized_attrs.zip(initialized_values).map { |a, v| "#{a}='#{v}'" }.join(", ")
     end
@@ -21,12 +26,13 @@ module PassiveDomain
       self.class.hash ^ initialized_values.hash
     end
 
+    protected
+
     attr_reader :initialized_attrs
-    protected :initialized_attrs
 
     def initialized_values
       initialized_attrs.map{|a| self.send(a.to_sym) }
     end
-    protected :initialized_values
+
   end
 end

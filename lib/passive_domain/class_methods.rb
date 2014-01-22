@@ -27,12 +27,6 @@ module PassiveDomain
 
     # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
     def value_object_initializer(*attribute_targets)
-
-      # When overriding initialize be sure to call initialize_attrs directly
-      define_method(:initialize) do |data_obj|
-        initialize_attrs(data_obj)
-      end
-
       attr_targets = parse_targets(attribute_targets).freeze
       attrs = attr_targets.values.freeze
 
