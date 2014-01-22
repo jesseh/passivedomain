@@ -12,6 +12,7 @@
 
 require_relative "only"
 require_relative "ask"
+require_relative "builder"
 require_relative "instance_methods"
 
 module PassiveDomain
@@ -27,8 +28,9 @@ module PassiveDomain
 
     # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
     def value_object_initializer(*attribute_targets)
-      attr_targets = parse_targets(attribute_targets).freeze
-      attrs = attr_targets.values.freeze
+      builder      = Builder.new(*attribute_targets)
+      attr_targets = builder.attribute_targets
+      attrs        = builder.attribute_values
 
       define_method(:initialize_attrs) do |data_obj|
         attr_targets.each do |source, target_attr|
@@ -59,33 +61,5 @@ module PassiveDomain
       include InstanceMethods
     end
 
-
-    private
-
-    def parse_targets(targets)
-      attrs = {}
-      targets.each do |target_or_hash|
-        if target_or_hash.respond_to? :each
-          target_or_hash.each do |source_message, target|
-            attrs[source_message] = underscore(target.to_s).to_sym
-          end
-        else
-          source = target_or_hash
-          target = source.instance_of?(Ask) ? source.source : source
-
-          attrs[source] = underscore(target.to_s).to_sym
-        end
-      end
-      attrs
-    end
-
-    # method from Rails ActiveSupport.
-    def underscore(str)
-      str.gsub(/::/, '/').
-      gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-      gsub(/([a-z\d])([A-Z])/,'\1_\2').
-      tr("-", "_").
-      downcase
-    end
   end
 end
