@@ -36,12 +36,12 @@ describe CashFlow::Mapper do
 
   describe "#facility_cost" do
     let(:record_data){ {facility_cost_fractional: 30_00} }
-    it { expect( subject.facility_cost ).to eql(UsDollarRate.from_base_unit(30.00 / NumberWithUnits::HOURS_PER_MONTH)) }
+    it { expect( subject.facility_cost ).to eql(UsDollarRate.from_base_unit(BigDecimal(30.00,9) / NumberWithUnits::HOURS_PER_MONTH)) }
   end
 
   describe "#other_cost" do
     let(:record_data){ {other_cost_fractional: 30_00} }
-    it { expect( subject.other_cost ).to eql(UsDollarRate.from_base_unit(30.00 / NumberWithUnits::HOURS_PER_MONTH)) }
+    it { expect( subject.other_cost ).to eql(UsDollarRate.from_base_unit(BigDecimal(30.00,9) / NumberWithUnits::HOURS_PER_MONTH)) }
   end
 
   describe "#reward_amount" do
