@@ -3,7 +3,11 @@ require 'ostruct'
 class WhenToMine::CalculatorsController < ApplicationController
   
   def show
-    @report = CashFlow::Report.new(data_source.canned)
+    data = data_source.canned
+    @report = CashFlow::Report.new(data)
+    @rig = Rig.new(data)
+    @network = Network.new(data)
+    @exchange = Exchange.new(data)
   end
 
   private

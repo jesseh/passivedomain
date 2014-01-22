@@ -9,12 +9,26 @@ class Energy
     new(value.to_f)
   end
 
+  def self.power_timespan(power, timespan)
+    unless power.instance_of?(Power) && timespan.instance_of?(Timespan)
+      raise(TypeError, "Power and Timespan classes required") 
+    end
+    new(power.kilowatts * timespan.hours)
+  end
+
   def kilowatt_hours
     value
   end
 
   def base_unit
     "kilowatt hours"
+  end
+
+  def *(other)
+    if other.instance_of? EnergyCost
+      return UsCurrency.new(value * other.value)
+    end
+    super
   end
 
 end

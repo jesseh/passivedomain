@@ -13,8 +13,18 @@ class Power
     value
   end
 
+  def kilowatts
+    value / 1000
+  end
+
   def base_unit
     "watts"
+  end
+
+  def *(other)
+    return Energy.power_timespan(self, other) if other.instance_of?(Timespan)
+    return UsDollarRate.per_hour(UsCurrency.dollars(kilowatts * other.value)) if other.instance_of?(EnergyCost)
+    super
   end
 
   def /(other)

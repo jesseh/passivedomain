@@ -81,13 +81,13 @@
             <legend>The external environment</legend>
             <p>The external environment is out of your control. It changes continuously, and largely determines when you should mine.</p>
             <label>Bitcoin mining difficulty
-                <p><%= @report.network.effort.difficulty %></p>
+                <p><%= @network.effort.difficulty %></p>
             </label>
             <label>Bitcoin reward amount (Bitcoin)
-                <p><%= @report.network.reward %></p>
+                <p><%= @network.reward %></p>
             </label>
             <label>Bitcoin exchange rate (US$ / Bitcoin)
-                <p><%= @report.exchange.rate %></p>
+                <p><%= @exchange.rate %></p>
             </label>
           </fieldset>
         </form>
@@ -111,14 +111,14 @@
             <tr class="line">
               <td class="operation"></td>
               <td class="item">capacity of your rig</td>
-              <td class="value"><%= @report.rig_capacity_value %></td>
-              <td class="unit"><%= @report.rig_capacity_unit %></td>
+              <td class="value"><%= @rig.capacity.gigahash_per_second %></td>
+              <td class="unit"><%= @rig.capacity.gigahash_per_second_unit %></td>
             </tr>
             <tr class="line">
               <td class="operation"></td>
               <td class="item">efficiency of your rig</td>
-              <td class="value"><%= @report.rig_efficiency_value %></td>
-              <td class="unit"><%= @report.rig_efficiency_unit %></td>
+              <td class="value"><%= @rig.efficiency %></td>
+              <td class="unit"><%= @rig.efficiency.base_unit %></td>
             </tr>
 
             <tr class="spacer"><td></td></tr>
@@ -140,8 +140,8 @@
             <tr class="line">
               <td class="operation">-</td>
               <td class="item">electricity cost</td>
-              <td class="value">0.06617</td>
-              <td class="unit">US$</td>
+              <td class="value"><%= @report.electricity_cost_value %></td>
+              <td class="unit"><%= @report.electricity_cost_unit %></td>
             </tr>
             <tr class="line">
               <td class="operation">-</td>

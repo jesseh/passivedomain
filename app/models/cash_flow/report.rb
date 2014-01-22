@@ -5,32 +5,14 @@ module CashFlow
   class Report
     extend PassiveDomain
 
-    value_object_initializer Rig, Mine, Exchange, Network
+    value_object_initializer Mine
 
-    attr_reader :network, :exchange
-
-    def rig_capacity_value
-      rig.capacity.gigahash_per_second
+    def electricity_cost_value
+      mine.electricity_cost.monthly_value
     end
 
-    def rig_capacity_unit
-      rig.capacity.gigahash_per_second_unit
-    end
-
-    def rig_efficiency_value
-      rig.efficiency.kwh_per_ghash
-    end
-
-    def rig_efficiency_unit
-      rig.efficiency.kwh_per_ghash_unit
-    end
-
-    def rig_utilization_value
-      mine.rig_utilization.whole
-    end
-
-    def rig_utilization_unit
-      mine.rig_utilization.whole_unit
+    def electricity_cost_unit
+      mine.electricity_cost.monthly_unit
     end
 
     def other_cost_value

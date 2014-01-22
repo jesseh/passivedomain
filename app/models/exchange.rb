@@ -10,5 +10,14 @@ class Exchange
 
   attr_reader :rate
 
+  def bitcoin_to_usd(amount)
+    raise(TypeError, "Bitcoin amount required for exchange.") unless amount.instance_of?(Bitcoin)
+    UsCurrency.dollars(rate * amount.value)
+  end
+
+  def fee_in_usd(amount)
+    fee * bitcoin_to_usd(amount) 
+  end
+
 end
 
