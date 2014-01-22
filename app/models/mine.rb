@@ -27,7 +27,7 @@ class Mine
   end
 
   def electricity_cost
-    #JESSE start here
+    rig.power * electricity_rate
   end
 
 end
