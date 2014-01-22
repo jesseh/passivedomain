@@ -27,11 +27,7 @@ class BitcoinRate
   end
 
   def monthly_value
-    value * HOURS_PER_MONTH
-  end
-
-  def monthly_unit
-    'BTC / month'
+    Bitcoin.new(value * HOURS_PER_MONTH)
   end
 
   def to_s

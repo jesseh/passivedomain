@@ -129,8 +129,7 @@
             <tr class="line">
               <td class="operation"></td>
               <td class="item">mining rewards</td>
-              <td class="value"><%= @report.revenue_value %></td>
-              <td class="unit"><%= @report.revenue_unit %></td>
+              <td class="value"><%= number_to_currency(@report.revenue.value) %></td>
             </tr>
             <tr class="spacer"><td></td></tr>
             <tr class="section">
@@ -140,27 +139,23 @@
             <tr class="line">
               <td class="operation">-</td>
               <td class="item">electricity cost</td>
-              <td class="value"><%= @report.electricity_cost_value %></td>
-              <td class="unit"><%= @report.electricity_cost_unit %></td>
+              <td class="value"><%= number_to_currency(@report.electricity_cost.dollars) %></td>
             </tr>
             <tr class="line">
               <td class="operation">-</td>
               <td class="item">pool cost</td>
-              <td class="value"><%= @report.pool_fees_value %></td>
-              <td class="unit"><%= @report.pool_fees_unit %></td>
+              <td class="value"><%= number_to_currency(@report.pool_fees.value) %></td>
             </tr>
             <%# If objective is 'extract' %>
             <tr class="line">
               <td class="operation">-</td>
               <td class="item">exchange transaction fees</td>
-              <td class="value">0</td>
-              <td class="unit">US$</td>
+              <td class="value"><%= number_to_currency(@report.exchange_fees.value) %></td>
             </tr>
             <tr class="line result">
               <td class="operation">=</td>
               <td class="item">gross margin</td>
-              <td class="value">41</td>
-              <td class="unit">US$</td>
+              <td class="value"><%= number_to_currency(@report.gross_margin.value) %></td>
             </tr>
 
             <tr class="spacer"><td></td></tr>
@@ -171,27 +166,17 @@
             <tr class="line">
               <td class="operation">-</td>
               <td class="item">recuring facility fees</td>
-              <td class="value"><%= @report.facility_cost_value %></td>
-              <td class="unit"><%= @report.facility_cost_unit %>$</td>
+              <td class="value"><%= number_to_currency(@report.facility_cost.value) %></td>
             </tr>
             <tr class="line">
               <td class="operation">-</td>
               <td class="item">other operating costs</td>
-              <td class="value"><%= @report.other_cost_value %></td>
-              <td class="unit"><%= @report.other_cost_unit %>$</td>
-            </tr>
-            <%# If objective is 'retain' %>
-            <tr class="line">
-              <td class="operation">-</td>
-              <td class="item">exchange transaction fees</td>
-              <td class="value">0</td>
-              <td class="unit">US$</td>
+              <td class="value"><%= number_to_currency(@report.other_cost.value) %></td>
             </tr>
             <tr class="line result">
               <td class="operation">=</td>
               <td class="item">earnings <br /><small>before tax, interest, depreciation, and amortization</small></td>
-              <td class="value">0</td>
-              <td class="unit">US$</td>
+              <td class="value"><%= number_to_currency(@report.ebitda.value) %></td>
             </tr>
           </tbody>
         </table>

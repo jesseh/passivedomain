@@ -7,8 +7,7 @@ describe UsDollarRate do
   it_behaves_like 'number with units'
 
   its(:to_s)  { should == '3.00 USD / hour' }
-  its(:monthly_value)  { should == 3.00 * 730 }
-  its(:monthly_unit)  { should == 'USD / month' }
+  its(:monthly_value)  { should == UsCurrency.dollars(3.00 * 730) }
 
   it "can be created with per_month" do
     expect( described_class.per_month(UsCurrency.dollars(3 * 24 * 365 / 12)) ).to eq(subject)

@@ -7,7 +7,6 @@ describe BitcoinRate do
   it_behaves_like 'number with units'
 
   its(:to_s)  { should == '10.0000 BTC / hour' }
-  its(:monthly_value)  { should == 10.00 * 730 }
-  its(:monthly_unit)  { should == 'BTC / month' }
+  its(:monthly_value)  { should == Bitcoin.new(10.00 * 730) }
 
 end

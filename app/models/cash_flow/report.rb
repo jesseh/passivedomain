@@ -5,46 +5,46 @@ module CashFlow
   class Report
     extend PassiveDomain
 
-    value_object_initializer Mine
+    value_object_initializer Mine, Exchange
 
-    def electricity_cost_value
-      mine.electricity_cost.monthly_value
+    def revenue
+      to_usd mine.revenue.monthly_value
     end
 
-    def electricity_cost_unit
-      mine.electricity_cost.monthly_unit
+    def pool_fees
+      to_usd mine.pool_fees.monthly_value
     end
 
-    def other_cost_value
-      mine.other_cost.monthly_value
+    def exchange_fees
+      to_usd exchange.to_usd_fee(revenue)
     end
 
-    def other_cost_unit
-      mine.other_cost.monthly_unit
+    def electricity_cost
+      to_usd mine.electricity_cost.monthly_value
     end
 
-    def facility_cost_value
-      mine.facility_cost.monthly_value
+    def gross_margin
+      revenue - electricity_cost - pool_fees - exchange_fees
     end
 
-    def facility_cost_unit
-      mine.facility_cost.monthly_unit
+    def other_cost
+      to_usd mine.other_cost.monthly_value
     end
 
-    def revenue_value
-      mine.revenue.monthly_value
+    def facility_cost
+      to_usd mine.facility_cost.monthly_value
     end
 
-    def revenue_unit
-      mine.revenue.monthly_unit
+    def ebitda
+        gross_margin - facility_cost - other_cost
     end
 
-    def pool_fees_value
-      mine.pool_fees.monthly_value
-    end
 
-    def pool_fees_unit
-      mine.pool_fees.monthly_unit
+
+    private
+
+    def to_usd(amount)
+      exchange.to_usd(amount)
     end
   end
 end
