@@ -36,7 +36,7 @@ class UsDollarRate
   end
 
   def monthly_value
-    value * HOURS_PER_MONTH
+    UsCurrency.dollars(value * HOURS_PER_MONTH)
   end
 
   def monthly_unit

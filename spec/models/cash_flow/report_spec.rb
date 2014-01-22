@@ -22,8 +22,14 @@ describe CashFlow::Report do
   it_should_behave_like("CashFlow::Report data"){ subject { data } }
   it_should_behave_like("CashFlow::Report interface")
 
-  its(:other_cost_value) { should == 97 * NumberWithUnits::HOURS_PER_MONTH }
-  its(:other_cost_unit) { should == 'USD / month' }
+  its(:revenue) { should be } #TODO figure out the math here
+  its(:pool_fees) { should be } #TODO figure out the math here
+  its(:electricity_cost) { should be } #TODO figure out the math here
+  its(:exchange_fees) { should be } #TODO figure out the math here
+  its(:gross_margin) { should be } #TODO figure out the math here
+  its(:facility_cost) { should == UsCurrency.dollars(73 * NumberWithUnits::HOURS_PER_MONTH) }
+  its(:other_cost) { should == UsCurrency.dollars(97 * NumberWithUnits::HOURS_PER_MONTH) }
+  its(:ebitda) { should be } #TODO figure out the math here
 
   #TODO - tests are missing here.
 end
