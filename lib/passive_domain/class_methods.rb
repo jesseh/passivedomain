@@ -26,37 +26,16 @@ module PassiveDomain
       Only.new
     end
 
+    attr_reader :attribute_targets, :attribute_values
+
     # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
     def value_object_initializer(*attribute_targets)
       builder      = Builder.new(*attribute_targets)
-      attr_targets = builder.attribute_targets
-      attrs        = builder.attribute_values
+      @attribute_targets = builder.attribute_targets
+      @attribute_values  = builder.attribute_values
 
-      define_method(:initialize_attrs) do |data_obj|
-        attr_targets.each do |source, target_attr|
-          value = begin
-            if source.instance_of?(Ask)
-              source.value(data_obj)
-            elsif source.respond_to?(:new)
-              source.new(data_obj)
-            else
-              data_obj.send(source)
-            end
-          end
-          unless value.frozen? ||
-                 value.nil?    ||
-                 value.instance_of?(TrueClass) ||
-                 value.instance_of?(FalseClass)
-            raise TypeError, "#{self.class} can only be instantiated with frozen data. #{target_attr} has non-frozen value: #{value.inspect}"
-          end
-          instance_variable_set("@#{target_attr}", value)
-        end
-        instance_variable_set(:@initialized_attrs, attrs)
-        freeze
-      end
-
-      attr_reader(*attrs)
-      private(*attrs)
+      attr_reader(*@attribute_values)
+      private(*@attribute_values)
 
       include InstanceMethods
     end

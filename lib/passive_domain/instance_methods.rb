@@ -7,7 +7,7 @@ module PassiveDomain
     end
 
     def inspect
-      self.class.to_s + ': ' + initialized_attrs.zip(initialized_values).map { |a, v| "#{a}='#{v}'" }.join(", ")
+      self.class.to_s + ': ' + self.class.attribute_values.zip(initialized_values).map { |a, v| "#{a}='#{v}'" }.join(", ")
     end
 
     def to_s
@@ -28,10 +28,30 @@ module PassiveDomain
 
     protected
 
-    attr_reader :initialized_attrs
+    def initialize_attrs(data_obj)
+      self.class.attribute_targets.each do |source, target_attr|
+        value = begin
+          if source.instance_of?(Ask)
+            source.value(data_obj)
+          elsif source.respond_to?(:new)
+            source.new(data_obj)
+          else
+            data_obj.send(source)
+          end
+        end
+        unless value.frozen? ||
+               value.nil?    ||
+               value.instance_of?(TrueClass) ||
+               value.instance_of?(FalseClass)
+          raise TypeError, "#{self.class} can only be instantiated with frozen data. #{target_attr} has non-frozen value: #{value.inspect}"
+        end
+        instance_variable_set("@#{target_attr}", value)
+      end
+      freeze
+    end
 
     def initialized_values
-      initialized_attrs.map{|a| self.send(a.to_sym) }
+      self.class.attribute_values.map{|a| self.send(a.to_sym) }
     end
 
   end
