@@ -14,20 +14,12 @@ shared_examples "CashFlow::Report data" do
 end
 
 shared_examples "CashFlow::Report interface" do
-  it { should respond_to :exchange }
-  it { should respond_to :network }
-  it { should respond_to :rig_capacity_value }
-  it { should respond_to :rig_capacity_unit }
-  it { should respond_to :rig_efficiency_value }
-  it { should respond_to :rig_efficiency_unit }
-  it { should respond_to :rig_utilization_value }
-  it { should respond_to :rig_utilization_unit }
-  it { should respond_to :other_cost_value }
-  it { should respond_to :other_cost_unit }
-  it { should respond_to :facility_cost_value }
-  it { should respond_to :facility_cost_unit }
-  it { should respond_to :revenue_value }
-  it { should respond_to :revenue_unit }
-  it { should respond_to :pool_fees_value }
-  it { should respond_to :pool_fees_unit }
+  it { should respond_to :revenue }
+  it { should respond_to :pool_fees }
+  it { should respond_to :exchange_fees }
+  it { should respond_to :electricity_cost }
+  it { should respond_to :gross_margin }
+  it { should respond_to :other_cost }
+  it { should respond_to :facility_cost }
+  it { should respond_to :ebitda }
 end
