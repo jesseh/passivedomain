@@ -4,7 +4,7 @@ require_dependency Rails.root.join('lib', 'passive_domain').to_s
 class CashFlow::ReportForm
   extend PassiveDomain
 
-  value_object_initializer
+  value_object_initializer{}
 
   attr_reader :rig_hash_rate,
               :electricity_rate,

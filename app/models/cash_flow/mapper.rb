@@ -1,54 +1,50 @@
 require_dependency Rails.root.join('lib', 'passive_domain').to_s
 
 module CashFlow
-  class Mapper 
+  class Mapper
     extend PassiveDomain
 
-    value_object_initializer(
-      ask(:rig_hash_rate,               only.positive_number){
-        |raw| HashRate.new(MiningHash.new(raw), Timespan.second)
-      },
-      ask(:watts_to_mine,               only.positive_number) {
-        |raw| Power.watts(raw)
-      },
-      ask(:watts_to_cool,               only.positive_number) {
-        |raw| Power.watts(raw)
-      },
-      ask(:pool_fee_percent,            only.number_within(0...1)) {
-        |raw| Percent.decimal(raw)
-      },
-      ask(:rig_utilization,             only.number_within(0...1)) {
-        |raw| Percent.decimal(raw)
-      },
-      ask(:exchange_fee_percent,        only.number_within(0...1)) {
-        |raw| Percent.decimal(raw)
-      },
-      ask(:exchange_rate,               only.positive_number),
-      
-      ask(:mining_difficulty,           only.positive_number) {
-        |raw| MiningEffort.new(raw)
-      } => :mining_effort,
+    value_object_initializer do
+      accept(:rig_hash_rate).only{ positive_number }.prepare{|raw|
+        HashRate.new(MiningHash.new(raw), Timespan.second)
+      }
+      accept(:watts_to_mine).only{ positive_number }.prepare{|raw|
+        Power.watts(raw)
+      }
+      accept(:watts_to_cool).only{ positive_number }.prepare{|raw|
+        Power.watts(raw)
+      }
+      accept(:pool_fee_percent).only{ number_within(0...1) }.prepare{|raw|
+        Percent.decimal(raw)
+      }
+      accept(:rig_utilization).only{ number_within(0...1) }.prepare{|raw|
+        Percent.decimal(raw)
+      }
+      accept(:exchange_fee_percent).only{ number_within(0...1) }.prepare{|raw|
+        Percent.decimal(raw)
+      }
+      accept(:exchange_rate).only{ positive_number }
 
-      ask(:reward_amount_fractional,    only.positive_integer) {
-        |raw| Bitcoin.new(raw) 
-      } => :reward_amount,
+      accept(:mining_difficulty).only{ positive_number }.prepare{|raw|
+        MiningEffort.new(raw)
+      }.to(:mining_effort)
 
-      ask(:other_cost_fractional,       only.positive_number) { 
-        |raw| UsDollarRate.per_month(UsCurrency.cents(raw))
-      } => :other_cost,
+      accept(:reward_amount_fractional).only{ positive_integer }.prepare{|raw|
+        Bitcoin.new(raw)
+      }.to(:reward_amount)
 
-      ask(:facility_cost_fractional,    only.positive_number) {
-        |raw| UsDollarRate.per_month(UsCurrency.cents(raw))
-      } => :facility_cost,
+      accept(:other_cost_fractional).only{ positive_number }.prepare{ |raw|
+        UsDollarRate.per_month(UsCurrency.cents(raw))
+      }.to(:other_cost)
 
-      ask(:electricity_rate_fractional, only.positive_number) {
-        |raw| EnergyCost.new(UsCurrency.cents(raw))
-      } => :electricity_rate
-    )
+      accept(:facility_cost_fractional).only{ positive_number }.prepare{|raw|
+        UsDollarRate.per_month(UsCurrency.cents(raw))
+      }.to(:facility_cost)
 
-
-
-
+      accept(:electricity_rate_fractional).only{ positive_number }.prepare{|raw|
+        EnergyCost.new(UsCurrency.cents(raw))
+      }.to(:electricity_rate)
+    end
 
     attr_reader :rig_hash_rate,
                 :electricity_rate,

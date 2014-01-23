@@ -10,27 +10,17 @@
 # which is protected. It's no private because it is useful for testing
 # equality.
 
-require_relative "only"
-require_relative "ask"
 require_relative "builder"
 require_relative "instance_methods"
 
 module PassiveDomain
   module ClassMethods
 
-    def ask(source, only=only.anything, &block)
-      Ask.new(source, only, block)
-    end
-
-    def only(*args)
-      Only.new
-    end
-
     attr_reader :attribute_targets, :attribute_values
 
     # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
-    def value_object_initializer(*attribute_targets)
-      builder      = Builder.new(*attribute_targets)
+    def value_object_initializer(&block)
+      builder = Builder.new(&block)
       @attribute_targets = builder.attribute_targets
       @attribute_values  = builder.attribute_values
 
