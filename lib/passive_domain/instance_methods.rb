@@ -37,6 +37,7 @@ module PassiveDomain
     end
 
     def initialize_attrs(data_obj)
+      data_obj = OpenStruct.new(data_obj) if data_obj.is_a? Hash
       inputs.each do |input|
         value = input.value data_obj
         assert_frozen value
