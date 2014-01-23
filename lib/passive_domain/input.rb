@@ -45,7 +45,7 @@ module PassiveDomain
 
     def assert_valid(value)
       return unless validator
-      validation_message = validator.call(value)
+      validation_message = validator.call(source, value)
       raise(ValidationError, validation_message) if validation_message
     end
 
