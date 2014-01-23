@@ -16,6 +16,7 @@ describe CashFlow::Report do
     exchange_fee_percent:  Percent.from_base_unit(0.07),
     exchange_rate:         1,
     rig_utilization:       Percent.from_base_unit(0.50),
+    pool_fee_percent:      Percent.from_base_unit(0.50),
   }) }
   subject { described_class.new(data) }
 
