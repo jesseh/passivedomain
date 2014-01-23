@@ -52,6 +52,24 @@ module PassiveDomain
       Only.new
     end
 
+    def nested_interface(interface)
+      interface.find { |source| source.respond_to?(:interface) }
+    end
+    private :nested_interface
+
+    def interface
+      begin
+        self.new(PassiveDomain::COLLECT_INTERFACE)
+      rescue PassiveDomain::InterfaceCollection => e
+        result = e.attr_targets.keys
+      end
+      while source = nested_interface(result) do
+        result.delete(source)
+        result.concat(source.interface)
+      end
+      result
+    end
+
     # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
     def value_object_initializer(*attribute_targets)
 
@@ -64,6 +82,11 @@ module PassiveDomain
       attrs = attr_targets.values.freeze
 
       define_method(:initialize_attrs) do |data_obj|
+        # Query the interface - this is exceptional behavior
+        if data_obj == PassiveDomain::COLLECT_INTERFACE
+          raise PassiveDomain::InterfaceCollection.new(attr_targets)
+        end
+
         attr_targets.each do |source, target_attr|
           value = begin
             if source.instance_of?(Ask)

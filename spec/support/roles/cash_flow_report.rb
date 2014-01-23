@@ -1,16 +1,9 @@
+
 shared_examples "CashFlow::Report data" do
-  it { should respond_to :rig_hash_rate }
-  it { should respond_to :watts_to_mine }
-  it { should respond_to :watts_to_cool }
-  it { should respond_to :mining_effort }
-  it { should respond_to :reward_amount }
-  it { should respond_to :electricity_rate }
-  it { should respond_to :pool_fee_percent }
-  it { should respond_to :facility_cost }
-  it { should respond_to :other_cost }
-  it { should respond_to :exchange_fee_percent }
-  it { should respond_to :exchange_rate }
-  it { should respond_to :rig_utilization }
+
+  CashFlow::Report.interface.map(&:source).each do |source|
+    it { should respond_to source }
+  end
 end
 
 shared_examples "CashFlow::Report interface" do
