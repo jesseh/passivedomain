@@ -29,25 +29,21 @@ module PassiveDomain
     protected
 
     def initialize_attrs(data_obj)
-      self.class.attribute_targets.each do |source, target_attr|
-        value = begin
-          if source.instance_of?(Ask)
-            source.value(data_obj)
-          elsif source.respond_to?(:new)
-            source.new(data_obj)
-          else
-            data_obj.send(source)
-          end
-        end
-        unless value.frozen? ||
-               value.nil?    ||
-               value.instance_of?(TrueClass) ||
-               value.instance_of?(FalseClass)
-          raise TypeError, "#{self.class} can only be instantiated with frozen data. #{target_attr} has non-frozen value: #{value.inspect}"
-        end
-        instance_variable_set("@#{target_attr}", value)
+      self.class.inputs.each do |input|
+        value = input.value data_obj
+        assert_frozen value
+        instance_variable_set("@#{input.target}", value)
       end
       freeze
+    end
+
+    def assert_frozen(value)
+      unless value.frozen? ||
+             value.nil?    ||
+             value.instance_of?(TrueClass) ||
+             value.instance_of?(FalseClass)
+        raise TypeError, "#{self.class} can only be instantiated with frozen data. #{target_attr} has non-frozen value: #{value.inspect}"
+      end
     end
 
     def initialized_values

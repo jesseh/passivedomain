@@ -16,13 +16,13 @@ require_relative "instance_methods"
 module PassiveDomain
   module ClassMethods
 
-    attr_reader :attribute_targets, :attribute_values
+    attr_reader :inputs, :attribute_values
 
     # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
     def value_object_initializer(&block)
       builder = Builder.new(&block)
-      @attribute_targets = builder.attribute_targets
-      @attribute_values  = builder.attribute_values
+      @inputs = builder.inputs
+      @attribute_values = builder.attribute_values
 
       attr_reader(*@attribute_values)
       private(*@attribute_values)

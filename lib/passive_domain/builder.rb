@@ -1,5 +1,3 @@
-require_relative "ask"
-require_relative "only"
 require_relative "input"
 
 module PassiveDomain
@@ -13,21 +11,9 @@ module PassiveDomain
       Input.new(source).tap{|t| inputs << t }
     end
 
-    def attribute_targets
-      Hash[inputs.map{|input|
-        if input.source.is_a? Symbol
-          [Ask.new(input.source, input.validator, input.prepare_block), input.target]
-        else
-          [input.source, input.target]
-        end
-      }]
-    end
-
     def attribute_values
-      attribute_targets.values
+      inputs.map(&:target)
     end
-
-    private
 
     def inputs
       @inputs ||= []
