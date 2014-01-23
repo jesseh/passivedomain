@@ -4,9 +4,9 @@ class Rig
   extend PassiveDomain
 
   value_object_initializer do
-    accept(:rig_hash_rate).only{ instance_of(HashRate) }
-    accept(:watts_to_mine).only{ instance_of(Power) }
-    accept(:watts_to_cool).only{ instance_of(Power) }
+    value(:rig_hash_rate).must_be( only.instance_of(HashRate) )
+    value(:watts_to_mine).must_be( only.instance_of(Power) )
+    value(:watts_to_cool).must_be( only.instance_of(Power) )
   end
 
   def capacity

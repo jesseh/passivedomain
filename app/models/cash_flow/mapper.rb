@@ -5,51 +5,52 @@ module CashFlow
     extend PassiveDomain
 
     value_object_initializer do
-      accept(:electricity_rate_fractional).only{ positive_number }.prepare{|raw|
-        EnergyCost.new(UsCurrency.cents(raw))
-      }.to(:electricity_rate)
+      value(:electricity_rate_fractional => :electricity_rate).
+        must_be( only.positive_number ).
+        transform{|raw| EnergyCost.new(UsCurrency.cents(raw)) }
 
-      accept(:exchange_fee_percent).only{ number_within(0...1) }.prepare{|raw|
-        Percent.decimal(raw)
-      }
+      value(:exchange_fee_percent).
+        must_be( only.number_within(0...1) ).
+        transform{|raw| Percent.decimal(raw) }
 
-      accept(:exchange_rate).only{ positive_number }
+      value(:exchange_rate).
+        must_be( only.positive_number )
 
-      accept(:facility_cost_fractional).only{ positive_number }.prepare{|raw|
-        UsDollarRate.per_month(UsCurrency.cents(raw))
-      }.to(:facility_cost)
+      value(:facility_cost_fractional => :facility_cost).
+        must_be( only.positive_number ).
+        transform{|raw| UsDollarRate.per_month(UsCurrency.cents(raw)) }
 
-      accept(:mining_difficulty).only{ positive_number }.prepare{|raw|
-        MiningEffort.new(raw)
-      }.to(:mining_effort)
+      value(:mining_difficulty => :mining_effort).
+        must_be( only.positive_number ).
+        transform{|raw| MiningEffort.new(raw) }
 
-      accept(:other_cost_fractional).only{ positive_number }.prepare{ |raw|
-        UsDollarRate.per_month(UsCurrency.cents(raw))
-      }.to(:other_cost)
+      value(:other_cost_fractional => :other_cost).
+        must_be( only.positive_number ).
+        transform{ |raw| UsDollarRate.per_month(UsCurrency.cents(raw)) }
 
-      accept(:pool_fee_percent).only{ number_within(0...1) }.prepare{|raw|
-        Percent.decimal(raw)
-      }
+      value(:pool_fee_percent).
+        must_be( only.number_within(0...1) ).
+        transform{|raw| Percent.decimal(raw) }
 
-      accept(:reward_amount_fractional).only{ positive_integer }.prepare{|raw|
-        Bitcoin.new(raw)
-      }.to(:reward_amount)
+      value(:reward_amount_fractional => :reward_amount).
+        must_be( only.positive_integer ).
+        transform{|raw| Bitcoin.new(raw) }
 
-      accept(:rig_hash_rate).only{ positive_number }.prepare{|raw|
-        HashRate.new(MiningHash.new(raw), Timespan.second)
-      }
+      value(:rig_hash_rate).
+        must_be( only.positive_number ).
+        transform{|raw| HashRate.new(MiningHash.new(raw), Timespan.second) }
 
-      accept(:rig_utilization).only{ number_within(0...1) }.prepare{|raw|
-        Percent.decimal(raw)
-      }
+      value(:rig_utilization).
+        must_be( only.number_within(0...1) ).
+        transform{|raw| Percent.decimal(raw) }
 
-      accept(:watts_to_cool).only{ positive_number }.prepare{|raw|
-        Power.watts(raw)
-      }
+      value(:watts_to_cool).
+        must_be( only.positive_number ).
+        transform{|raw| Power.watts(raw) }
 
-      accept(:watts_to_mine).only{ positive_number }.prepare{|raw|
-        Power.watts(raw)
-      }
+      value(:watts_to_mine).
+        must_be( only.positive_number ).
+        transform{|raw| Power.watts(raw) }
     end
 
     attr_reader :rig_hash_rate,

@@ -4,13 +4,13 @@ class Mine
   extend PassiveDomain
 
   value_object_initializer do
-    accept(:electricity_rate ).only{ instance_of(EnergyCost) }
-    accept(:pool_fee_percent ).only{ instance_of(Percent) }
-    accept(:facility_cost    ).only{ instance_of(UsDollarRate) }
-    accept(:other_cost       ).only{ instance_of(UsDollarRate) }
-    accept(:rig_utilization  ).only{ instance_of(Percent) }
-    accept(Rig)
-    accept(Network)
+    value(:electricity_rate ).must_be( only.instance_of(EnergyCost) )
+    value(:pool_fee_percent ).must_be( only.instance_of(Percent) )
+    value(:facility_cost    ).must_be( only.instance_of(UsDollarRate) )
+    value(:other_cost       ).must_be( only.instance_of(UsDollarRate) )
+    value(:rig_utilization  ).must_be( only.instance_of(Percent) )
+    value(Rig)
+    value(Network)
   end
 
   attr_reader :other_cost,

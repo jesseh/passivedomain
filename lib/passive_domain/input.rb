@@ -1,25 +1,21 @@
-require_relative "only"
-
 module PassiveDomain
   class Input
     attr_reader :source, :validator, :prepare_block
 
-    def initialize(source)
-      @source = source
+    def initialize(source_description)
+      params = Array(source_description).flatten
+
+      @source = params.shift
+      @target = params.shift
     end
 
-    def only(&block)
-      @validator = Only.new.instance_eval(&block)
+    def must_be(validator)
+      @validator = validator
       self
     end
 
-    def prepare(&block)
+    def transform(&block)
       @prepare_block = block
-      self
-    end
-
-    def to(target)
-      @target = target
       self
     end
 

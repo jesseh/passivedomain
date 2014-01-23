@@ -4,8 +4,8 @@ class Exchange
   extend PassiveDomain
 
   value_object_initializer do
-    accept(:exchange_fee_percent).only{ instance_of(Percent) }.to(:fee)
-    accept(:exchange_rate).only{ positive_number }.to(:rate)
+    value(:exchange_fee_percent => :fee).must_be( only.instance_of(Percent) )
+    value(:exchange_rate => :rate).must_be( only.positive_number )
   end
 
   attr_reader :rate

@@ -5,37 +5,36 @@ class CashFlow::ReportForm
   extend PassiveDomain
 
   value_object_initializer do
-    accept(:cooling_electricity).only{ positive_number }.prepare{|raw|
-      Power.watts(raw)
-    }.to(:watts_to_cool)
+    value(:cooling_electricity => :watts_to_cool).
+      must_be( only.positive_number ).
+      transform{|raw| Power.watts(raw) }
 
-    accept(:electricity_rate).only{ positive_number }.prepare{|raw|
-      EnergyCost.new(UsCurrency.cents(raw))
-    }
+    value(:electricity_rate).
+      must_be( only.positive_number ).
+      transform{|raw| EnergyCost.new(UsCurrency.cents(raw)) }
 
-    accept(:facility_fees).only{ positive_number }.prepare{|raw|
-      UsDollarRate.per_month(UsCurrency.cents(raw))
-    }.to(:facility_cost)
+    value(:facility_fees => :facility_cost).
+      must_be( only.positive_number ).
+      transform{|raw| UsDollarRate.per_month(UsCurrency.cents(raw)) }
 
-    accept(:hash_rate).only{ positive_number }.prepare{|raw|
-      HashRate.new(MiningHash.new(raw), Timespan.second)
-    }.to(:rig_hash_rate)
+    value(:hash_rate => :rig_hash_rate).
+      must_be( only.positive_number ).
+      transform{|raw| HashRate.new(MiningHash.new(raw), Timespan.second) }
 
-    accept(:mining_electricity).only{ positive_number }.prepare{|raw|
-      Power.watts(raw)
-    }.to(:watts_to_mine)
+    value(:mining_electricity => :watts_to_mine).
+      must_be( only.positive_number ).
+      transform{|raw| Power.watts(raw) }
 
-    # accept(:objective)
+    # value(:objective)
 
-    accept(:other_operating_costs).only{ positive_number }.prepare{|raw|
-      UsDollarRate.per_month(UsCurrency.cents(raw))
-    }
+    value(:other_operating_costs).
+      must_be( only.positive_number ).
+      transform{|raw| UsDollarRate.per_month(UsCurrency.cents(raw)) }
 
-    accept(:pool_percentage).only{ number_within(0...100) }.prepare{|raw|
-      Percent.whole(raw)
-    }.to(:pool_fee_percent)
+    value(:pool_percentage => :pool_fee_percent).
+      must_be( only.number_within(0...100) ).transform{|raw| Percent.whole(raw) }
 
-    accept(:rig_utilization).prepare{|i| Percent.whole(i) }
+    value(:rig_utilization).transform{|i| Percent.whole(i) }
   end
 
   attr_reader :electricity_rate,

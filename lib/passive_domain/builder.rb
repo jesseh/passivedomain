@@ -1,4 +1,5 @@
 require_relative "input"
+require_relative "only"
 
 module PassiveDomain
   class Builder
@@ -8,8 +9,12 @@ module PassiveDomain
       self.instance_eval(&block) if block
     end
 
-    def accept(source)
-      Input.new(source).tap{|t| inputs << t }
+    def value(source_description)
+      Input.new(source_description).tap{|t| inputs << t }
+    end
+
+    def only
+      Only.new
     end
 
     def input_targets
