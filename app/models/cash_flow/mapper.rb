@@ -57,7 +57,8 @@ module CashFlow
                 :rig_utilization,
                 :mining_effort,
                 :exchange_fee_percent,
-                :exchange_rate
+                :exchange_rate,
+                :pool_fee_percent
 
 
   end
