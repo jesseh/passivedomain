@@ -9,6 +9,10 @@ class Percent
     new(value)
   end
 
+  def self.whole(value)
+    new(value / 100)
+  end
+
   def whole
     value * 100
   end

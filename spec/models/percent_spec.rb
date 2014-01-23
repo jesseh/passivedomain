@@ -8,6 +8,11 @@ describe Percent do
   its(:whole) { should eq(12.3) }
   its(:whole_unit) { should eq('%') }
 
+  describe ".whole" do
+    subject { described_class.whole(55.5) }
+    it { should eq(described_class.decimal(0.555)) }
+  end
+
   describe "#* by anything" do
     it { expect(described_class.new(0.50) * MiningHash.new(10)).to eq(MiningHash.new(5)) }
     it { expect(described_class.new(0.50) * Power.new(20)).to eq(Power.new(10)) }
