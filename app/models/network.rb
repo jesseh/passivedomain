@@ -4,8 +4,8 @@ class Network
   extend PassiveDomain
 
   value_object_initializer do
-    accept(:mining_effort).only{ instance_of(MiningEffort) }.to(:effort)
-    accept(:reward_amount).only{ instance_of(Bitcoin)      }.to(:reward)
+    value(:mining_effort => :effort).must_be only.instance_of MiningEffort
+    value(:reward_amount => :reward).must_be only.instance_of Bitcoin 
   end
 
   attr_reader :effort, :reward
