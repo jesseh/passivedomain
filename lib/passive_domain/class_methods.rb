@@ -19,8 +19,8 @@ module PassiveDomain
     attr_reader :inputs, :attribute_values
 
     # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
-    def value_object_initializer(&block)
-      builder = Builder.new(&block)
+    def value_object_initializer(*inputs,&block)
+      builder = Builder.new(*inputs,&block)
       @inputs = builder.inputs
       @attribute_values = builder.attribute_values
 

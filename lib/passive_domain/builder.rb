@@ -3,8 +3,9 @@ require_relative "input"
 module PassiveDomain
   class Builder
 
-    def initialize(&block)
-      self.instance_eval(&block)
+    def initialize(*inputs,&block)
+      @inputs = inputs.map{|source| Input.new(source) }
+      self.instance_eval(&block) if block
     end
 
     def accept(source)

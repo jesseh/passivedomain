@@ -5,12 +5,7 @@ module CashFlow
   class Report
     extend PassiveDomain
 
-    value_object_initializer do
-      accept(Rig)
-      accept(Mine)
-      accept(Exchange)
-      accept(Network)
-    end
+    value_object_initializer Rig, Mine, Exchange, Network
 
     attr_reader :network, :exchange
 
