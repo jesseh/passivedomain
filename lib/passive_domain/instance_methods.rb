@@ -21,12 +21,12 @@ module PassiveDomain
       self.class.hash ^ initialized_values.hash
     end
 
+    protected
+
     attr_reader :initialized_attrs
-    protected :initialized_attrs
 
     def initialized_values
       initialized_attrs.map{|a| self.send(a.to_sym) }
     end
-    protected :initialized_values
   end
 end
