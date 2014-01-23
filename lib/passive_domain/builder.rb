@@ -12,7 +12,7 @@ module PassiveDomain
       Input.new(source).tap{|t| inputs << t }
     end
 
-    def attribute_values
+    def input_targets
       inputs.map(&:target)
     end
 

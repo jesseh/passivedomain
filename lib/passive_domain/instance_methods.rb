@@ -7,7 +7,7 @@ module PassiveDomain
     end
 
     def inspect
-      self.class.to_s + ': ' + self.class.attribute_values.zip(initialized_values).map { |a, v| "#{a}='#{v}'" }.join(", ")
+      self.class.to_s + ': ' + input_targets.zip(initialized_values).map { |a, v| "#{a}='#{v}'" }.join(", ")
     end
 
     def to_s
@@ -28,8 +28,16 @@ module PassiveDomain
 
     protected
 
+    def inputs
+      self.class.inputs
+    end
+
+    def input_targets
+      self.class.input_targets
+    end
+
     def initialize_attrs(data_obj)
-      self.class.inputs.each do |input|
+      inputs.each do |input|
         value = input.value data_obj
         assert_frozen value
         instance_variable_set("@#{input.target}", value)
@@ -47,7 +55,7 @@ module PassiveDomain
     end
 
     def initialized_values
-      self.class.attribute_values.map{|a| self.send(a.to_sym) }
+      self.class.input_targets.map{|a| self.send(a.to_sym) }
     end
 
   end
