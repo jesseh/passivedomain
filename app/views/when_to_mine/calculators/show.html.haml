@@ -1,0 +1,164 @@
+- content_for :title do
+  When to Mine
+
+.row
+  / Main Content Section
+  / This has been source ordered to come first in the markup (and on small devices) but to be to the right of the nav on larger screens
+  .large-12.columns
+    %h1 When to mine?
+    %h2.subheader
+      Will you earn a return by powering your rig
+      = succeed "?" do
+        %em right now
+.row
+  .large-6.columns
+    .panel
+      %h3 Inputs
+      = Form::Builder.new(@report) do |report|
+
+        = report.input(:hash_rate)
+        = report.input(:electricity_rate)
+        = report.input(:pool_fee_percent)
+        = report.input(:facility_cost)
+        = report.input(:other_cost)
+        = report.input(:rig_utilization)
+        = report.input(:rig_hash_rate)
+        = report.input(:watts_to_mine)
+        = report.input(:watts_to_cool)
+        = report.input(:mining_effort)
+        = report.input(:reward_amount)
+        = report.input(:exchange_fee_percent)
+        = report.input(:exchange_rate)
+
+        %fieldset
+          %legend Your objective
+          %p This calculator adjusts based on what you aim to achieve by mining.
+          .row
+            .columns
+              %div
+                %input#earning-bitcoin{name: "objective", type: "radio", value: "acquire"}/
+                %label{for: "objective-acquire"} Acquire Bitcoins
+                %p Mining is a means to acquire Bitcoin for less than you would pay to buy them. Therefore you hold onto all the Bitcoin you receive from mining.
+              %div
+                %input#earning-bitcoin{name: "objective", type: "radio", value: "retain"}/
+                %label{for: "objective-retain"} Retain earnings as Bitcoin
+                %p You retain your earnings, after expenses, as an investment in Bitcoin. Therefore you regularly convert some of the Bitcoin you receive from mining to cover the associated expenses.
+              %div
+                %input#earning-fiat{name: "objective", type: "radio", value: "extract"}/
+                %label{for: "objective-extract"} Extract mining profit
+                %p Your are mining for immediate profit, and not as a means to invest in Bitcoin. Therefore you regularly convert all mining proceeds to a fiat currency
+        %fieldset
+          %legend Your rig
+          %p Your rig is a sunk cost. These attributes will not change unless you sink more money into it.
+          %label
+            Hash rate (gigahash / second)
+            %input{input_mode: "numeric", name: "hash_rate", required: "", type: "text"}/
+          %label
+            Electricity to mine (watts)
+            %input{input_mode: "numeric", name: "mining_electricity", required: "", type: "text"}/
+          %label
+            Electricity to cool while mining (watts)
+            %input{input_mode: "numeric", name: "cooling_electricity", required: "", type: "text"}/
+        %fieldset
+          %legend Your operating environment
+          %p Your operating environment is generally stable, although you may be able to improve it by, for example, relocating your rig.
+          %label
+            Electricity rate (US$ / kWh)
+            %input{input_mode: "numeric", name: "electricity_rate", required: "", type: "text"}/
+          %label
+            Rig utilization (%)
+            %input{input_mode: "numeric", name: "rig_utilization", required: "", type: "text"}/
+          %label
+            Pool fee percentage (%)
+            %input{input_mode: "numeric", name: "pool_percentage", type: "text"}/
+          %label
+            Recuring facility fees (US$ / month)
+            %input{input_mode: "numeric", name: "facility_fees", type: "text"}/
+          %label
+            Bitcoing exchange
+            %select{name: "exchange"}
+              %option{value: "mtgox"} Mt.Gox
+          %label
+            Other operating costs (US$ / month)
+            %input{input_mode: "numeric", name: "other_operating_costs", type: "text"}/
+        %fieldset
+          %legend The external environment
+          %p The external environment is out of your control. It changes continuously, and largely determines when you should mine.
+          %label
+            Bitcoin mining difficulty
+            %p= @network.effort.difficulty
+          %label
+            Bitcoin reward amount (Bitcoin)
+            %p= @network.reward
+          %label
+            Bitcoin exchange rate (US$ / Bitcoin)
+            %p= @exchange.rate
+        %input.button{type: "submit", value: "Calculate"}/
+  .large-6.columns
+    .panel
+      %h3 Result
+      %p You should not be mining....
+      %p
+        If the current environment were to remain stable for a month you would earn #{number_to_currency(@report.ebitda.value)}.
+      %h3 Cash flow projection
+      %table.calculation
+        %tbody
+          %tr.section
+            %td{colspan: "5"} Scale
+          %tr.line
+            %td.operation
+            %td.item capacity of your rig
+            %td.value= @rig.capacity.gigahash_per_second
+            %td.unit= @rig.capacity.gigahash_per_second_unit
+          %tr.line
+            %td.operation
+            %td.item efficiency of your rig
+            %td.value= @rig.efficiency
+            %td.unit= @rig.efficiency.base_unit
+          %tr.spacer
+            %td
+          %tr.section
+            %td{colspan: "5"} Revenue
+          %tr.line
+            %td.operation
+            %td.item mining rewards
+            %td.value= number_to_currency(@report.revenue.value)
+          %tr.spacer
+            %td
+          %tr.section
+            %td{colspan: "5"} Mining costs
+          %tr.line
+            %td.operation -
+            %td.item electricity cost
+            %td.value= number_to_currency(@report.electricity_cost.dollars)
+          %tr.line
+            %td.operation -
+            %td.item pool cost
+            %td.value= number_to_currency(@report.pool_fees.value)
+          %tr.line
+            %td.operation -
+            %td.item exchange transaction fees
+            %td.value= number_to_currency(@report.exchange_fees.value)
+          %tr.line.result
+            %td.operation =
+            %td.item gross margin
+            %td.value= number_to_currency(@report.gross_margin.value)
+          %tr.spacer
+            %td
+          %tr.section
+            %td{colspan: "5"} Operating costs
+          %tr.line
+            %td.operation -
+            %td.item recuring facility fees
+            %td.value= number_to_currency(@report.facility_cost.value)
+          %tr.line
+            %td.operation -
+            %td.item other operating costs
+            %td.value= number_to_currency(@report.other_cost.value)
+          %tr.line.result
+            %td.operation =
+            %td.item
+              earnings
+              %br/
+              %small before tax, interest, depreciation, and amortization
+            %td.value= number_to_currency(@report.ebitda.value)
