@@ -56,7 +56,7 @@ module PassiveDomain
     end
 
     def initialized_values
-      self.class.input_targets.map{|a| self.send(a.to_sym) }
+      input_targets.map{|a| self.send(a.to_sym) }
     end
   end
 end

@@ -40,5 +40,21 @@ module PassiveDomain
         "positive number required for #{name}." unless raw_value.kind_of?(Numeric) && range.include?(raw_value)
       end
     end
+
+    # def initialize(test_lambda, fail_message, mock_value)
+    #   @test_lambda = test_lambda
+    #   @fail_message = fail_message
+    #   @mock_value = mock_value
+    # end
+
+    # def check(name, raw_value)
+    #   fail(name) unless test_lambda(name, raw_value)
+    # end
+
+    # def fail(name)
+    #   fail_message % name
+    # end
+
+    # attr_reader :mock_value
   end
 end

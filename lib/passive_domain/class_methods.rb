@@ -21,13 +21,24 @@ module PassiveDomain
     # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
     def value_object_initializer(*inputs,&block)
       builder        = Builder.new(*inputs,&block)
-      @inputs        = builder.inputs
-      @input_targets = builder.input_targets
+      input_targets = builder.input_targets
 
-      attr_reader(*@input_targets)
-      private(*@input_targets)
+      self.class_variable_set :@@inputs, builder.inputs
+      self.class_variable_set :@@input_targets, builder.input_targets
+
+
+      attr_reader(*input_targets)
+      private(*input_targets)
 
       include InstanceMethods
+    end
+
+    def inputs
+      self.class_variable_get(:@@inputs)
+    end
+
+    def input_targets
+      self.class_variable_get(:@@input_targets)
     end
 
   end

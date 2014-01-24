@@ -5,7 +5,10 @@ module CashFlow
   class Report
     extend PassiveDomain
 
-    value_object_initializer Mine, Exchange
+    value_object_initializer do
+      value(Mine)
+      value(Exchange) 
+    end
 
     def revenue
       to_usd mine.revenue.monthly_value

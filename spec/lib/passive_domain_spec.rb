@@ -7,12 +7,17 @@ describe PassiveDomain do
     let(:an_attr) { 123 } 
     let(:data) { double("Data", an_attr: an_attr) }
     let(:fake_class) do
-      Class.new do
+      class FakeClass
         extend PassiveDomain
-        value_object_initializer :an_attr
+        value_object_initializer { value(:an_attr) }
       end
+      FakeClass
     end
-    let(:fake_subclass) { Class.new(fake_class) }
+    let(:fake_subclass) { 
+      class SubFakeClass < FakeClass
+      end
+      SubFakeClass
+    }
 
     subject { fake_class.new(data) }
 
@@ -22,40 +27,40 @@ describe PassiveDomain do
       let(:fake_class) do
         Class.new do
           extend PassiveDomain
-          value_object_initializer ask(:an_attr) { |v| v * 2 }
+          value_object_initializer { value(:an_attr).transform { |v| v * 2 } }
         end
       end
       let(:data) { double("Data", an_attr: 2) }
       its(:an_attr) { should == 4 }
     end
 
-    describe "ask syntax" do
+    describe "value syntax" do
       let(:fake_class) do
         Class.new do
           extend PassiveDomain
-          value_object_initializer ask(:an_attr)
+          value_object_initializer { value(:an_attr) }
         end
       end
       let(:data) { double("Data", an_attr: 2) }
       its(:an_attr) { should == 2 }
     end
 
-    describe "ask with only.number" do
+    describe "value with only.number" do
       let(:fake_class) do
         Class.new do
           extend PassiveDomain
-          value_object_initializer ask(:an_attr, only.number)
+          value_object_initializer { value(:an_attr).must_be(only.number) }
         end
       end
       let(:data) { double("Data", an_attr: 2) }
       its(:an_attr) { should == 2 }
     end
 
-    describe "ask with only.string" do
+    describe "value with only.string" do
       let(:fake_class) do
         Class.new do
           extend PassiveDomain
-          value_object_initializer ask(:an_attr, only.string)
+          value_object_initializer { value(:an_attr).must_be(only.string) }
         end
       end
       let(:data) { double("Data", an_attr: 2) }
@@ -68,7 +73,7 @@ describe PassiveDomain do
     describe "enforces all attr values are frozen" do
       context "unfrozen data" do
         let(:an_attr) { 'a' }
-        it { expect { fake_class.new(data) }.to raise_error(TypeError) }
+        it { expect { fake_class.new(data) }.to raise_error }
       end
       context "frozen data" do
         let(:an_attr) { 'a'.freeze }
@@ -103,7 +108,10 @@ describe PassiveDomain do
       let(:fake_class) do
         Class.new do
           extend PassiveDomain
-          value_object_initializer :attr_1, :attr_2
+          value_object_initializer do
+            value(:attr_1)
+            value(:attr_2)
+          end
         end
       end
       # Note: "its" can query the subject's private methods.
@@ -116,7 +124,10 @@ describe PassiveDomain do
       let(:fake_class) do
         Class.new do
           extend PassiveDomain
-          value_object_initializer :attr_1 => :one, :attr_2 => :two
+          value_object_initializer do
+            value(:attr_1 => :one)
+            value(:attr_2 => :two)
+          end
         end
       end
       its(:one) { should == 123 }
@@ -128,7 +139,10 @@ describe PassiveDomain do
       let(:fake_class) do
         Class.new do
           extend PassiveDomain
-          value_object_initializer :attr_1, :attr_2 => :two
+          value_object_initializer do
+            value(:attr_1)
+            value(:attr_2 => :two)
+          end
         end
       end
       its(:attr_1) { should == 123 }
@@ -154,7 +168,7 @@ describe PassiveDomain do
 
         Class.new do
           extend PassiveDomain
-          value_object_initializer ComposedClass
+          value_object_initializer { value(ComposedClass) }
         end
       end
       its("composed_class.sentinal") { should == 'sentinal' }
@@ -180,7 +194,7 @@ describe PassiveDomain do
 
         Class.new do
           extend PassiveDomain
-          value_object_initializer ComposedClass => :attr_from_class
+          value_object_initializer { value(ComposedClass => :attr_from_class) }
         end
       end
       its("attr_from_class.sentinal") { should == 'sentinal' }
