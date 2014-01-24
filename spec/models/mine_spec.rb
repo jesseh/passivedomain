@@ -23,6 +23,6 @@ describe Mine do
   it { expect(subject.other_cost.to_s).to      be }
   it { expect(subject.revenue).to              be_an_instance_of(BitcoinRate) }
   it { expect(subject.pool_fees).to            be }
-  xit { expect(subject.electricity_cost).to     be }
+  it { expect(subject.electricity_cost).to     be }
 
 end
