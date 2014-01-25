@@ -14,6 +14,11 @@ module PassiveDomain
           "numeric type required for %s." )
     end
 
+    def self.equal_to(expected_value)
+      new(lambda{ |raw_value| raw_value == expected_value },
+          "%s must have the value '#{expected_value}'." )
+    end
+
     def self.string
       new(lambda{ |raw_value| raw_value.kind_of?(String) },
           "string required for %s." )

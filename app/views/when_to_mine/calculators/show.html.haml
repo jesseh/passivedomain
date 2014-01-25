@@ -99,7 +99,7 @@
       %h3 Result
       %p You should not be mining....
       %p
-        If the current environment were to remain stable for a month you would earn #{number_to_currency(@report.ebitda.value)}.
+        If the current environment were to remain stable for a month you would earn #{number_to_currency(@report.ebitda)}.
       %h3 Cash flow projection
       %table.calculation
         %tbody
@@ -122,7 +122,7 @@
           %tr.line
             %td.operation
             %td.item mining rewards
-            %td.value= number_to_currency(@report.revenue.value)
+            %td.value= number_to_currency(@report.revenue)
           %tr.spacer
             %td
           %tr.section
@@ -134,15 +134,16 @@
           %tr.line
             %td.operation -
             %td.item pool cost
-            %td.value= number_to_currency(@report.pool_fees.value)
-          %tr.line
-            %td.operation -
-            %td.item exchange transaction fees
-            %td.value= number_to_currency(@report.exchange_fees.value)
+            %td.value= number_to_currency(@report.pool_fees)
+          - unless @report.revenue_exchange_fees.nil?
+            %tr.line
+              %td.operation -
+              %td.item exchange transaction fees
+              %td.value= number_to_currency(@report.revenue_exchange_fees)
           %tr.line.result
             %td.operation =
             %td.item gross margin
-            %td.value= number_to_currency(@report.gross_margin.value)
+            %td.value= number_to_currency(@report.gross_margin)
           %tr.spacer
             %td
           %tr.section
@@ -150,15 +151,20 @@
           %tr.line
             %td.operation -
             %td.item recuring facility fees
-            %td.value= number_to_currency(@report.facility_cost.value)
+            %td.value= number_to_currency(@report.facility_cost)
           %tr.line
             %td.operation -
             %td.item other operating costs
-            %td.value= number_to_currency(@report.other_cost.value)
+            %td.value= number_to_currency(@report.other_cost)
+          - unless @report.operations_exchange_fees.nil?
+            %tr.line
+              %td.operation -
+              %td.item exchange transaction fees
+              %td.value= number_to_currency(@report.operations_exchange_fees)
           %tr.line.result
             %td.operation =
             %td.item
               earnings
               %br/
               %small before tax, interest, depreciation, and amortization
-            %td.value= number_to_currency(@report.ebitda.value)
+            %td.value= number_to_currency(@report.ebitda)

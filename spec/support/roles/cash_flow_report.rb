@@ -16,7 +16,8 @@ end
 shared_examples "CashFlow::Report interface" do
   it { should respond_to :revenue }
   it { should respond_to :pool_fees }
-  it { should respond_to :exchange_fees }
+  it { should respond_to :revenue_exchange_fees }
+  it { should respond_to :operating_exchange_fees }
   it { should respond_to :electricity_cost }
   it { should respond_to :gross_margin }
   it { should respond_to :other_cost }

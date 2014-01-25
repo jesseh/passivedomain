@@ -2,40 +2,72 @@
 require_dependency Rails.root.join('lib', 'passive_domain').to_s
 
 module CashFlow
-  class Report
-    extend PassiveDomain
+  module Report
 
-    value_object_initializer do
-      value(Mine)
-      value(Exchange) 
+    def self.create(data)
+      options = [CashFlow::Reports::Acquire,
+                 CashFlow::Reports::Retain,
+                 CashFlow::Reports::Extract,
+                 CashFlow::Reports::Empty,
+                ]
+      
+      # There is a better way to do this that does not hit exceptions.  But it
+      # depends on being able to ask for a classes interface (perhaps via an
+      # interface registry?).# So for the moment this hack will do.
+      
+      report = nil
+      options.each do |option|
+        begin
+          report = option.new(data) 
+          break
+        rescue PassiveDomain::ValidationError => e
+          report = nil
+          next
+        end
+      end
+      if report.nil?
+        raise PassiveDomain::ValidationError, "No report can be created with this data."
+      end
+      report
+    end
+
+
+    ### Methods to be included in reports ###
+    
+    def units
+      raise NotImplementedError
     end
 
     def revenue
-      to_usd mine.revenue.monthly_value
+      convert(mine.revenue.monthly_value).value
     end
 
     def pool_fees
-      to_usd mine.pool_fees.monthly_value
+      convert(mine.pool_fees.monthly_value).value
     end
 
-    def exchange_fees
-      to_usd exchange.to_usd_fee(revenue)
+    def revenue_exchange_fees
+      nil
     end
 
     def electricity_cost
-      to_usd mine.electricity_cost.monthly_value
+      convert(mine.electricity_cost.monthly_value).value
     end
 
     def gross_margin
-      revenue - electricity_cost - pool_fees - exchange_fees
-    end
-
-    def other_cost
-      to_usd mine.other_cost.monthly_value
+      revenue - electricity_cost - pool_fees
     end
 
     def facility_cost
-      to_usd mine.facility_cost.monthly_value
+      convert(mine.facility_cost.monthly_value).value
+    end
+
+    def other_cost
+      convert(mine.other_cost.monthly_value).value
+    end
+
+    def operating_exchange_fees
+      nil
     end
 
     def ebitda
@@ -46,9 +78,10 @@ module CashFlow
 
     private
 
-    def to_usd(amount)
-      exchange.to_usd(amount)
+    def convert(amount)
+      amount
     end
+
   end
 end
 

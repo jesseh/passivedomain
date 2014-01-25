@@ -16,6 +16,12 @@ class Exchange
     raise(TypeError, "The type '#{amount.class} cannot be exchanged into US dollars.")
   end
 
+  def to_bitcoin(amount)
+    return Bitcoin.new(amount.dollars / rate) if amount.instance_of? UsCurrency
+    return amount if amount.instance_of? Bitcoin
+    raise(TypeError, "The type '#{amount.class} cannot be exchanged into Bitcoin.")
+  end
+
   def to_usd_fee(amount)
     return UsCurrency.new(0) if amount.instance_of? UsCurrency
     return fee * to_usd(amount) 
