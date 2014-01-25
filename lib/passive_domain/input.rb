@@ -1,6 +1,6 @@
 module PassiveDomain
   class Input
-    attr_reader :source, :validator, :prepare_block
+    attr_reader :source, :only, :prepare_block
 
     def initialize(source_description)
       params = Array(source_description).flatten
@@ -9,8 +9,9 @@ module PassiveDomain
       @target = params.shift
     end
 
-    def must_be(validator)
-      @validator = validator
+    def must_be(only)
+      raise TypeError, "Invalid only statement. Must be a kind of Only." unless only.kind_of?(Only)
+      @only = only
       self
     end
 
@@ -40,8 +41,8 @@ module PassiveDomain
     end
 
     def assert_valid(value)
-      return unless validator
-      validation_message = validator.call(source, value)
+      return unless only
+      validation_message = only.check(source, value)
       raise(ValidationError, validation_message) if validation_message
     end
 

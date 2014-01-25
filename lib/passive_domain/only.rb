@@ -1,60 +1,52 @@
 module PassiveDomain
   class Only
-    def anything
-      lambda do |name,raw_value|
+    def self.anything
+      new(lambda{ |raw_value| true }, nil)
+    end
+
+    def self.instance_of(cls)
+      new(lambda{ |raw_value| raw_value.instance_of?(cls) },
+          "instance of '#{cls.to_s}' required for %s.")
+    end
+
+    def self.number
+      new(lambda{ |raw_value| raw_value.kind_of?(Numeric) },
+          "numeric type required for %s." )
+    end
+
+    def self.string
+      new(lambda{ |raw_value| raw_value.kind_of?(String) },
+          "string required for %s." )
+    end
+
+    def self.positive_integer
+      new(lambda{ |raw_value| raw_value.kind_of?(Integer) && raw_value >= 0 },
+        "positive integer required for %s." )
+    end
+
+    def self.positive_number
+      new(lambda{ |raw_value| raw_value.kind_of?(Numeric) && raw_value >= 0 },
+          "positive number required for %s." )
+    end
+
+    def self.number_within(range)
+      new(lambda{ |raw_value| raw_value.kind_of?(Numeric) && range.include?(raw_value) },
+          "positive number required for %s." )
+    end
+
+    def initialize(test_lambda, fail_message)
+      @test_lambda = test_lambda
+      @fail_message = fail_message
+    end
+
+    def check(name, raw_value)
+      unless test_lambda.call(raw_value)
+        fail_message % name 
       end
     end
 
-    def instance_of(cls)
-      lambda do |name,raw_value|
-        "instance of '#{cls.to_s}' required for #{name}." unless raw_value.instance_of?(cls)
-      end
-    end
+    private
 
-    def number
-      lambda do |name,raw_value|
-        "numeric type required for #{name}." unless raw_value.kind_of?(Numeric)
-      end
-    end
-
-    def string
-      lambda do |name,raw_value|
-        "string required for #{name}." unless raw_value.kind_of?(String)
-      end
-    end
-
-    def positive_integer
-      lambda do |name,raw_value|
-        "positive integer required for #{name}." unless raw_value.kind_of?(Integer) && raw_value >= 0
-      end
-    end
-
-    def positive_number
-      lambda do |name,raw_value|
-        "positive number required for #{name}." unless raw_value.kind_of?(Numeric) && raw_value >= 0
-      end
-    end
-
-    def number_within(range)
-      lambda do |name,raw_value|
-        "positive number required for #{name}." unless raw_value.kind_of?(Numeric) && range.include?(raw_value)
-      end
-    end
-
-    # def initialize(test_lambda, fail_message, mock_value)
-    #   @test_lambda = test_lambda
-    #   @fail_message = fail_message
-    #   @mock_value = mock_value
-    # end
-
-    # def check(name, raw_value)
-    #   fail(name) unless test_lambda(name, raw_value)
-    # end
-
-    # def fail(name)
-    #   fail_message % name
-    # end
-
-    # attr_reader :mock_value
+    attr_reader :test_lambda, :fail_message
   end
 end

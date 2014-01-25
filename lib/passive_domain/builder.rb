@@ -13,12 +13,12 @@ module PassiveDomain
       Input.new(source_description).tap{|t| inputs << t }
     end
 
-    def only
-      Only.new
-    end
-
     def input_targets
       inputs.map(&:target)
+    end
+
+    def only
+      Only
     end
 
     def inputs
