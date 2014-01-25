@@ -40,18 +40,18 @@ module PassiveDomain
       data_obj = OpenStruct.new(data_obj) if data_obj.is_a? Hash
       inputs.each do |input|
         value = input.value data_obj
-        assert_frozen value
+        assert_frozen value, input.target
         instance_variable_set("@#{input.target}", value)
       end
       freeze
     end
 
-    def assert_frozen(value)
+    def assert_frozen(value, target)
       unless value.frozen? ||
              value.nil?    ||
              value.instance_of?(TrueClass) ||
              value.instance_of?(FalseClass)
-        raise TypeError, "#{self.class} can only be instantiated with frozen data. #{target_attr} has non-frozen value: #{value.inspect}"
+        raise TypeError, "#{self.class} can only be instantiated with frozen data. '#{target}' has non-frozen value: #{value.inspect}"
       end
     end
 
