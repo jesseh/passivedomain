@@ -15,13 +15,13 @@ describe WhenToMine::CalculatorsController do
       Rig.stub(:new => :rig_sentinal)
       Network.stub(:new => :network_sentinal)
       Exchange.stub(:new => :exchange_sentinal)
-      CashFlow::Report.stub(:new => :report_sentinal)
+      CashFlow::Report.stub(:create => :report_sentinal)
       CashFlow::DataSource.stub(:new => data_source)
       get :show
     end
 
     it { expect(CashFlow::DataSource).to have_received(:new) }
-    it { expect(CashFlow::Report).to have_received(:new).with(:mapping_sentinal) }
+    it { expect(CashFlow::Report).to have_received(:create).with(:mapping_sentinal) }
     it { expect(data_source).to have_received(:canned) }
     it { expect(assigns(:report)).to eq(:report_sentinal) }
     it { expect(assigns(:rig)).to eq(:rig_sentinal) }

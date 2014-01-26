@@ -16,6 +16,7 @@ describe CashFlow::Mapper do
     exchange_fee_percent:  0.07,
     exchange_rate:         1,
     rig_utilization:       0.50,
+    objective:             'the objective',
   } }
   let(:record_data){ {} }
 
@@ -23,6 +24,11 @@ describe CashFlow::Mapper do
 
   it_behaves_like('value object')
   it_behaves_like('CashFlow::Report data')
+
+  describe "#objective" do
+    let(:record_data){ { objective: 'yada' } }
+    it { expect( subject.objective ).to eql('yada'.freeze) }
+  end
 
   describe "#rig_hash_rate" do
     let(:record_data){ { rig_hash_rate: 123 } }

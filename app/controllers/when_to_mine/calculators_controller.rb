@@ -4,7 +4,7 @@ class WhenToMine::CalculatorsController < ApplicationController
   
   def show
     data = data_source.canned
-    @report = CashFlow::Report.new(data)
+    @report = CashFlow::Report.create(data)
     @rig = Rig.new(data)
     @network = Network.new(data)
     @exchange = Exchange.new(data)

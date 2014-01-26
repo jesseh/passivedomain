@@ -26,6 +26,7 @@ module CashFlow
       data.rig_utilization             = 0.5
       data.watts_to_cool               = 123
       data.watts_to_mine               = 123
+      data.objective                   = 'acquire'
 
       data
     end

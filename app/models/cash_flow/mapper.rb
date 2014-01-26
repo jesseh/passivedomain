@@ -5,6 +5,11 @@ module CashFlow
     extend PassiveDomain
 
     value_object_initializer do
+
+      value(:objective).
+        must_be( only.string ).
+        transform{|raw| raw.freeze }
+
       value(:electricity_rate_fractional => :electricity_rate).
         must_be( only.positive_number ).
         transform{|raw| EnergyCost.new(UsCurrency.cents(raw)) }
@@ -65,7 +70,8 @@ module CashFlow
                 :mining_effort,
                 :exchange_fee_percent,
                 :exchange_rate,
-                :pool_fee_percent
+                :pool_fee_percent,
+                :objective
 
 
   end
