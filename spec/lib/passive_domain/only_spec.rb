@@ -67,7 +67,7 @@ describe PassiveDomain::Only do
       end
     end
 
-    context "positive_number" do
+   context "positive_number" do
       let(:method_symbol) { :positive_number }
       it "does equality correctly" do
         expect(v1).to eq v2
@@ -86,5 +86,31 @@ describe PassiveDomain::Only do
         expect(v1).to_not eq v3
       end
     end
+
+    context "instance_array" do
+      let(:cls) { Class.new }
+      let(:v2) { described_class.send(method_symbol, cls) }
+      let(:v3) { described_class.send(method_symbol, Class.new) }
+      let(:method_symbol) { :instance_array }
+
+      subject { described_class.send(method_symbol, cls) }
+
+      it "does equality correctly" do
+        expect(subject).to eq v2
+      end
+
+      context "valid input" do
+        it "checks the class of the instances in the array" do
+          expect(subject.check("test code", [cls.new, cls.new])).to be_nil
+        end
+      end
+
+      context "invalid input" do
+        it "checks the class of the instances in the array" do
+          expect(subject.check("test code", [1,2,3])).to_not be_nil
+        end
+      end
+    end
+
   end
 end

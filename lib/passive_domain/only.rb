@@ -44,6 +44,11 @@ module PassiveDomain
                                     "positive number required for %s." )
     end
 
+    def self.instance_array(cls)
+      @instance_array ||= {}
+      @instance_array[cls] ||= new(lambda{ |raw_value| raw_value.all? { |x| x.instance_of?(cls) } },
+                                    "an array of #{cls} instances required for %s." )
+    end
 
     def initialize(test_lambda, fail_message)
       @test_lambda = test_lambda

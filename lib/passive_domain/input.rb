@@ -1,12 +1,13 @@
 module PassiveDomain
   class Input
-    attr_reader :source, :only, :prepare_block
+    attr_reader :source, :only, :prepare_block, :target
 
     def initialize(source_description)
       params = Array(source_description).flatten
 
       @source = params.shift
       @target = params.shift
+      @args = []
     end
 
     def must_be(only)
@@ -15,6 +16,11 @@ module PassiveDomain
       self
     end
 
+    def call_args(*args)
+      @args = args
+      self
+    end
+    
     def transform(&block)
       @prepare_block = block
       self
@@ -36,7 +42,7 @@ module PassiveDomain
       if source.is_a? Class
         source.new(data_obj)
       else
-        data_obj.public_send(source)
+        data_obj.public_send(source, *@args)
       end
     end
 
