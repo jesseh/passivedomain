@@ -16,7 +16,7 @@ module PassiveDomain
       self
     end
 
-    def call_args(*args)
+    def send_args(*args)
       @args = args
       self
     end

@@ -9,26 +9,61 @@ module PassiveDomain
 
     # Instantiate with a class
     value_object_initializer do
-      value(:inputs => :calls).
+      value(:inputs => :sends).
         must_be(only.instance_array(Input)).
         transform do |raw|
           raw.inject({}) do |collector, input| 
-            collector[input.source] ||= [] 
-            collector[input.source] << input.only if input.only
+            if collector[input.source] 
+              if collector[input.source] != input.only
+                raise TypeError, "Only objects must be the same for multiple uses of '#{input.source}'."
+              end
+            else
+              collector[input.source] = input.only
+            end
             collector
           end.freeze
         end
 
       value(:instance_methods => :responds_to).
-        call_args(true).
+        send_args(true).
         must_be(only.instance_array(Symbol)).
         transform do |raw| 
           methods = (raw - Object.instance_methods - IGNORED_METHODS).freeze
           methods
         end
+
+      value(:name).
+        must_be(only.string_symbol_or_nil).
+        transform { |raw| raw.freeze }
+
     end
 
-    attr_reader :calls, :responds_to
+    attr_reader :sends, :responds_to, :name
 
+    def responder(params={})
+      params = default_responder_params.update params
+      instance = responder_class.new
+      params.each { |method, value| instance.send("#{method}=", value) }
+      instance
+    end
+
+    private
+
+    def responder_class
+      methods = sends.keys
+      class_name = "ResponderFor#{name}#{rand 1..1000}" # Random suffix to prevent name clashes with existing constants.
+      Struct.new(class_name, *methods)
+    end
+
+    def default_responder_params
+      sends.inject({}) do |collector, (message, only)| 
+        collector[message] = only.nil? ? nil : only.standin_value
+        collector
+      end
+    end
+
+    def mock_params
+      sends.inject({}) { |c, (method, only)| c[method] = only.mock_value }
+    end
   end
 end
