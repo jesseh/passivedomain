@@ -51,8 +51,6 @@ module PassiveDomain
 
     def responder_class
       methods = sends.keys
-      # class_name = "ResponderFor#{name}#{rand 1..1000}" # Random suffix to prevent name clashes with existing constants.
-      # Struct.new(class_name, *methods)
       Struct.new(*methods)
     end
 
