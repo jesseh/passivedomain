@@ -1,23 +1,12 @@
 require "spec_helper"
 
+require_dependency Rails.root.join('lib', 'passive_domain', 'interface').to_s
+require_dependency Rails.root.join('lib', 'passive_domain').to_s
+
 describe CashFlow::Mapper do
 
-  let(:record){ double("Record", record_default.merge(record_data)) }
-  let(:record_default) { {
-    rig_hash_rate:         25,
-    watts_to_mine:         33,
-    watts_to_cool:         81,
-    mining_difficulty:     123456,
-    reward_amount_fractional: 25,
-    electricity_rate_fractional: 12,
-    pool_fee_percent:      0.12,
-    facility_cost_fractional: 73,
-    other_cost_fractional: 97,
-    exchange_fee_percent:  0.07,
-    exchange_rate:         1,
-    rig_utilization:       0.50,
-    objective:             'the objective',
-  } }
+  let(:interface){ PassiveDomain::Interface.new(described_class) }
+  let (:record) { interface.responder(record_data) }
   let(:record_data){ {} }
 
   subject { described_class.new(record) }

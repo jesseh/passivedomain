@@ -51,8 +51,9 @@ module PassiveDomain
 
     def responder_class
       methods = sends.keys
-      class_name = "ResponderFor#{name}#{rand 1..1000}" # Random suffix to prevent name clashes with existing constants.
-      Struct.new(class_name, *methods)
+      # class_name = "ResponderFor#{name}#{rand 1..1000}" # Random suffix to prevent name clashes with existing constants.
+      # Struct.new(class_name, *methods)
+      Struct.new(*methods)
     end
 
     def default_responder_params
@@ -62,8 +63,5 @@ module PassiveDomain
       end
     end
 
-    def mock_params
-      sends.inject({}) { |c, (method, only)| c[method] = only.mock_value }
-    end
   end
 end
