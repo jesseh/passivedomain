@@ -1,10 +1,11 @@
 require "spec_helper"
 
 describe CashFlow::Reports::Empty do
-  let(:data) { double("Data").as_null_object }
+  let(:interface){ PassiveDomain::Interface.new(described_class) }
+  let(:data) { interface.responder() }
+
   subject { described_class.new(data) }
 
-  it_should_behave_like("CashFlow::Report data"){ subject { data } }
   #it_should_behave_like("CashFlow::Report interface")
 
   its(:units) { should == "" }

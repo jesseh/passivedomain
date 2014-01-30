@@ -51,7 +51,7 @@ module PassiveDomain
 
     def responder_class
       methods = sends.keys
-      Struct.new(*methods)
+      methods.empty? ? Class.new : Struct.new(*methods)
     end
 
     def default_responder_params
