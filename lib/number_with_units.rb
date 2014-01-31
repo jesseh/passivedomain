@@ -2,18 +2,15 @@ module NumberWithUnits
   HOURS_PER_MONTH = 24 * 365 / 12 # hours/day * days in year / months in year
   SECONDS_PER_HOUR = 60 * 60 
 
+
   attr_reader :value
+
 
   # Require the factory methods
   def self.included(cl)
     def cl.from_base_unit(value)
       new(value)
     end
-  end
-
-  def initialize(value)
-    @value = cast_new_value(value)
-    freeze
   end
 
   def inspect
@@ -23,6 +20,10 @@ module NumberWithUnits
   def to_s
     join_char = base_unit.blank? ? '' : ' '
     [value, base_unit].join(join_char)
+  end
+
+  def number_type
+    self.class
   end
 
   def ==(other)

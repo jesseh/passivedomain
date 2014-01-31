@@ -1,3 +1,5 @@
+require_dependency Rails.root.join('lib', 'passive_domain').to_s
+
 module PassiveDomain
   class Only
     extend PassiveDomain
@@ -15,7 +17,10 @@ module PassiveDomain
       @instance_of ||= {}
       @instance_of[cls] ||= new(lambda{ |raw_value| raw_value.instance_of?(cls) },
                                "instance of '#{cls.to_s}' required for %s.",
-                               ->{ nil }) # standin is nil because the class can't be instantiated.
+                               lambda { 
+                                  responder = Interface.for_class(cls).responder
+                                  responder.nil? ? nil : cls.new(responder)
+                               }) 
     end
 
     def self.number

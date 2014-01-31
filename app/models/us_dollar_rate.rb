@@ -3,28 +3,29 @@ require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class UsDollarRate
   extend PassiveDomain
+
+  value_object_initializer do
+    value.
+      must_be( only.instance_of(UsCurrency) ).
+      transform{ |raw| (raw.dollars / Timespan.hour.hours).freeze }
+  end
+
+
   include NumberWithUnits
   HOURS_PER_MONTH = 730
 
+  attr_reader :value
+
   def self.per_month(value)
-    new(value, Timespan.month)
+    new(value / Timespan.month.hours)
   end
 
   def self.per_hour(value)
-    new(value, Timespan.hour)
+    new(value)
   end
 
   def self.from_base_unit(value)
-    new(UsCurrency.dollars(value), Timespan.hour)
-  end
-
-
-  def initialize(currency, timespan=Timespan.new(1))
-    unless currency.instance_of?(UsCurrency) && timespan.instance_of?(Timespan)
-      raise TypeError, "UsDollarRate requires UsCurrency and Timespan"
-    end
-    @value = (currency.dollars / timespan.hours)
-    freeze
+    new(UsCurrency.dollars(value))
   end
 
   def base_unit

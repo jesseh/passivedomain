@@ -3,7 +3,15 @@ require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class HashRate
   extend PassiveDomain
+
+  value_object_initializer do
+    value.
+      must_be( only.instance_of(MiningHash) ).
+      transform{ |raw| (raw.number / Timespan.second.seconds).freeze }
+  end
+
   include NumberWithUnits
+
 
   SECONDS_PER_HOUR = 60 * 60
 
@@ -11,13 +19,8 @@ class HashRate
     self.new(MiningHash.from_base_unit(value))
   end
 
-  def initialize(hashes, timespan=Timespan.seconds(1))
-    raise_uncreatable(hashes, timespan) unless hashes.instance_of? MiningHash
-    raise_uncreatable(hashes, timespan) unless timespan.instance_of? Timespan 
-    
-    @value = hashes.number / timespan.seconds
-    freeze
-  end
+
+  attr_reader :value
 
   def gigahash_per_second
     value / 1E9

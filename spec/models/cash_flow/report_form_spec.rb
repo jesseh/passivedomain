@@ -15,6 +15,6 @@ describe CashFlow::ReportForm do
 
   subject { described_class.new(data) }
 
-  it_should_behave_like "CashFlow::Report data"
+  #it_should_behave_like "CashFlow::Report data"
 
 end

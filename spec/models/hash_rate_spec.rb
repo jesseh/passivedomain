@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe HashRate do
 
-  subject { described_class.new(MiningHash.new(123), Timespan.seconds(1)) }
+  subject { described_class.new(MiningHash.new(123)) }
 
   it_behaves_like 'number with units'
 

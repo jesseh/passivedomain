@@ -3,15 +3,24 @@ require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class EnergyCost
   extend PassiveDomain
+
+  value_object_initializer do
+    value.
+      must_be( only.instance_of(UsCurrency) ).
+      transform{ |raw| (raw.dollars / Energy.kilowatt_hours(1).value).freeze }
+  end
+
   include NumberWithUnits
 
-  def initialize(cost, energy=Energy.kilowatt_hours(1))
-    raise_uncreatable(cost, energy) unless cost.instance_of? UsCurrency
-    raise_uncreatable(cost, energy) unless energy.instance_of? Energy
+  attr_reader :value
+
+  def self.from_us_currency_and_energy(cost, energy)
+    raise_uncreatable(cost, energy) unless cost.number_type ==  UsCurrency
+    raise_uncreatable(cost, energy) unless energy.number_type == Energy
     
-    @value = cost.dollars / energy.kilowatt_hours
-    freeze
-  end
+    data = cost / energy.kilowatt_hours
+    self.new(data)
+  end 
 
   def self.from_base_unit(amount)
     new(UsCurrency.dollars(amount))

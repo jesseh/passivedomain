@@ -43,7 +43,7 @@ module CashFlow
 
       value(:rig_hash_rate).
         must_be( only.positive_number ).
-        transform{|raw| HashRate.new(MiningHash.new(raw), Timespan.second) }
+        transform{|raw| HashRate.new(MiningHash.new(raw)) }
 
       value(:rig_utilization).
         must_be( only.number_within(0...1) ).

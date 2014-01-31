@@ -4,9 +4,16 @@ require 'bigdecimal'
 
 class UsCurrency
   extend PassiveDomain
-  include NumberWithUnits
 
   PRECISION = 9
+
+  value_object_initializer do
+    value.must_be( only.number ).transform{ |raw| BigDecimal(raw, PRECISION).freeze }
+  end
+
+  include NumberWithUnits
+
+  attr_reader :value
 
   def self.dollars(value)
     new(value)
@@ -26,12 +33,6 @@ class UsCurrency
 
   def base_unit
     "USD"
-  end
-
-  private
-
-  def cast_new_value(value)
-    BigDecimal(value, PRECISION)
   end
 
 end

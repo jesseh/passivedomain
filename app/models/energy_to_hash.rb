@@ -3,7 +3,14 @@ require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class EnergyToHash
   extend PassiveDomain
+
+  value_object_initializer do
+    value.must_be( only.number ).transform{ |raw| raw.freeze }
+  end
+
   include NumberWithUnits
+
+  attr_reader :value
 
   def self.power_for_hash_rate(power, hash_rate)
     unless power.instance_of?(Power) && hash_rate.instance_of?(HashRate)

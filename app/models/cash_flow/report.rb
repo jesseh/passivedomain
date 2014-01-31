@@ -34,6 +34,10 @@ module CashFlow
 
     ### Methods to be included in reports ###
     
+    def mine
+      raise NotImplementedError
+    end
+
     def units
       raise NotImplementedError
     end

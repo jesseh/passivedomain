@@ -4,12 +4,26 @@ require_dependency Rails.root.join('lib', 'passive_domain', 'only').to_s
 require_dependency Rails.root.join('lib', 'passive_domain', 'interface').to_s
 
 
+describe PassiveDomain::UndefinedInterface do
+  its(:sends) { should be_nil }
+  its(:responds_to) { should be_nil }
+  its(:responder) { should be_nil }
+end
+
 describe PassiveDomain::Interface do
+  class AnotherFakeClass986789
+    extend PassiveDomain
+    value_object_initializer do
+      value(:nested_attr) 
+    end
+  end
+
   class FakeClass9645
     extend PassiveDomain
     value_object_initializer do
       value(:an_attr) 
       value(:another_attr).must_be(only.number)
+      value(AnotherFakeClass986789)
     end
     def the_method
     end
@@ -17,12 +31,22 @@ describe PassiveDomain::Interface do
   end
 
 
+  describe ".for_class" do
+    it "returns an undefined interface if the class is does not offer its inputs" do
+      expect(described_class.for_class(Class.new)).to be_a_kind_of(PassiveDomain::UndefinedInterface)
+    end
+    it "returns an interface if the class offers its inputs" do
+      expect(described_class.for_class(FakeClass9645)).to be_a_kind_of(PassiveDomain::Interface)
+    end
+  end
+
   describe "initialization" do
     subject { described_class.new(FakeClass9645) }
     
     it "describes the in-bound (what the object sends) interface of a class" do
       expect(subject.sends).to eq({:an_attr => nil,
-                                   :another_attr => PassiveDomain::Only.number
+                                   :another_attr => PassiveDomain::Only.number,
+                                   :nested_attr => nil
                                  })
     end
 
@@ -74,5 +98,7 @@ describe PassiveDomain::Interface do
       expect(instance.an_attr).to eq("yada")
       expect(instance.another_attr).to eq(5)
     end
+
+    it "handles nested classes in the interface"
   end
 end

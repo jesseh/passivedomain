@@ -9,7 +9,7 @@ module PassiveDomain
       self.instance_eval(&block) if block
     end
 
-    def value(source_description)
+    def value(source_description=nil)
       Input.new(source_description).tap{|t| inputs << t }
     end
 

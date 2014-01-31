@@ -3,15 +3,16 @@ require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class MiningHash
   extend PassiveDomain
+
+  value_object_initializer do
+    value.must_be( only.number ).transform{ |raw| raw.freeze }
+  end
+
   include NumberWithUnits
 
   GHASH_PER_HASH = 1 / 1E9
 
-  def initialize(number)
-    raise(TypeError, "Mining hash requires a Numeric") unless number.kind_of? Numeric
-    @value = number
-    freeze
-  end
+  attr_reader :value
 
   def giga
     "%.2E gigahashes" % gigahash_number

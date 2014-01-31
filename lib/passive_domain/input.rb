@@ -2,7 +2,7 @@ module PassiveDomain
   class Input
     attr_reader :source, :only, :prepare_block, :target
 
-    def initialize(source_description)
+    def initialize(source_description=nil)
       params = Array(source_description).flatten
 
       @source = params.shift
@@ -27,7 +27,7 @@ module PassiveDomain
     end
 
     def target
-      underscore( (@target || source).to_s )
+      underscore( (@target || source || :value).to_s )
     end
 
     def value(data_obj)
@@ -39,7 +39,9 @@ module PassiveDomain
     private
 
     def raw_value(data_obj)
-      if source.is_a? Class
+      if source.nil?
+        data_obj
+      elsif source.is_a? Class
         source.new(data_obj)
       else
         data_obj.public_send(source, *@args)

@@ -3,7 +3,15 @@ require_dependency Rails.root.join('lib', 'number_with_units').to_s
 
 class Power
   extend PassiveDomain
+
+  value_object_initializer do
+    value.must_be( only.number ).transform{ |raw| raw.to_f.freeze }
+  end
+
+
   include NumberWithUnits
+
+  attr_reader :value
 
   def self.watts(value)
     new(value)

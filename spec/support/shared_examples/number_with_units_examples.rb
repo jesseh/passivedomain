@@ -6,6 +6,13 @@ shared_examples "number with units" do
     Class.new do
       include NumberWithUnits
 
+      attr_reader :value
+
+      def initialize(value)
+        @value = cast_new_value(value)
+        freeze
+      end
+
       def base_unit; "fake"; end
     end.from_base_unit(45)
   end
