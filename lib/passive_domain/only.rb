@@ -40,7 +40,7 @@ module PassiveDomain
     def self.symbol
       @symbol ||= new(lambda{ |raw_value| raw_value.kind_of?(Symbol) },
                       "symbol required for %s.",
-                      ->{ :standin_symbol })
+                      ->{ [:standin_symbol_1, :standin_symbol_2, :standin_symbol_3].sample })
     end
 
     def self.symbol_or_string
@@ -71,21 +71,21 @@ module PassiveDomain
     def self.string
       @string ||= new(lambda{ |raw_value| raw_value.kind_of?(String) },
                       "string required for %s.",
-                      ->{ "standin string" }
+                      ->{ rand(10) < 3 ? "" : "standin string #{rand(36**5).to_s(36)}" }
                      )
     end
 
     def self.positive_integer
       @positive_integer ||= new(lambda{ |raw_value| raw_value.kind_of?(Integer) && raw_value >= 0 },
                                 "positive integer required for %s.",
-                                ->{ rand 0..100000 }
+                                ->{ rand(10) < 2 ? 0 : rand(0..100000) }
                                )
     end
 
     def self.positive_number
       @positive_number ||= new(lambda{ |raw_value| raw_value.kind_of?(Numeric) && raw_value >= 0 },
                                "positive number required for %s.",
-                               ->{ rand 0..10000 * rand }
+                               ->{ rand(10) < 2 ? 0 : (rand(0..100000) * rand) }
                               )
     end
 
@@ -93,7 +93,7 @@ module PassiveDomain
       @number_within ||= {}
       @number_within[range] ||= new(lambda{ |raw_value| raw_value.kind_of?(Numeric) && range.include?(raw_value) },
                                     "positive number required for %s.",
-                                    ->{ rand range }
+                                    ->{ [range.max, range.min, rand(range)].sample }
                                    )
     end
 
@@ -101,17 +101,22 @@ module PassiveDomain
       @instance_array ||= {}
       @instance_array[cls] ||= new(lambda{ |raw_value| raw_value.all? { |x| x.instance_of?(cls) } },
                                     "an array of #{cls} instances required for %s.",
-                                  ->{ [] })  # empty array becaus the expected class may not be easy to instantiate.
+                                  ->{ [] })  # empty array because the expected class may not be easy to instantiate.
     end
 
-    attr_reader :test_lambda, :fail_message, :standin_value
+    attr_reader :test_lambda, :fail_message
     protected :test_lambda, :fail_message
 
     def initialize(test_lambda, fail_message, standin_lambda=nil)
       @test_lambda = test_lambda
       @fail_message = fail_message.freeze
-      @standin_value = standin_lambda.respond_to?(:call) ? standin_lambda.call : nil
+      standin_lambda = ->{ nil } unless standin_lambda.respond_to?(:call) 
+      @standin_generator = as_generator standin_lambda
       freeze
+    end
+
+    def standin_value
+      @standin_generator.next
     end
 
     def check(name, raw_value)
@@ -141,5 +146,9 @@ module PassiveDomain
       [self.class, test_lambda, fail_message].hash
     end
 
+    private
+    def as_generator(value_lambda)
+      Enumerator.new{ |y| loop{ y << value_lambda.call } }
+    end
   end
 end
