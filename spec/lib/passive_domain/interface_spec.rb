@@ -99,6 +99,5 @@ describe PassiveDomain::Interface do
       expect(instance.another_attr).to eq(5)
     end
 
-    it "handles nested classes in the interface"
   end
 end
