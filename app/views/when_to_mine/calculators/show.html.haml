@@ -14,22 +14,7 @@
   .large-6.columns
     .panel
       %h3 Inputs
-      = Form::Builder.new(@report) do |report|
-
-        = report.input(:hash_rate)
-        = report.input(:electricity_rate)
-        = report.input(:pool_fee_percent)
-        = report.input(:facility_cost)
-        = report.input(:other_cost)
-        = report.input(:rig_utilization)
-        = report.input(:rig_hash_rate)
-        = report.input(:watts_to_mine)
-        = report.input(:watts_to_cool)
-        = report.input(:mining_effort)
-        = report.input(:reward_amount)
-        = report.input(:exchange_fee_percent)
-        = report.input(:exchange_rate)
-
+      %form#inputs
         %fieldset
           %legend Your objective
           %p This calculator adjusts based on what you aim to achieve by mining.
@@ -130,7 +115,7 @@
           %tr.line
             %td.operation -
             %td.item electricity cost
-            %td.value= number_to_currency(@report.electricity_cost.dollars)
+            %td.value= number_to_currency(@report.electricity_cost)
           %tr.line
             %td.operation -
             %td.item pool cost
@@ -156,11 +141,11 @@
             %td.operation -
             %td.item other operating costs
             %td.value= number_to_currency(@report.other_cost)
-          - unless @report.operations_exchange_fees.nil?
+          - unless @report.operating_exchange_fees.nil?
             %tr.line
               %td.operation -
               %td.item exchange transaction fees
-              %td.value= number_to_currency(@report.operations_exchange_fees)
+              %td.value= number_to_currency(@report.operatiing_exchange_fees)
           %tr.line.result
             %td.operation =
             %td.item
