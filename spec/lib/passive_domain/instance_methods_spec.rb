@@ -16,4 +16,12 @@ describe PassiveDomain::InstanceMethods do
     end
 
   end
+
+  describe "#stand_in" do
+    subject { cls.stand_in }
+
+    it "is an instance of the source class" do
+      expect(subject).to be_instance_of(cls)
+    end
+  end
 end
