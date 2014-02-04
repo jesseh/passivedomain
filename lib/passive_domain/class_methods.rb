@@ -40,5 +40,9 @@ module PassiveDomain
       self.class_variable_get(:@@input_targets)
     end
 
+    def stand_in
+      self.new(Interface.new(self).responder)
+    end
+
   end
 end

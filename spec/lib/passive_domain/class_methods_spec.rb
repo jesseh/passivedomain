@@ -10,6 +10,12 @@ describe PassiveDomain::InstanceMethods do
     end
   end }
 
+  describe ".stand_in" do
+    it "is an instance of the source class" do
+      expect(subject.stand_in).to be_instance_of(subject)
+    end
+  end
+
   it "has a list of inputs" do
     expect(subject.inputs[0].source).to eq(:foo)
     expect(subject.inputs[0].target).to eq("bar")
