@@ -30,8 +30,19 @@ module PassiveDomain
       underscore( (@target || source || :value).to_s ).to_sym
     end
 
+    def when_missing(given)
+      @when_missing = given
+      self
+    end
+
+    def freeze_it
+      @freeze_it = true
+      self
+    end
+
     def value(data_obj)
       raw = raw_value(data_obj)
+      raw.freeze if @freeze_it
       assert_valid raw
       prepare_value raw
     end
@@ -43,6 +54,8 @@ module PassiveDomain
         data_obj
       elsif source.is_a? Class
         source.new(data_obj)
+      elsif instance_variable_defined?(:@when_missing) 
+        @when_missing unless data_obj.respond_to?(source)
       else
         data_obj.public_send(source, *@args)
       end
