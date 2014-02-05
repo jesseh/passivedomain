@@ -28,7 +28,4 @@ class Bitcoin
     "BTC"
   end
 
-  def cast_new_value(value)
-    BigDecimal.new(value, DIGITS)
-  end
 end
