@@ -27,7 +27,7 @@ module PassiveDomain
     end
 
     def target
-      underscore( (@target || source || :value).to_s )
+      underscore( (@target || source || :value).to_s ).to_sym
     end
 
     def value(data_obj)

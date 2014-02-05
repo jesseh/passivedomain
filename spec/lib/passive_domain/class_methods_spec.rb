@@ -18,10 +18,10 @@ describe PassiveDomain::InstanceMethods do
 
   it "has a list of inputs" do
     expect(subject.inputs[0].source).to eq(:foo)
-    expect(subject.inputs[0].target).to eq("bar")
+    expect(subject.inputs[0].target).to eq(:bar)
   end
 
   it "has a list of input_targets" do
-    expect(subject.input_targets).to match_array(["bar"])
+    expect(subject.input_targets).to match_array([:bar])
   end
 end
