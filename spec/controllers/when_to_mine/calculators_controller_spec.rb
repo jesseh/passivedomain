@@ -31,4 +31,11 @@ describe WhenToMine::CalculatorsController do
     it { should respond_with(:success) }
   end
 
+  describe "POST to #create" do
+    before do
+      post :show
+    end
+
+    it { should respond_with(:success) }
+  end
 end
