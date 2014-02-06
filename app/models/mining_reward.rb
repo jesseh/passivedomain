@@ -7,7 +7,7 @@ class MiningReward
   DIGITS = 10
 
   value_object_initializer do
-    value.must_be( only.number ).transform{ |raw| raw.freeze }
+    value.must_be( only.number ).freeze_it
   end
 
   include NumberWithUnits

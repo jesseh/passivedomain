@@ -7,13 +7,15 @@ class Bitcoin
   DIGITS = 10
 
   value_object_initializer do
-    value.must_be( only.number ).transform{ |raw| BigDecimal(raw, DIGITS).freeze }
+    value.must_be( only.number ).freeze_it
   end
 
   include NumberWithUnits
 
-  attr_reader :value
 
+  def value
+    BigDecimal(@value, DIGITS).freeze
+  end
 
 
   def self.amount(value)
