@@ -21,11 +21,6 @@ module PassiveDomain
       self
     end
     
-    def transform(&block)
-      @prepare_block = block
-      self
-    end
-
     def target
       underscore( (@target || source || :value).to_s ).to_sym
     end
@@ -44,7 +39,7 @@ module PassiveDomain
       raw = raw_value(data_obj)
       raw.freeze if @freeze_it
       assert_valid raw
-      prepare_value raw
+      raw
     end
 
     private
@@ -65,11 +60,6 @@ module PassiveDomain
       return unless only
       validation_message = only.check(source, value)
       raise(ValidationError, validation_message) if validation_message
-    end
-
-    def prepare_value(value)
-      return value unless prepare_block
-      prepare_block.call(value)
     end
 
     # method from Rails ActiveSupport.

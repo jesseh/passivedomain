@@ -5,16 +5,12 @@ class UsDollarRate
   extend PassiveDomain
 
   value_object_initializer do
-    value.
-      must_be( only.instance_of(UsCurrency) ).
-      transform{ |raw| (raw.dollars / Timespan.hour.hours).freeze }
+    value.must_be( only.instance_of(UsCurrency) )
   end
 
 
   include NumberWithUnits
   HOURS_PER_MONTH = 730
-
-  attr_reader :value
 
   def self.per_month(value)
     new(value / Timespan.month.hours)
@@ -26,6 +22,10 @@ class UsDollarRate
 
   def self.from_base_unit(value)
     new(UsCurrency.dollars(value))
+  end
+
+  def value
+    (@value.dollars / Timespan.hour.hours).freeze
   end
 
   def base_unit

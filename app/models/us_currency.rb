@@ -8,12 +8,16 @@ class UsCurrency
   PRECISION = 9
 
   value_object_initializer do
-    value.must_be( only.number ).transform{ |raw| BigDecimal(raw, PRECISION).freeze }
+    value.must_be( only.number ).freeze_it
   end
 
   include NumberWithUnits
 
   attr_reader :value
+
+  def value
+    BigDecimal(@value, PRECISION).freeze
+  end
 
   def self.dollars(value)
     new(value)

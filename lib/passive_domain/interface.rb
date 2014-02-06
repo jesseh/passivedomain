@@ -20,51 +20,29 @@ module PassiveDomain
 
     # Instantiate with a class
     value_object_initializer do
-      def assert_only_same(collector, input)
-        if collector[input.source] != input.only
-          raise TypeError, "Only objects must be the same for multiple uses of '#{input.source}'."
-        end
-      end
-
-      def collect_input collector, input
-        if collector[input.source] 
-          assert_only_same collector, input
-        else
-          collector[input.source] = input.only
-        end
-        collector
-      end
-
-      value(:inputs => :sends).
-        must_be(only.instance_array(Input)).
-        transform do |raw|
-          collector = {}
-          inputs = raw.dup
-          while input = inputs.shift
-            if input.source.respond_to? :inputs
-              inputs.concat input.source.inputs
-            else
-              collect_input(collector, input)
-            end
-          end
-          collector.freeze
-        end
-
-      value(:instance_methods => :responds_to).
-        send_args(true).
-        must_be(only.instance_array(Symbol)).
-        transform do |raw| 
-          methods = (raw - Object.instance_methods - IGNORED_METHODS).freeze
-          methods
-        end
-
-      value(:name).
-        must_be(only.string_symbol_or_nil).
-        transform { |raw| raw.freeze }
-
+      value(:inputs => :sends).must_be(only.instance_array(Input)).freeze_it
+      value(:instance_methods => :responds_to).send_args(true).must_be(only.instance_array(Symbol)).freeze_it
+      value(:name).must_be(only.string_symbol_or_nil).freeze_it
     end
 
-    attr_reader :sends, :responds_to, :name
+    attr_reader :responds_to, :name
+
+    def responds_to
+      (@responds_to - Object.instance_methods - IGNORED_METHODS).freeze
+    end
+
+    def sends
+      collector = {}
+      inputs = @sends.dup
+      while input = inputs.shift
+        if input.source.respond_to? :inputs
+          inputs.concat input.source.inputs
+        else
+          collect_input(collector, input)
+        end
+      end
+      collector.freeze
+    end
 
     def responder(params={})
       return nil if sends.keys[0].nil? and sends[nil].nil?
@@ -72,7 +50,7 @@ module PassiveDomain
 
       params = default_responder_params.update params
       instance = responder_class.new
-      params.each { |method, value| instance.send("#{method}=", value) unless method.nil? }
+      params.each { |method, value| instance.send("#{method}=", value.freeze) unless method.nil? }
       instance
     end
 
@@ -91,6 +69,21 @@ module PassiveDomain
         collector[message] = only.nil? ? nil : only.standin_value
         collector
       end
+    end
+
+    def assert_only_same(collector, input)
+      if collector[input.source] != input.only
+        raise TypeError, "Only objects must be the same for multiple uses of '#{input.source}'."
+      end
+    end
+
+    def collect_input collector, input
+      if collector[input.source] 
+        assert_only_same collector, input
+      else
+        collector[input.source] = input.only
+      end
+      collector
     end
 
   end

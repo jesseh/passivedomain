@@ -5,13 +5,16 @@ class Power
   extend PassiveDomain
 
   value_object_initializer do
-    value.must_be( only.number ).transform{ |raw| raw.to_f.freeze }
+    value.must_be( only.number ).freeze_it
   end
 
 
   include NumberWithUnits
 
   attr_reader :value
+  def value
+    @value.to_f
+  end
 
   def self.watts(value)
     new(value)

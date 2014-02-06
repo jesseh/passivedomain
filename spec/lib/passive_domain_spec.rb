@@ -27,7 +27,8 @@ describe PassiveDomain do
       let(:fake_class) do
         Class.new do
           extend PassiveDomain
-          value_object_initializer { value(:an_attr).transform { |v| v * 2 } }
+          value_object_initializer { value(:an_attr) }
+          def an_attr; @an_attr * 2; end
         end
       end
       let(:data) { double("Data", an_attr: 2) }

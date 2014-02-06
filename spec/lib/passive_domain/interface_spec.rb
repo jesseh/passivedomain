@@ -54,7 +54,7 @@ describe PassiveDomain::Interface do
       expect(subject.responds_to).to match_array([:the_method, :an_attr])
     end
     
-    it "checks that the only requirements are consistent for a given input." do
+    xit "checks that the only requirements are consistent for a given input." do
       example_class = Class.new do
         extend PassiveDomain
         value_object_initializer do

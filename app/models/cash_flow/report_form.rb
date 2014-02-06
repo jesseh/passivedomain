@@ -5,49 +5,56 @@ class CashFlow::ReportForm
   extend PassiveDomain
 
   value_object_initializer do
-    value(:cooling_electricity => :watts_to_cool).
-      must_be( only.positive_number ).
-      transform{|raw| Power.watts(raw) }
-
-    value(:electricity_rate).
-      must_be( only.positive_number ).
-      transform{|raw| EnergyCost.new(UsCurrency.cents(raw)) }
-
-    value(:facility_fees => :facility_cost).
-      must_be( only.positive_number ).
-      transform{|raw| UsDollarRate.per_month(UsCurrency.cents(raw)) }
-
-    value(:hash_rate => :rig_hash_rate).
-      must_be( only.positive_number ).
-      transform{|raw| HashRate.new(MiningHash.new(raw), Timespan.second) }
-
-    value(:mining_electricity => :watts_to_mine).
-      must_be( only.positive_number ).
-      transform{|raw| Power.watts(raw) }
-
     # value(:objective)
-
-    value(:other_operating_costs).
-      must_be( only.positive_number ).
-      transform{|raw| UsDollarRate.per_month(UsCurrency.cents(raw)) }
-
-    value(:pool_percentage => :pool_fee_percent).
-      must_be( only.number_within(0...100) ).transform{|raw| Percent.whole(raw) }
-
-    value(:rig_utilization).transform{|i| Percent.whole(i) }
+    value(:cooling_electricity => :watts_to_cool). must_be( only.positive_number )
+    value(:electricity_rate).                      must_be( only.positive_number )
+    value(:facility_fees => :facility_cost).       must_be( only.positive_number )
+    value(:hash_rate => :rig_hash_rate).           must_be( only.positive_number )
+    value(:mining_electricity => :watts_to_mine).  must_be( only.positive_number )
+    value(:other_operating_costs).                 must_be( only.positive_number )
+    value(:pool_percentage => :pool_fee_percent).  must_be( only.number_within(0...100) )
+    value(:rig_utilization)
   end
 
-  attr_reader :electricity_rate,
-              :facility_cost,
-              :other_cost,
-              :pool_fee_percent,
-              :rig_utilization,
-              :watts_to_cool,
-              :watts_to_mine,
-              :rig_hash_rate
+
+  def watts_to_cool
+    Power.watts(@watts_to_cool)
+  end
+
+  def watts_to_mine
+    Power.watts(@watts_to_mine)
+  end
+
+  def rig_hash_rate
+    HashRate.new(MiningHash.new(@rig_hash_rate), Timespan.second)
+  end
+
+  def facility_cost
+    UsDollarRate.per_month(UsCurrency.cents(@facility_cost))
+  end
+
+  def electricity_rate
+    EnergyCost.new(UsCurrency.cents(@electricity_rate))
+  end
 
   def exchange_fee_percent
     Percent.decimal(0.05)
+  end
+
+  def facility_cost
+    UsDollarRate.per_month(UsCurrency.cents(@facility_cost))
+  end
+
+  def other_operating_costs
+    UsDollarRate.per_month(UsCurrency.cents(@other_operating_costs))
+  end
+
+  def pool_fee_percent
+    Percent.whole(@pool_fee_percent)
+  end
+
+  def rig_utilization
+    Percent.whole(@rig_utilization)
   end
 
   def exchange_rate

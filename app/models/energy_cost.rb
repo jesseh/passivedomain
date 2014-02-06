@@ -5,14 +5,10 @@ class EnergyCost
   extend PassiveDomain
 
   value_object_initializer do
-    value.
-      must_be( only.instance_of(UsCurrency) ).
-      transform{ |raw| (raw.dollars / Energy.kilowatt_hours(1).value).freeze }
+    value.must_be( only.instance_of(UsCurrency) ).freeze_it
   end
 
   include NumberWithUnits
-
-  attr_reader :value
 
   def self.from_us_currency_and_energy(cost, energy)
     raise_uncreatable(cost, energy) unless cost.number_type ==  UsCurrency
@@ -24,6 +20,10 @@ class EnergyCost
 
   def self.from_base_unit(amount)
     new(UsCurrency.dollars(amount))
+  end
+
+  def value
+    (@value.dollars / Energy.kilowatt_hours(1).value).freeze
   end
 
   def base_unit

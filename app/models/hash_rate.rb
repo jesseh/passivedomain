@@ -5,9 +5,7 @@ class HashRate
   extend PassiveDomain
 
   value_object_initializer do
-    value.
-      must_be( only.instance_of(MiningHash) ).
-      transform{ |raw| (raw.number / Timespan.second.seconds).freeze }
+    value.must_be( only.instance_of(MiningHash) )
   end
 
   include NumberWithUnits
@@ -20,7 +18,9 @@ class HashRate
   end
 
 
-  attr_reader :value
+  def value
+    (@value.number / Timespan.second.seconds).freeze
+  end
 
   def gigahash_per_second
     value / 1E9
