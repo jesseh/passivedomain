@@ -20,12 +20,13 @@ module PassiveDomain
 
     # Instantiate with a class
     value_object_initializer do
-      value(:inputs => :sends).must_be(only.instance_array(Input)).freeze_it
-      value(:instance_methods => :responds_to).send_args(true).must_be(only.instance_array(Symbol)).freeze_it
       value(:name).must_be(only.string_symbol_or_nil).freeze_it
+      value(:inputs => :sends).must_be(only.instance_array(Input)).freeze_it
+      value(:instance_methods => :responds_to).
+        send_args(true).must_be(only.instance_array(Symbol)).freeze_it
     end
 
-    attr_reader :responds_to, :name
+    attr_reader :name
 
     def responds_to
       (@responds_to - Object.instance_methods - IGNORED_METHODS).freeze

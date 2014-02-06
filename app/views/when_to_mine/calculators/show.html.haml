@@ -43,7 +43,7 @@
             %input{input_mode: "numeric", name: "mining_electricity", required: "", type: "text"}/
           %label
             Electricity to cool while mining (watts)
-            %input{input_mode: "numeric", name: "cooling_electricity", required: "", type: "text"}/
+            =@form.cooling_electricity.html_safe
         %fieldset
           %legend Your operating environment
           %p Your operating environment is generally stable, although you may be able to improve it by, for example, relocating your rig.

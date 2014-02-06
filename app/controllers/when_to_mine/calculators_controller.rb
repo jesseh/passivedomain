@@ -4,6 +4,7 @@ class WhenToMine::CalculatorsController < ApplicationController
   
   def show
     data = data_source.canned
+    @form = CashFlow::FormBacker.new params
     @report = CashFlow::Report.create(data)
     @rig = Rig.new(data)
     @network = Network.new(data)
@@ -11,7 +12,7 @@ class WhenToMine::CalculatorsController < ApplicationController
   end
 
   def create
-    data = CashFlow::FormDataSource.new params
+    @form = CashFlow::FormBacker.new params
     @report = CashFlow::Report.create(data)
     @rig = Rig.new(data)
     @network = Network.new(data)
