@@ -4,60 +4,42 @@ module CashFlow
   class Mapper
     extend PassiveDomain
 
-    in_interface = Interface.new do
-      value(:objective).                   must_be( only.string )
-      value(:electricity_rate_fractional). must_be( only.positive_number )
-      value(:exchange_fee_percent).        must_be( only.number_within(0...1) )
-      value(:exchange_rate).               must_be( only.positive_number )
-      value(:facility_cost_fractional).    must_be( only.positive_number )
-      value(:mining_difficulty).           must_be( only.positive_number )
-      value(:other_cost_fractional).       must_be( only.positive_number )
-      value(:pool_fee_percent).            must_be( only.number_within(0...1) )
-      value(:reward_amount_fractional).    must_be( only.positive_integer )
-      value(:rig_hash_rate).               must_be( only.positive_number )
-      value(:rig_utilization).             must_be( only.number_within(0...1) )
-      value(:watts_to_cool).               must_be( only.positive_number )
-      value(:watts_to_mine).               must_be( only.positive_number )
+    value_object_initializer do
+      value(:objective).                                        must_be( only.string ).freeze_it
+      value(:electricity_rate_fractional => :electricity_rate). must_be( only.positive_number ).freeze_it
+      value(:exchange_fee_percent).                             must_be( only.number_within(0...1) ).freeze_it
+      value(:exchange_rate).                                    must_be( only.positive_number ).freeze_it
+      value(:facility_cost_fractional => :facility_cost).       must_be( only.positive_number ).freeze_it
+      value(:mining_difficulty => :mining_effort).              must_be( only.positive_number ).freeze_it
+      value(:other_cost_fractional => :other_cost).             must_be( only.positive_number ).freeze_it
+      value(:pool_fee_percent).                                 must_be( only.number_within(0...1) ).freeze_it
+      value(:reward_amount_fractional => :reward_amount).       must_be( only.positive_integer ).freeze_it
+      value(:rig_hash_rate).                                    must_be( only.positive_number ).freeze_it
+      value(:rig_utilization).                                  must_be( only.number_within(0...1) ).freeze_it
+      value(:watts_to_cool).                                    must_be( only.positive_number ).freeze_it
+      value(:watts_to_mine).                                    must_be( only.positive_number ).freeze_it
     end
-
-    out_interface = Interface.new do
-      value(:objective).         must_be( only.string )
-      value(:electricity_rate).  must_be( only.instance_of(EnergyCost) )
-      value(:exchange_fee).      must_be( only.instance_of(Percent) )
-      value(:exchange_rate).     must_be( only.positive_number )
-      value(:facility_cost).     must_be( only.instance_of(UsDollarRate) )
-      value(:mining_difficulty). must_be( only.instance_of(MiningEffort) )
-      value(:other_cost).        must_be( only.intance_of(UsDollarRate) )
-      value(:pool_fee).          must_be( only.instance_of(Percent) )
-      value(:reward_amount).     must_be( only.instance_of(Bitcoin) )
-      value(:rig_hash_rate).     must_be( only.instance_of(HashRate) )
-      value(:rig_utilization).   must_be( only.instance_of(Percent) )
-      value(:watts_to_cool).     must_be( only.instance_of(Power) )
-      value(:watts_to_mine).     must_be( only.intance_of(Power) )
-    end
-
-    value_object_initializer in_interface, out_interface
 
     attr_reader :exchange_rate, :objective
 
     def electricity_rate
-      EnergyCost.new(UsCurrency.cents(@electricity_rate_fractional)).freeze
+      EnergyCost.new(UsCurrency.cents(@electricity_rate)).freeze
     end
 
-    def exchange_fee
+    def exchange_fee_percent
       Percent.decimal(@exchange_fee_percent).freeze
     end
 
     def facility_cost
-      UsDollarRate.per_month(UsCurrency.cents(@facility_cost_fractional)).freeze
+      UsDollarRate.per_month(UsCurrency.cents(@facility_cost)).freeze
     end
 
     def mining_effort
-      MiningEffort.new(@mining_difficulty).freeze
+      MiningEffort.new(@mining_effort).freeze
     end
 
     def other_cost
-      UsDollarRate.per_month(UsCurrency.cents(@other_cost_fractional)).freeze
+      UsDollarRate.per_month(UsCurrency.cents(@other_cost)).freeze
     end
 
     def pool_fee_percent
@@ -65,7 +47,7 @@ module CashFlow
     end
 
     def reward_amount
-      Bitcoin.new(@reward_amount_fractional).freeze
+      Bitcoin.new(@reward_amount).freeze
     end
 
     def rig_hash_rate
