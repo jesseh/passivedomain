@@ -105,7 +105,7 @@ module Specification
     end
 
     attr_reader :test_lambda, :fail_message
-    protected :test_lambda, :fail_message
+    protected :test_lambda
 
     def initialize(test_lambda, fail_message, standin_lambda=nil)
       @test_lambda = test_lambda
@@ -119,12 +119,9 @@ module Specification
       @standin_generator.next
     end
 
-    def check(name, raw_value)
-      unless test_lambda.call(raw_value)
-        fail_message % name 
-      end
+    def valid?(raw_value)
+      test_lambda.call(raw_value)
     end
-
 
     def inspect
       "#{self.class} test_lambda=#{test_lambda}, fail_message='#{fail_message}'"

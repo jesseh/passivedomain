@@ -101,13 +101,13 @@ describe Specification::Only do
 
       context "valid input" do
         it "checks the class of the instances in the array" do
-          expect(subject.check("test code", [cls.new, cls.new])).to be_nil
+          expect(subject.valid?([cls.new, cls.new])).to be_true
         end
       end
 
       context "invalid input" do
         it "checks the class of the instances in the array" do
-          expect(subject.check("test code", [1,2,3])).to_not be_nil
+          expect(subject.valid?([1,2,3])).to be_false
         end
       end
     end
