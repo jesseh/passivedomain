@@ -30,7 +30,18 @@ describe Specification::Interface do
         expect(subject.valid_response?(:nonexistant, 1)).to be_false
       end
     end
+  end
 
+  describe "#value_message?" do
+    subject { described_class.new({:a => Specification::Only.number}) }
+
+    it "it returns false for an invalid message" do
+      expect(subject.valid_message?(:a)).to be_true
+    end
+
+    it "it returns true for a valid message" do
+      expect(subject.valid_message?(:nope)).to be_false
+    end
   end
 
   describe "stand-in object that responds to the interface" do
