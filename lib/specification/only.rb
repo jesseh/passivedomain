@@ -104,6 +104,13 @@ module Specification
                                   ->{ [] })  # empty array because the expected class may not be easy to instantiate.
     end
 
+    def self.nil_value
+      @nil_value ||= new(lambda{ |raw_value| raw_value.nil? },
+                      "nil required for %s.",
+                      ->{ nil } 
+                     )
+    end
+
     attr_reader :test_lambda, :fail_message
     protected :test_lambda
 

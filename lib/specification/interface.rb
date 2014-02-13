@@ -1,17 +1,16 @@
 module Specification
   class Interface
-    attr_reader :messages
 
-    def initialize(messages)
-      @messages = messages
+    def initialize(signatures)
+      build_index signatures
     end
 
-    def valid_response?(message, response)
-      valid_message?(message) && messages[message].valid?(response)
+    def valid_response?(method, response)
+      valid_method?(method) && index.fetch(method).valid_response?(response)
     end
 
-    def valid_message?(message)
-      messages.keys.include?(message)
+    def valid_method?(method)
+      index.keys.include?(method)
     end
 
     def responder(override_params={})
@@ -25,18 +24,28 @@ module Specification
 
     private
 
+    attr_reader :index
+
+    def build_index(signatures)
+      @index ||= signatures.inject({}) do |collector, signature| 
+        raise(ArgumentError, "Duplicate signature for method '#{signature.method}'") if collector.key?(signature.method) 
+        collector[signature.method] = signature
+        collector
+      end
+    end
+
     def responder_params(overrides)
       default_responder_params.tap do |params|
         overrides.each do |k, v|
-          raise(NameError, "Parameter '#{k}' has no message in the interface.") unless valid_message?(k)
+          raise(NameError, "Parameter '#{k}' has no message in the interface.") unless valid_method?(k)
           params[k] = v
         end
       end
     end
 
     def default_responder_params
-      messages.inject({}) do |collector, (message, only)| 
-        collector[message] = only.nil? ? nil : only.standin_value
+      index.inject({}) do |collector, (method, signature)| 
+        collector[method] = signature.sample_response
         collector
       end
     end

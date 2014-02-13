@@ -4,25 +4,36 @@ require_dependency Rails.root.join('lib', 'specification').to_s
 
 describe Specification::Interface do
   describe "specifiying the interface" do
-    subject { described_class.new({ :a => Specification::Only.string,
-                                    :b => Specification::Only.anything
-                                  }) }
-    it "is instanciated with a list of message specifications" do
+    subject { described_class.new([ Specification::Signature.new(:a, [], Specification::Only.string),
+                                    Specification::Signature.new(:b, [], Specification::Only.anything)
+                                  ]) }
+    it "is instanciated with a list of method specifications" do
       expect(subject).to be
     end
+
+    context "multiple signagures for one method" do
+      subject { described_class.new([ Specification::Signature.new(:a, [], Specification::Only.string),
+                                      Specification::Signature.new(:a, [], Specification::Only.anything)
+                                    ]) }
+
+      it "should raise an error" do
+        expect{ subject }.to raise_error(ArgumentError)
+      end
+    end
+
 
   end
 
   describe "#valid_response?" do
     let(:value) { 1 }
-    subject { described_class.new({:a => Specification::Only.number}) }
+    subject { described_class.new([Specification::Signature.new(:a, [], Specification::Only.number) ]) }
 
     it "it returns false for an invalid value" do
-      expect(subject.valid_response?(:a, 1)).to be_true
+      expect(subject.valid_response?(:a, 'a')).to be_false
     end
 
     it "it returns true for a valid value" do
-      expect(subject.valid_response?(:a, 'a')).to be_false
+      expect(subject.valid_response?(:a, 1)).to be_true
     end
 
     context "non-existant method" do
@@ -32,20 +43,21 @@ describe Specification::Interface do
     end
   end
 
-  describe "#value_message?" do
-    subject { described_class.new({:a => Specification::Only.number}) }
+  describe "#valid_method?" do
+    subject { described_class.new([Specification::Signature.new(:a, [], Specification::Only.number) ]) }
 
-    it "it returns false for an invalid message" do
-      expect(subject.valid_message?(:a)).to be_true
+    it "it returns false for an invalid method" do
+      expect(subject.valid_method?(:a)).to be_true
     end
 
-    it "it returns true for a valid message" do
-      expect(subject.valid_message?(:nope)).to be_false
+    it "it returns true for a valid method" do
+      expect(subject.valid_method?(:nope)).to be_false
     end
   end
 
   describe "stand-in object that responds to the interface" do
-    subject { described_class.new({:an_attr => Specification::Only.positive_number}).responder(params) }
+    subject { specification = described_class.new([Specification::Signature.new(:an_attr, [], Specification::Only.number) ])
+              specification.responder(params) }
 
     context "no supplied params" do
       let(:params) { {} }
@@ -70,8 +82,8 @@ describe Specification::Interface do
       end
     end
 
-    context "with params that have no corresponding message" do
-      let(:params) { {nonexisting_message: 'yada'} }
+    context "with params that have no corresponding method" do
+      let(:params) { {nonexisting_method: 'yada'} }
 
       it "raises an error" do
         expect { subject }.to raise_error(NameError)
@@ -97,7 +109,7 @@ describe Specification::Interface do
       end
     end
 
-    context "non-conforming message" do
+    context "non-conforming method" do
       before { test_responder.define_singleton_method(:wrong_attr) { 10 } }
       xit "returns false" do
         expect(subject.conforms?(test_responder)).to be_false

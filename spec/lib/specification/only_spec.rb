@@ -60,6 +60,13 @@ describe Specification::Only do
       end
     end
 
+    context "nil" do
+      let(:method_symbol) { :nil_value }
+      it "does equality correctly" do
+        expect(v1).to eq v2
+      end
+    end
+
     context "positive_integer" do
       let(:method_symbol) { :positive_integer }
       it "does equality correctly" do
