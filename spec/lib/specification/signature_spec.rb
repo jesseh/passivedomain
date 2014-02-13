@@ -16,12 +16,23 @@ describe Specification::Signature do
   end
     
   describe "#valid_response?" do
-    xit "a randomly generated sample"
+    let(:only) { double(:only, :valid? => :response_from_only) }
+
+    subject { described_class.new(:a_method, [], only) }
+
+    it "delegates to the response only object" do
+      expect(subject.valid_response?('yada')).to eq :response_from_only
+    end
   end
 
   describe "#sample_response" do
-    before { its(:response) { should eq(Specification::Only.symbol) } }
-    xit "a randomly generated sample"
+    let(:only) { double(:only, :standin_value => :response_from_only) }
+
+    subject { described_class.new(:a_method, [], only) }
+
+    it "delegates to the response only object" do
+      expect(subject.sample_response).to eq :response_from_only
+    end
   end
 
 end
