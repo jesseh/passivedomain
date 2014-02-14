@@ -72,6 +72,48 @@ describe Canopy do
         expect( example_class.order ).to eq([1,2])
       end
     end
+
+    context "when called after a method definition" do
+      let(:example_class) do
+        Class.new do
+          def after; end
+
+          include Canopy
+          canopy_input :after => ->(){ raise "still works" }
+        end
+      end
+
+      subject { example_class.new }
+
+      it "should still call validator" do
+        expect{ subject.after }.to raise_error("still works")
+      end
+    end
+
+    context "when called multiple times before and after" do
+      let(:instance){ example_class.new }
+      let(:example_class) do
+        Class.new do
+          include Canopy
+
+          def self.order
+            @@order
+          end
+
+          @@order = []
+
+          canopy_input :tricky => ->(){ @@order << 1 }
+          def tricky; end
+          canopy_input :tricky => ->(){ @@order << 2 }
+        end
+      end
+
+      subject! { instance.tricky }
+
+      it "shall in correct order" do
+        expect( example_class.order ).to eq([1,2])
+      end
+    end
   end
 
   describe ".canopy_output" do
@@ -135,6 +177,58 @@ describe Canopy do
 
       it "shall in correct order" do
         expect( example_class.order ).to eq([1,2])
+      end
+    end
+
+    context "when called multiple times before and after" do
+      let(:instance){ example_class.new }
+      let(:example_class) do
+        Class.new do
+          include Canopy
+
+          def self.order
+            @@order
+          end
+
+          @@order = []
+
+          canopy_output :tricky => ->(v){ @@order << 1 }
+          def tricky; end
+          canopy_output :tricky => ->(v){ @@order << 2 }
+        end
+      end
+
+      subject! { instance.tricky }
+
+      it "shall in correct order" do
+        expect( example_class.order ).to eq([1,2])
+      end
+    end
+
+    context "when called alongside canopy_input" do
+      let(:instance){ example_class.new }
+      let(:example_class) do
+        Class.new do
+          include Canopy
+
+          def self.order
+            @@order
+          end
+
+          @@order = []
+
+          canopy_input  :tricky => ->(){ @@order << 1 }
+          canopy_output :tricky => ->(v){ @@order << 3 }
+          def tricky; end
+          canopy_output :tricky => ->(v){ @@order << 4 }
+          canopy_input  :tricky => ->(){ @@order << 2 }
+        end
+      end
+
+      subject! { instance.tricky }
+
+      it "shall in correct order" do
+        expect( example_class.order ).to eq([1,2,3,4])
       end
     end
   end

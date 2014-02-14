@@ -7,12 +7,16 @@ module Canopy
   module ClassMethods
     def canopy_input(*args)
       @__canopy_input ||= Interface.new
-      @__canopy_input.add(*args)
+      @__canopy_input.add(*args) do |method|
+        Wrapper.inject(self, method)
+      end
     end
 
     def canopy_output(*args)
       @__canopy_output ||= Interface.new
-      @__canopy_output.add(*args)
+      @__canopy_output.add(*args) do |method|
+        Wrapper.inject(self, method)
+      end
     end
 
     def canopy_for(method_name)
@@ -33,7 +37,10 @@ module Canopy
   class Wrapper
     def self.inject(target, method_name)
       target.instance_eval do
+        return unless instance_methods.include?(method_name)
+
         method_object = instance_method(method_name)
+
         define_method(method_name) do |*args, &block|
           # Call input interface
           target.canopy_input.validate(method_name,*args,&block)
@@ -55,11 +62,12 @@ module Canopy
       @store = {}
     end
 
-    def add(options=nil)
+    def add(options=nil,&block)
       return self unless options
 
       options.each do |method,validator|
-        validator_store method, validator
+        block.call(method) if validators_for(method).empty?
+        validator_store(method, validator)
       end
       return self
     end
