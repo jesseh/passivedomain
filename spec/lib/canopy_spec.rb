@@ -3,6 +3,22 @@ require_dependency Rails.root.join('lib', 'canopy').to_s
 
 describe Canopy do
 
+  class Logger
+    def self.log(v)
+      (@@log ||= []) << v
+    end
+
+    def self.results
+      @@log
+    end
+
+    def self.reset
+      @@log = nil
+    end
+  end
+
+  before { Logger.reset }
+
   let(:example_class) do
     Class.new do
       include Canopy
@@ -53,14 +69,8 @@ describe Canopy do
         Class.new do
           include Canopy
 
-          def self.order
-            @@order
-          end
-
-          @@order = []
-
-          canopy_input :tricky => ->(){ @@order << 1 }
-          canopy_input :tricky => ->(){ @@order << 2 }
+          canopy_input :tricky => ->(){ Logger.log 1 }
+          canopy_input :tricky => ->(){ Logger.log 2 }
 
           def tricky; end
         end
@@ -69,7 +79,7 @@ describe Canopy do
       subject! { instance.tricky }
 
       it "shall in correct order" do
-        expect( example_class.order ).to eq([1,2])
+        expect( Logger.results ).to eq([1,2])
       end
     end
 
@@ -96,22 +106,16 @@ describe Canopy do
         Class.new do
           include Canopy
 
-          def self.order
-            @@order
-          end
-
-          @@order = []
-
-          canopy_input :tricky => ->(){ @@order << 1 }
+          canopy_input :tricky => ->(){ Logger.log 1 }
           def tricky; end
-          canopy_input :tricky => ->(){ @@order << 2 }
+          canopy_input :tricky => ->(){ Logger.log 2 }
         end
       end
 
       subject! { instance.tricky }
 
       it "shall in correct order" do
-        expect( example_class.order ).to eq([1,2])
+        expect( Logger.results ).to eq([1,2])
       end
     end
   end
@@ -160,14 +164,8 @@ describe Canopy do
         Class.new do
           include Canopy
 
-          def self.order
-            @@order
-          end
-
-          @@order = []
-
-          canopy_output :tricky => ->(v){ @@order << 1 }
-          canopy_output :tricky => ->(v){ @@order << 2 }
+          canopy_output :tricky => ->(v){ Logger.log 1 }
+          canopy_output :tricky => ->(v){ Logger.log 2 }
 
           def tricky; end
         end
@@ -176,7 +174,7 @@ describe Canopy do
       subject! { instance.tricky }
 
       it "shall in correct order" do
-        expect( example_class.order ).to eq([1,2])
+        expect( Logger.results ).to eq([1,2])
       end
     end
 
@@ -186,22 +184,16 @@ describe Canopy do
         Class.new do
           include Canopy
 
-          def self.order
-            @@order
-          end
-
-          @@order = []
-
-          canopy_output :tricky => ->(v){ @@order << 1 }
+          canopy_output :tricky => ->(v){ Logger.log 1 }
           def tricky; end
-          canopy_output :tricky => ->(v){ @@order << 2 }
+          canopy_output :tricky => ->(v){ Logger.log 2 }
         end
       end
 
       subject! { instance.tricky }
 
       it "shall in correct order" do
-        expect( example_class.order ).to eq([1,2])
+        expect( Logger.results ).to eq([1,2])
       end
     end
 
@@ -211,24 +203,18 @@ describe Canopy do
         Class.new do
           include Canopy
 
-          def self.order
-            @@order
-          end
-
-          @@order = []
-
-          canopy_input  :tricky => ->(){ @@order << 1 }
-          canopy_output :tricky => ->(v){ @@order << 3 }
+          canopy_input  :tricky => ->(){ Logger.log 1 }
+          canopy_output :tricky => ->(v){ Logger.log 3 }
           def tricky; end
-          canopy_output :tricky => ->(v){ @@order << 4 }
-          canopy_input  :tricky => ->(){ @@order << 2 }
+          canopy_output :tricky => ->(v){ Logger.log 4 }
+          canopy_input  :tricky => ->(){ Logger.log 2 }
         end
       end
 
       subject! { instance.tricky }
 
       it "shall in correct order" do
-        expect( example_class.order ).to eq([1,2,3,4])
+        expect( Logger.results ).to eq([1,2,3,4])
       end
     end
   end
