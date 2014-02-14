@@ -20,7 +20,7 @@ describe Canopy do
         Class.new do
           include Canopy
 
-          canopy_input  :dangerous_method => ->(input){ raise "Not a string" unless input.is_a? String }
+          canopy_input :dangerous_method => ->(input){ raise "Not a string" unless input.is_a? String }
 
           def dangerous_method(string)
             "Danger " + string
@@ -44,6 +44,32 @@ describe Canopy do
 
       it "should not interfere with other methods" do
         expect( subject.boring_method(nil) ).to eq("Boring ")
+      end
+    end
+
+    context "when called multiple times" do
+      let(:instance){ example_class.new }
+      let(:example_class) do
+        Class.new do
+          include Canopy
+
+          def self.order
+            @@order
+          end
+
+          @@order = []
+
+          canopy_input :tricky => ->(){ @@order << 1 }
+          canopy_input :tricky => ->(){ @@order << 2 }
+
+          def tricky; end
+        end
+      end
+
+      subject! { instance.tricky }
+
+      it "shall in correct order" do
+        expect( example_class.order ).to eq([1,2])
       end
     end
   end
@@ -83,6 +109,32 @@ describe Canopy do
 
       it "should not interfere with other methods" do
         expect( subject.groovy ).to eq("groovy")
+      end
+    end
+
+    context "when called multiple times" do
+      let(:instance){ example_class.new }
+      let(:example_class) do
+        Class.new do
+          include Canopy
+
+          def self.order
+            @@order
+          end
+
+          @@order = []
+
+          canopy_output :tricky => ->(v){ @@order << 1 }
+          canopy_output :tricky => ->(v){ @@order << 2 }
+
+          def tricky; end
+        end
+      end
+
+      subject! { instance.tricky }
+
+      it "shall in correct order" do
+        expect( example_class.order ).to eq([1,2])
       end
     end
   end

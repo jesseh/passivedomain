@@ -6,11 +6,13 @@ module Canopy
 
   module ClassMethods
     def canopy_input(*args)
-      @__canopy_input ||= Interface.new(*args)
+      @__canopy_input ||= Interface.new
+      @__canopy_input.add(*args)
     end
 
     def canopy_output(*args)
-      @__canopy_output ||= Interface.new(*args)
+      @__canopy_output ||= Interface.new
+      @__canopy_output.add(*args)
     end
 
     def canopy_for(method_name)
@@ -49,8 +51,17 @@ module Canopy
   end
 
   class Interface
-    def initialize(opts={})
-      @opts = opts
+    def initialize
+      @store = {}
+    end
+
+    def add(options=nil)
+      return self unless options
+
+      options.each do |method,validator|
+        validator_store method, validator
+      end
+      return self
     end
 
     def match?(method_name)
@@ -58,16 +69,23 @@ module Canopy
     end
 
     def methods
-      opts.keys
+      store.keys
     end
 
     def validate(method_name,*args,&block)
-      validator = opts[method_name]
-      validator.call(*args,&block) if validator
+      validators_for(method_name).each{|v| v.call(*args,&block) }
     end
 
     private
-    attr_reader :target_klass, :opts
+    attr_reader :target_klass, :store
+
+    def validators_for(method_name)
+      store[method_name] || []
+    end
+
+    def validator_store(method_name, validator)
+      store[method_name] = validators_for(method_name) + [validator]
+    end
   end
 
 end
