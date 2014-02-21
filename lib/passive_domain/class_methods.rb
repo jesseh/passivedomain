@@ -31,12 +31,9 @@ module PassiveDomain
 
       # Temporary scaffolding during refactoring to Specificatin
       # Not all these class vars are needed
-      if (inputs[0]).kind_of?(Specification::Interface)
-        self.class_variable_set :@@interface, interface
-      else
-        self.class_variable_set :@@inputs, built_inputs
-        self.class_variable_set :@@input_targets, input_targets
-      end
+      self.class_variable_set :@@interface, interface
+      self.class_variable_set :@@inputs, built_inputs
+      self.class_variable_set :@@input_targets, input_targets
 
 
       attr_reader(*input_targets)
