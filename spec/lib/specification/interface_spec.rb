@@ -4,9 +4,11 @@ require_dependency Rails.root.join('lib', 'specification').to_s
 
 describe Specification::Interface do
   describe "specifiying the interface" do
-    subject { described_class.new([ Specification::Signature.new(:a, [], Specification::Only.string),
-                                    Specification::Signature.new(:b, [], Specification::Only.anything)
-                                  ]) }
+    let(:specs) { [ Specification::Signature.new(:a, [], Specification::Only.string),
+                    Specification::Signature.new(:b, [], Specification::Only.anything)
+                  ] }
+
+    subject { described_class.new(specs) }
     it "is instanciated with a list of method specifications" do
       expect(subject).to be
     end
@@ -36,7 +38,7 @@ describe Specification::Interface do
       expect(subject.valid_response?(:a, 1)).to be_true
     end
 
-    context "non-existant method" do
+    context "non-existant method symbol" do
       it "it returns false for a valid value" do
         expect(subject.valid_response?(:nonexistant, 1)).to be_false
       end
@@ -86,7 +88,7 @@ describe Specification::Interface do
       let(:params) { {nonexisting_method: 'yada'} }
 
       it "raises an error" do
-        expect { subject }.to raise_error(NameError)
+        expect { subject }.to raise_error(KeyError)
       end
     end
   end
@@ -117,4 +119,14 @@ describe Specification::Interface do
     end
   end
 
+  describe "#method_symbols" do
+    let(:value) { 1 }
+    subject { described_class.new([
+                                  Specification::Signature.new(:a, [], Specification::Only.number),
+                                  Specification::Signature.new(:b, [], Specification::Only.number),
+    ]) }
+    it "is a list of symbols" do
+      expect(subject.method_symbols).to match_array([:a, :b])
+    end
+  end
 end

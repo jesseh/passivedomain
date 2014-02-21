@@ -9,7 +9,7 @@ describe Specification::Signature do
   
   describe "instantiating with a list of argument requirements, and a return value requirement" do
 
-    its(:method) { should eq(:a_method) }
+    its(:method_symbol) { should eq(:a_method) }
     its(:arguments) { should eq([Specification::Only.string, Specification::Only.number]) }
     its(:response) { should eq(Specification::Only.symbol) }
 

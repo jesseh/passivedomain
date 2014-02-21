@@ -18,7 +18,12 @@ module Specification
       @instance_of[cls] ||= new(lambda{ |raw_value| raw_value.instance_of?(cls) },
                                "instance of '#{cls.to_s}' required for %s.",
                                lambda { 
-                                  responder = Interface.for_class(cls).responder
+                                  # Scaffolding for refactor to specificatipn module
+                                  if cls.interface
+                                    responder = cls.interface.responder
+                                  else
+                                    responder = PassiveDomain::Interface.for_class(cls).responder
+                                  end
                                   responder.nil? ? nil : cls.new(responder)
                                }) 
     end
@@ -99,7 +104,7 @@ module Specification
 
     def self.instance_array(cls)
       @instance_array ||= {}
-      @instance_array[cls] ||= new(lambda{ |raw_value| raw_value.all? { |x| x.instance_of?(cls) } },
+      @instance_array[cls] ||= new(lambda{ |raw_value| raw_value && raw_value.all? { |x| x.instance_of?(cls) } },
                                     "an array of #{cls} instances required for %s.",
                                   ->{ [] })  # empty array because the expected class may not be easy to instantiate.
     end

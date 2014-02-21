@@ -4,7 +4,7 @@ describe Rig do
 
   it_behaves_like 'value object'
 
-  let (:data) { PassiveDomain::Interface.for_class(described_class).responder({
+  let (:data) { Rig::SOURCE_INTERFACE.responder({
     rig_hash_rate:         HashRate.new(MiningHash.new(1E9)),
     watts_to_mine:         Power.watts(40),
     watts_to_cool:         Power.watts(60),

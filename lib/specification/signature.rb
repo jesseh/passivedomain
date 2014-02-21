@@ -3,10 +3,10 @@ require_dependency Rails.root.join('lib', 'passive_domain').to_s
 module Specification
   class Signature
 
-    attr_reader :method, :arguments, :response
+    attr_reader :method_symbol, :arguments, :response
 
-    def initialize(method, arguments, response)
-      @method = method
+    def initialize(method_symbol, arguments, response)
+      @method_symbol = method_symbol
       @arguments = arguments
       @response = response
     end
@@ -18,6 +18,8 @@ module Specification
     def valid_response?(value)
       response.valid?(value)
     end
+
+    
     
 
   end

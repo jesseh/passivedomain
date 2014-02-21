@@ -10,7 +10,7 @@ module PassiveDomain
   class Interface
     extend ClassMethods
 
-    IGNORED_METHODS = [:inputs, :input_targets, :initialize_attrs,
+    IGNORED_METHODS = [:interface, :inputs, :input_targets, :initialize_attrs,
                        :assert_frozen, :initialized_values]
 
     def self.for_class(cls)

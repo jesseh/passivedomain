@@ -10,6 +10,7 @@
 # which is protected. It's no private because it is useful for testing
 # equality.
 
+require_dependency Rails.root.join('lib', 'specification', 'interface').to_s
 require_relative "builder"
 require_relative "instance_methods"
 
@@ -18,18 +19,34 @@ module PassiveDomain
 
     # Method similar to attr_accessor that defines the initializer for a class and sets up private attr_readers
     def value_object_initializer(*inputs,&block)
-      builder = Builder.new(*inputs,&block)
-      inputs = builder.inputs
-      input_targets = builder.input_targets
+      # Temporary scaffolding during refactoring to Specification
+      if (inputs[0]).kind_of?(Specification::Interface)
+        interface = inputs[0]
+      else
+        builder = Builder.new(*inputs,&block)
+        built_inputs = builder.inputs
+        input_targets = builder.input_targets
+        interface = nil
+      end
 
-      self.class_variable_set :@@inputs, inputs
-      self.class_variable_set :@@input_targets, input_targets
+      # Temporary scaffolding during refactoring to Specificatin
+      # Not all these class vars are needed
+      if (inputs[0]).kind_of?(Specification::Interface)
+        self.class_variable_set :@@interface, interface
+      else
+        self.class_variable_set :@@inputs, built_inputs
+        self.class_variable_set :@@input_targets, input_targets
+      end
 
 
       attr_reader(*input_targets)
       private(*input_targets)
 
       include InstanceMethods
+    end
+
+    def interface
+      self.class_variable_get(:@@interface)
     end
 
     def inputs
@@ -41,7 +58,13 @@ module PassiveDomain
     end
 
     def stand_in
-      self.new(Interface.new(self).responder)
+      #TODO simplify after refactor to specification
+      if self.interface
+        responder = self.interface.responder
+      else
+        responder = Interface.new(self).responder
+      end
+      self.new(responder)
     end
 
   end
