@@ -7,8 +7,8 @@ describe Specification::Interface do
     let(:specs) { [ Specification::Signature.new(:a, [], Specification::Only.string),
                     Specification::Signature.new(:b, [], Specification::Only.anything)
                   ] }
-
     subject { described_class.new(specs) }
+
     it "is instanciated with a list of method specifications" do
       expect(subject).to be
     end
@@ -45,15 +45,15 @@ describe Specification::Interface do
     end
   end
 
-  describe "#valid_method?" do
+  describe "#valid_method_name?" do
     subject { described_class.new([Specification::Signature.new(:a, [], Specification::Only.number) ]) }
 
     it "it returns false for an invalid method" do
-      expect(subject.valid_method?(:a)).to be_true
+      expect(subject.valid_method_name?(:a)).to be_true
     end
 
     it "it returns true for a valid method" do
-      expect(subject.valid_method?(:nope)).to be_false
+      expect(subject.valid_method_name?(:nope)).to be_false
     end
   end
 

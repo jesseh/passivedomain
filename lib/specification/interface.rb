@@ -10,10 +10,10 @@ module Specification
     end
 
     def valid_response?(method_symbol, response)
-      valid_method?(method_symbol) && index.fetch(method_symbol).valid_response?(response)
+      valid_method_name?(method_symbol) && index.fetch(method_symbol).valid_response?(response)
     end
 
-    def valid_method?(method_symbol)
+    def valid_method_name?(method_symbol)
       index.keys.include?(method_symbol)
     end
 
@@ -41,7 +41,7 @@ module Specification
     def responder_params(overrides)
       default_responder_params.tap do |params|
         overrides.each do |k, v|
-          raise(KeyError, "Parameter '#{k}' has no message in the interface.") unless valid_method?(k)
+          raise(KeyError, "Parameter '#{k}' has no message in the interface.") unless valid_method_name?(k)
           params[k] = v
         end
       end
