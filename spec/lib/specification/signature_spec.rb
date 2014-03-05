@@ -25,6 +25,41 @@ describe Specification::Signature do
     end
   end
 
+  describe "#valid_arguments?" do
+    let(:only_arg1) { double(:only_arg1, :valid? => true) }
+    let(:only_arg2) { double(:only_arg2, :valid? => true) }
+    let(:only_rv) { double(:only_rv, :valid? => true) }
+
+    subject { described_class.new(:a_method, [only_arg1, only_arg2], only_rv) }
+
+    context "all arguments are valid" do
+      it "is true" do
+        expect(subject.valid_arguments?(['a', 'b'])).to be_true
+      end
+    end
+
+    context "insufficient arguments" do
+      it "is false" do
+        expect(subject.valid_arguments?(['a'])).to be_false
+      end
+    end
+
+    context "too many arguments" do
+      it "is false" do
+        expect(subject.valid_arguments?(['a', 'b', 'c'])).to be_false
+      end
+    end
+
+    context "invalid argument" do
+      let(:only_arg1) { double(:only_arg1, :valid? => false) }
+      it "is false" do
+        expect(subject.valid_arguments?(['invalid', 'b'])).to be_false
+      end
+    end
+
+
+  end
+
   describe "#sample_response" do
     let(:only) { double(:only, :standin_value => :response_from_only) }
 

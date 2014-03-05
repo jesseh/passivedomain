@@ -57,6 +57,40 @@ describe Specification::Interface do
     end
   end
 
+  describe "#valid_send?" do
+    let(:target) { Object.new }
+    subject { described_class.new([Specification::Signature.new(:a, [Specification::Only.string], Specification::Only.number) ]) }
+
+    it "is true for a valid send" do
+      target.define_singleton_method(:a){ |some_string| 5 }
+      expect(subject.valid_send?(:a, target, ['an arg'])).to be_true
+    end
+
+    it "is false when the method is missing" do
+      expect(subject.valid_send?(:a, target, ['an arg'])).to be_false
+    end
+
+    it "is false when the method exists, but is not in the spec" do
+      target.define_singleton_method(:b){ |some_string| 5 }
+      expect(subject.valid_send?(:b, target, ['an arg'])).to be_false
+    end
+
+    it "is false when args are wrong" do
+      target.define_singleton_method(:a){ |some_string| 5 }
+      expect(subject.valid_send?(:a, target, [2])).to be_false
+    end
+
+    it "is false when args are wrong" do
+      target.define_singleton_method(:a){ |some_string| 5 }
+      expect(subject.valid_send?(:a, target, [2])).to be_false
+    end
+
+    it "is false when the return value is wrong" do
+      target.define_singleton_method(:a){ |some_string| 'wrong return value' }
+      expect(subject.valid_send?(:a, target, ['an arg'])).to be_false
+    end
+  end
+
   describe "stand-in object that responds to the interface" do
     subject { specification = described_class.new([Specification::Signature.new(:an_attr, [], Specification::Only.number) ])
               specification.responder(params) }
@@ -95,6 +129,8 @@ describe Specification::Interface do
 
 
   describe "check that an object responds according to the interface" do
+    subject { described_class.new([Specification::Signature.new(:an_attr, [], Specification::Only.number) ]) }
+
     let(:test_responder) { Object.new }
 
     context "does conform" do

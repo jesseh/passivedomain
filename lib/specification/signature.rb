@@ -19,8 +19,14 @@ module Specification
       response.valid?(value)
     end
 
-    
-    
+    def valid_arguments?(in_arguments)
+      return false unless in_arguments.length == arguments.length
+
+      arguments.each_with_index do |argument, i|
+        return false unless argument.valid?(in_arguments[i])
+      end
+      true
+    end
 
   end
 end

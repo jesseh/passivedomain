@@ -10,7 +10,8 @@ module Specification
     end
 
     def valid_response?(method_symbol, response)
-      valid_method_name?(method_symbol) && index.fetch(method_symbol).valid_response?(response)
+      valid_method_name?(method_symbol) &&
+        signature_for(method_symbol).valid_response?(response)
     end
 
     def valid_method_name?(method_symbol)
@@ -25,10 +26,28 @@ module Specification
       end
     end
 
+    def valid_send?(method_symbol, target, arguments=[])
+      return false unless valid_method_name?(method_symbol)
+      return false unless target.respond_to?(method_symbol)
+
+      signature = signature_for(method_symbol)
+
+      return false unless signature.valid_arguments?(arguments)
+
+      response = target.send(method_symbol, arguments)
+      return false unless signature.valid_response?(response)
+
+      true
+    end
+
 
     private
 
     attr_reader :index
+
+    def signature_for(method_symbol)
+      index.fetch(method_symbol)
+    end
 
     def build_index(signatures)
       @index ||= signatures.inject({}) do |collector, signature| 
