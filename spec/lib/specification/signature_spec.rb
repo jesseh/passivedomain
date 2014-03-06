@@ -2,16 +2,33 @@ require 'spec_helper'
 require_dependency Rails.root.join('lib', 'specification').to_s
 
 describe Specification::Signature do
-  subject { described_class.new(:a_method, 
-                                [Specification::Only.string, Specification::Only.number],
-                                Specification::Only.symbol
-                               ) }
-  
-  describe "instantiating with a list of argument requirements, and a return value requirement" do
+  describe "instantiating" do
+    context "with a list of argument requirements, and a return value requirement" do
+      subject { described_class.new(:a_method, 
+                                  [Specification::Only.string, Specification::Only.number],
+                                  Specification::Only.symbol
+                                 ) }
 
-    its(:method_symbol) { should eq(:a_method) }
-    its(:arguments) { should eq([Specification::Only.string, Specification::Only.number]) }
-    its(:response) { should eq(Specification::Only.symbol) }
+      its(:method_symbol) { should eq(:a_method) }
+      its(:arguments) { should eq([Specification::Only.string, Specification::Only.number]) }
+      its(:response) { should eq(Specification::Only.symbol) }
+    end
+
+    context "with no return value" do
+      subject { described_class.new(:a_method, []) }
+
+      its(:method_symbol) { should eq(:a_method) }
+      its(:arguments) { should eq([]) }
+      its(:response) { should eq(nil) }
+    end
+
+    context "with arguments nor return value" do
+      subject { described_class.new(:a_method) }
+
+      its(:method_symbol) { should eq(:a_method) }
+      its(:arguments) { should eq([]) }
+      its(:response) { should eq(nil) }
+    end
 
   end
     
@@ -70,6 +87,15 @@ describe Specification::Signature do
     end
   end
 
-end
+  describe "#standin_arguments" do
+    let(:only_1) { double(:only_1, :standin_value => :arg_1) }
+    let(:only_2) { double(:only_2, :standin_value => :arg_2) }
 
+    subject { described_class.new(:a_method, [only_1, only_2]) }
+
+    it "generates standin arguments based on the only requirements" do
+      expect(subject.standin_arguments).to eq [:arg_1, :arg_2] 
+    end
+  end
+end
 

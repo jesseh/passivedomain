@@ -9,21 +9,13 @@ module Specification
       @index.keys
     end
 
-    def valid_response?(method_symbol, response)
-      valid_method_name?(method_symbol) &&
-        signature_for(method_symbol).valid_response?(response)
-    end
-
     def valid_method_name?(method_symbol)
       index.keys.include?(method_symbol)
     end
 
-    def responder(override_params={})
-      Class.new.tap do |instance|
-        responder_params(override_params).each do |method_symbol, value| 
-          instance.define_singleton_method(method_symbol) { value }
-        end
-      end
+    def valid_response?(method_symbol, response)
+      valid_method_name?(method_symbol) &&
+        signature_for(method_symbol).valid_response?(response)
     end
 
     def valid_send?(method_symbol, target, arguments=[])
@@ -34,12 +26,25 @@ module Specification
 
       return false unless signature.valid_arguments?(arguments)
 
-      response = target.send(method_symbol, arguments)
+      response = target.send(method_symbol, *arguments)
       return false unless signature.valid_response?(response)
 
       true
     end
 
+    def responder(override_params={})
+      Class.new.tap do |instance|
+        responder_params(override_params).each do |method_symbol, value| 
+          instance.define_singleton_method(method_symbol) { |*args| value }
+        end
+      end
+    end
+
+    def conforms?(subject)
+      method_symbols.map do |method_symbol|
+        valid_send?(method_symbol, subject, signature_for(method_symbol).standin_arguments)
+      end.all?
+    end
 
     private
 

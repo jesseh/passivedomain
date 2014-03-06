@@ -5,7 +5,7 @@ module Specification
 
     attr_reader :method_symbol, :arguments, :response
 
-    def initialize(method_symbol, arguments, response)
+    def initialize(method_symbol, arguments=[], response=nil)
       @method_symbol = method_symbol
       @arguments = arguments
       @response = response
@@ -26,6 +26,10 @@ module Specification
         return false unless argument.valid?(in_arguments[i])
       end
       true
+    end
+
+    def standin_arguments
+      arguments.map(&:standin_value)
     end
 
   end

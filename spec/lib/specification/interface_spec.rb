@@ -43,6 +43,8 @@ describe Specification::Interface do
         expect(subject.valid_response?(:nonexistant, 1)).to be_false
       end
     end
+
+    xit "does not check return value if it is unspecified"
   end
 
   describe "#valid_method_name?" do
@@ -89,6 +91,8 @@ describe Specification::Interface do
       target.define_singleton_method(:a){ |some_string| 'wrong return value' }
       expect(subject.valid_send?(:a, target, ['an arg'])).to be_false
     end
+
+    xit "does not check return value if it is unspecified"
   end
 
   describe "stand-in object that responds to the interface" do
@@ -129,29 +133,24 @@ describe Specification::Interface do
 
 
   describe "check that an object responds according to the interface" do
-    subject { described_class.new([Specification::Signature.new(:an_attr, [], Specification::Only.number) ]) }
 
+    let(:instance) { described_class.new([Specification::Signature.new(:an_attr, [], Specification::Only.number) ]) }
     let(:test_responder) { Object.new }
+    subject { instance.conforms?(test_responder) }
 
     context "does conform" do
       before { test_responder.define_singleton_method(:an_attr){ 5 } }
-      xit "returns true" do
-        expect(subject.conforms?(test_responder)).to be_true
-      end
+      it { should be_true }
     end
 
-    context "non-conforming value" do
+    context "non-conforming return value" do
       before { test_responder.define_singleton_method(:an_attr){ 'wrong' } }
-      xit "returns false" do
-        expect(subject.conforms?(test_responder)).to be_false
-      end
+      xit { should be_false }
     end
 
     context "non-conforming method" do
       before { test_responder.define_singleton_method(:wrong_attr) { 10 } }
-      xit "returns false" do
-        expect(subject.conforms?(test_responder)).to be_false
-      end
+      xit { should be_false }
     end
   end
 
