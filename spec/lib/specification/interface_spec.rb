@@ -1,11 +1,12 @@
 require "spec_helper"
 require_dependency Rails.root.join('lib', 'specification').to_s
+require_dependency Rails.root.join('lib', 'specification', 'signatures', 'query').to_s
 
 
 describe Specification::Interface do
   describe "specifiying the interface" do
-    let(:specs) { [ Specification::Signature.new(:a, [], Specification::Only.string),
-                    Specification::Signature.new(:b, [], Specification::Only.anything)
+    let(:specs) { [ Specification::Signatures::Query.new(:a, [], Specification::Only.string),
+                    Specification::Signatures::Query.new(:b, [], Specification::Only.anything)
                   ] }
     subject { described_class.new(specs) }
 
@@ -14,8 +15,8 @@ describe Specification::Interface do
     end
 
     context "multiple signagures for one method" do
-      subject { described_class.new([ Specification::Signature.new(:a, [], Specification::Only.string),
-                                      Specification::Signature.new(:a, [], Specification::Only.anything)
+      subject { described_class.new([ Specification::Signatures::Query.new(:a, [], Specification::Only.string),
+                                      Specification::Signatures::Query.new(:a, [], Specification::Only.anything)
                                     ]) }
 
       it "should raise an error" do
@@ -28,7 +29,7 @@ describe Specification::Interface do
 
   describe "#valid_response?" do
     let(:value) { 1 }
-    subject { described_class.new([Specification::Signature.new(:a, [], Specification::Only.number) ]) }
+    subject { described_class.new([Specification::Signatures::Query.new(:a, [], Specification::Only.number) ]) }
 
     it "it returns false for an invalid value" do
       expect(subject.valid_response?(:a, 'a')).to be_false
@@ -46,7 +47,7 @@ describe Specification::Interface do
   end
 
   describe "#valid_method_name?" do
-    subject { described_class.new([Specification::Signature.new(:a, [], Specification::Only.number) ]) }
+    subject { described_class.new([Specification::Signatures::Query.new(:a, [], Specification::Only.number) ]) }
 
     it "it returns false for an invalid method" do
       expect(subject.valid_method_name?(:a)).to be_true
@@ -59,7 +60,7 @@ describe Specification::Interface do
 
   describe "#valid_send?" do
     let(:target) { Object.new }
-    let(:signature) { Specification::Signature.new(:a, [Specification::Only.string], Specification::Only.number) }
+    let(:signature) { Specification::Signatures::Query.new(:a, [Specification::Only.string], Specification::Only.number) }
     subject { described_class.new([ signature ]) }
 
     it "is true for a valid send" do
@@ -107,7 +108,7 @@ describe Specification::Interface do
   end
 
   describe "stand-in object that responds to the interface" do
-    subject { specification = described_class.new([Specification::Signature.new(:an_attr, [], Specification::Only.number) ])
+    subject { specification = described_class.new([Specification::Signatures::Query.new(:an_attr, [], Specification::Only.number) ])
               specification.responder(params) }
 
     context "no supplied params" do
@@ -145,7 +146,7 @@ describe Specification::Interface do
 
   describe "check that an object responds according to the interface" do
 
-    let(:instance) { described_class.new([Specification::Signature.new(:an_attr, [], Specification::Only.number) ]) }
+    let(:instance) { described_class.new([Specification::Signatures::Query.new(:an_attr, [], Specification::Only.number) ]) }
     let(:test_responder) { Object.new }
     subject { instance.conforms?(test_responder) }
 
@@ -168,8 +169,8 @@ describe Specification::Interface do
   describe "#method_symbols" do
     let(:value) { 1 }
     subject { described_class.new([
-                                  Specification::Signature.new(:a, [], Specification::Only.number),
-                                  Specification::Signature.new(:b, [], Specification::Only.number),
+                                  Specification::Signatures::Query.new(:a, [], Specification::Only.number),
+                                  Specification::Signatures::Query.new(:b, [], Specification::Only.number),
     ]) }
     it "is a list of symbols" do
       expect(subject.method_symbols).to match_array([:a, :b])

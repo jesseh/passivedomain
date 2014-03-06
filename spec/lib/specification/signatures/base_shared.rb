@@ -1,7 +1,7 @@
 require 'spec_helper'
 require_dependency Rails.root.join('lib', 'specification').to_s
 
-describe Specification::Signature do
+shared_examples "a signature" do
   describe "instantiating" do
     context "with a list of argument requirements, and a return value requirement" do
       subject { described_class.new(:a_method, 

@@ -1,6 +1,7 @@
 require 'spec_helper'
 require_dependency Rails.root.join('lib', 'passive_domain').to_s
 require_dependency Rails.root.join('lib', 'specification').to_s
+require_dependency Rails.root.join('lib', 'specification', 'signatures', 'query').to_s
 
 describe PassiveDomain::InstanceMethods do
   context "using passive domain interface" do
@@ -34,7 +35,7 @@ describe PassiveDomain::InstanceMethods do
 
       value_object_initializer(
         Specification::Interface.new(
-          [ Specification::Signature.new(:foo, [], Specification::Only.anything ) ]
+          [ Specification::Signatures::Query.new(:foo, [], Specification::Only.anything ) ]
         )
       )
         
