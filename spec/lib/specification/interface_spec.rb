@@ -43,8 +43,6 @@ describe Specification::Interface do
         expect(subject.valid_response?(:nonexistant, 1)).to be_false
       end
     end
-
-    xit "does not check return value if it is unspecified"
   end
 
   describe "#valid_method_name?" do
@@ -61,38 +59,51 @@ describe Specification::Interface do
 
   describe "#valid_send?" do
     let(:target) { Object.new }
-    subject { described_class.new([Specification::Signature.new(:a, [Specification::Only.string], Specification::Only.number) ]) }
+    let(:signature) { Specification::Signature.new(:a, [Specification::Only.string], Specification::Only.number) }
+    subject { described_class.new([ signature ]) }
 
     it "is true for a valid send" do
       target.define_singleton_method(:a){ |some_string| 5 }
-      expect(subject.valid_send?(:a, target, ['an arg'])).to be_true
+      expect(subject.valid_send?(target, :a, ['an arg'])).to be_true
     end
 
     it "is false when the method is missing" do
-      expect(subject.valid_send?(:a, target, ['an arg'])).to be_false
+      expect(subject.valid_send?(target, :a, ['an arg'])).to be_false
     end
 
     it "is false when the method exists, but is not in the spec" do
       target.define_singleton_method(:b){ |some_string| 5 }
-      expect(subject.valid_send?(:b, target, ['an arg'])).to be_false
+      expect(subject.valid_send?(target, :b, ['an arg'])).to be_false
     end
 
     it "is false when args are wrong" do
       target.define_singleton_method(:a){ |some_string| 5 }
-      expect(subject.valid_send?(:a, target, [2])).to be_false
+      expect(subject.valid_send?(target, :a, [2])).to be_false
     end
 
     it "is false when args are wrong" do
       target.define_singleton_method(:a){ |some_string| 5 }
-      expect(subject.valid_send?(:a, target, [2])).to be_false
+      expect(subject.valid_send?(target, :a, [2])).to be_false
     end
 
     it "is false when the return value is wrong" do
       target.define_singleton_method(:a){ |some_string| 'wrong return value' }
-      expect(subject.valid_send?(:a, target, ['an arg'])).to be_false
+      expect(subject.valid_send?(target, :a, ['an arg'])).to be_false
     end
 
-    xit "does not check return value if it is unspecified"
+    context "no return value specified" do
+      let(:signature) { Specification::Signature.new(:a, []) }
+
+      it "does not check return value if it is unspecified" do
+        target.instance_eval do
+          @checked = false
+          def a(some_string); @checked = true; end
+          def checked?; @checked; end
+        end
+        subject.valid_send?(target, :a, [])
+        expect(target.checked?).to be_false
+      end
+    end
   end
 
   describe "stand-in object that responds to the interface" do
@@ -145,12 +156,12 @@ describe Specification::Interface do
 
     context "non-conforming return value" do
       before { test_responder.define_singleton_method(:an_attr){ 'wrong' } }
-      xit { should be_false }
+      it { should be_false }
     end
 
     context "non-conforming method" do
       before { test_responder.define_singleton_method(:wrong_attr) { 10 } }
-      xit { should be_false }
+      it { should be_false }
     end
   end
 

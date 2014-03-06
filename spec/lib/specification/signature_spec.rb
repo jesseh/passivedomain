@@ -32,6 +32,18 @@ describe Specification::Signature do
 
   end
     
+  describe "#response_defined?" do
+    it "is true when defined" do
+      instance = described_class.new(:a_method, [], double(:rv_only))
+      expect(instance.response_defined?).to be_true
+    end
+
+    it "is false when not defined" do
+      instance = described_class.new(:a_method, [])
+      expect(instance.response_defined?).to be_false
+    end
+  end
+
   describe "#valid_response?" do
     let(:only) { double(:only, :valid? => :response_from_only) }
 

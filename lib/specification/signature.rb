@@ -15,6 +15,10 @@ module Specification
       response.standin_value
     end
 
+    def response_defined?
+      !response.nil?
+    end
+
     def valid_response?(value)
       response.valid?(value)
     end

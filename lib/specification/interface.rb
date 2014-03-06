@@ -18,7 +18,7 @@ module Specification
         signature_for(method_symbol).valid_response?(response)
     end
 
-    def valid_send?(method_symbol, target, arguments=[])
+    def valid_send?(target, method_symbol, arguments=[])
       return false unless valid_method_name?(method_symbol)
       return false unless target.respond_to?(method_symbol)
 
@@ -26,8 +26,10 @@ module Specification
 
       return false unless signature.valid_arguments?(arguments)
 
-      response = target.send(method_symbol, *arguments)
-      return false unless signature.valid_response?(response)
+      if signature.response_defined?
+        response = target.send(method_symbol, *arguments)
+        return false unless signature.valid_response?(response)
+      end
 
       true
     end
@@ -42,7 +44,7 @@ module Specification
 
     def conforms?(subject)
       method_symbols.map do |method_symbol|
-        valid_send?(method_symbol, subject, signature_for(method_symbol).standin_arguments)
+        valid_send?(subject, method_symbol, signature_for(method_symbol).standin_arguments)
       end.all?
     end
 
