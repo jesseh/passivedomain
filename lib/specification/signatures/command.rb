@@ -5,6 +5,17 @@ module Specification
 
     class Command
       include Signatures::Base
+
+      def initialize(*args)
+        @idempotent = false
+        super(*args)
+      end
+
+      attr_writer :idempotent
+
+      def idempotent?
+        @idempotent
+      end
     end
 
   end

@@ -5,6 +5,10 @@ module Specification
 
     class Query
       include Signatures::Base
+
+      def idempotent?
+        true
+      end
     end
 
   end

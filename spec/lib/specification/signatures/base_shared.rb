@@ -109,5 +109,11 @@ shared_examples "a signature" do
       expect(subject.standin_arguments).to eq [:arg_1, :arg_2] 
     end
   end
+
+  describe "#idempotent?" do
+    it "should be declared" do
+      expect { subject.idempotent? }.not_to raise_error
+    end
+  end
 end
 

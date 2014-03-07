@@ -3,6 +3,19 @@ require_dependency Rails.root.join('lib', 'specification', 'signatures', 'comman
 require_dependency Rails.root.join('spec', 'lib', 'specification', 'signatures', 'base_shared').to_s
 
 describe Specification::Signatures::Command do
+  subject do 
+    described_class.new(:a_method, 
+                        [Specification::Only.string, Specification::Only.number],
+                        Specification::Only.symbol)
+  end
+
   it_behaves_like "a signature"
+
+  its(:idempotent?) { should be_false }
+
+  describe "#idempotent" do
+    before { subject.idempotent = true }
+    its(:idempotent?) { should be_true }
+  end
 end
 

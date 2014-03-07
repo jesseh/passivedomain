@@ -26,7 +26,7 @@ module Specification
 
       return false unless signature.valid_arguments?(arguments)
 
-      if signature.response_defined?
+      if signature.idempotent?
         response = target.send(method_symbol, *arguments)
         return false unless signature.valid_response?(response)
       end

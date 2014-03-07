@@ -92,10 +92,10 @@ describe Specification::Interface do
       expect(subject.valid_send?(target, :a, ['an arg'])).to be_false
     end
 
-    context "no return value specified" do
-      let(:signature) { Specification::Signature.new(:a, []) }
+    context "method not idempotent" do
+      let(:signature) { Specification::Signatures::Command.new(:a, []) }
 
-      it "does not check return value if it is unspecified" do
+      it "does not check return value" do
         target.instance_eval do
           @checked = false
           def a(some_string); @checked = true; end
