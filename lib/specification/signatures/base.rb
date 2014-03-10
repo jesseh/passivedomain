@@ -13,7 +13,7 @@ module Specification
       end
 
       def sample_response
-        response.standin_value
+        response.standin_value if response_defined?
       end
 
       def response_defined?
@@ -21,7 +21,7 @@ module Specification
       end
 
       def valid_response?(value)
-        response.valid?(value)
+        !response_defined? || response.valid?(value)
       end
 
       def valid_arguments?(in_arguments)
@@ -35,6 +35,10 @@ module Specification
 
       def standin_arguments
         arguments.map(&:standin_value)
+      end
+
+      def idempotent?
+        raise NotImplementedError
       end
 
     end

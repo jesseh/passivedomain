@@ -28,6 +28,13 @@ module Specification
                                }) 
     end
 
+    def self.interface(interface)
+      @interface ||= {}
+      @interface[interface] ||= new(lambda{ |raw_value| interface.conforms?(raw_value) },
+                                        "%s must conform to the '#{interface}'.",
+                                       interface.responder)
+    end
+
     def self.number
       @number ||= new(lambda{ |raw_value| raw_value.kind_of?(Numeric) },
                       "numeric type required for %s.",

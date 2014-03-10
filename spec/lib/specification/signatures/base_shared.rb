@@ -45,12 +45,22 @@ shared_examples "a signature" do
   end
 
   describe "#valid_response?" do
-    let(:only) { double(:only, :valid? => :response_from_only) }
+    context "undefined response" do
+      subject { described_class.new(:a_method, []) }
 
-    subject { described_class.new(:a_method, [], only) }
+      it "is true" do
+        expect(subject.valid_response?('yada')).to be_true
+      end
+    end
 
-    it "delegates to the response only object" do
-      expect(subject.valid_response?('yada')).to eq :response_from_only
+    context "defined response" do
+      let(:only) { double(:only, :valid? => :response_from_only) }
+
+      subject { described_class.new(:a_method, [], only) }
+
+      it "delegates to the response only object" do
+        expect(subject.valid_response?('yada')).to eq :response_from_only
+      end
     end
   end
 

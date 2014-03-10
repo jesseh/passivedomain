@@ -6,9 +6,9 @@ module Specification
     class Command
       include Signatures::Base
 
-      def initialize(*args)
+      def initialize(*args, &block)
         @idempotent = false
-        super(*args)
+        super
       end
 
       attr_writer :idempotent
