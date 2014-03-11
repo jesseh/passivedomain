@@ -4,13 +4,13 @@ module Specification
   module Signatures
     module Base
 
-      attr_reader :method_symbol, :arguments, :response
-
       def initialize(method_symbol, arguments=[], response=nil)
         @method_symbol = method_symbol
         @arguments = arguments
         @response = response
       end
+
+      attr_reader :method_symbol, :arguments, :response
 
       def sample_response
         response.standin_value if response_defined?
