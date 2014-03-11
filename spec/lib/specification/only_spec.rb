@@ -49,14 +49,14 @@ describe Specification::Only do
         it { expect(subject).to eq v2_of_subject }
       end
 
-      context "valid object" do
-        before { test_object.define_singleton_method(:a) { } }
-
-        it { expect(subject.valid?(test_object)).to be_true }
+      it "is true with a valid input object" do
+        test_object.define_singleton_method(:a) { }
+        expect(subject.valid?(test_object)).to be_true
       end
 
-      context "invalid input" do
-        it { expect(subject.valid?(test_object)).to be_false }
+      it "is false with an invalid input object" do
+        test_object.define_singleton_method(:wrong) { }
+        expect(subject.valid?(test_object)).to be_false
       end
     end
 
