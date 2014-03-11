@@ -1,3 +1,9 @@
+# Plan: 
+# - Unify the lambda / -> syntax
+# - Replace the only initializer with something that's more clear about the
+# intent of each part.
+# - Create an 'only' registry to replace the ||= memoization.
+
 require_dependency Rails.root.join('lib', 'passive_domain').to_s
 
 module Specification
