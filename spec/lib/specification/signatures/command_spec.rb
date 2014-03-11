@@ -9,7 +9,7 @@ describe Specification::Signatures::Command do
                         Specification::Only.symbol)
   end
 
-  it_behaves_like "a signature"
+  it_behaves_like "an instance method signature"
 
   its(:idempotent?) { should be_false }
 

@@ -1,0 +1,19 @@
+require_dependency Rails.root.join('lib', 'specification', 'signatures', 'base').to_s
+
+module Specification
+  module Signatures
+
+    class Initializer
+      include Signatures::Base
+
+      def initialize(arguments=[])
+        super(:initialize, arguments, nil)
+      end
+
+      def idempotent?
+        false
+      end
+    end
+
+  end
+end

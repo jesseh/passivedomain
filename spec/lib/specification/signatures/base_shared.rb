@@ -2,6 +2,19 @@ require 'spec_helper'
 require_dependency Rails.root.join('lib', 'specification').to_s
 
 shared_examples "a signature" do
+  it("has a method symbol")          { expect(subject.method_symbol).to be }
+  it("has arguments")                { expect(subject.arguments).to be }
+  it("response to response")         { expect { subject.response }.to_not raise_error }
+  it("responds to response_defined?"){ expect { subject.response_defined? }.to_not raise_error }
+  it("responds to valid_response?")  { expect { subject.valid_response?('yada') }.to_not raise_error }
+  it("responds to valid_arguments?") { expect { subject.valid_arguments?([1,2]) }.to_not raise_error }
+  it("responds to standin_arguments"){ expect { subject.standin_arguments }.to_not raise_error }
+  it("idempotent?")                  { expect { subject.idempotent? }.to_not raise_error }
+end
+
+shared_examples "an instance method signature" do
+  it_behaves_like "a signature"
+
   describe "instantiating" do
     context "with a list of argument requirements, and a return value requirement" do
       subject { described_class.new(:a_method, 

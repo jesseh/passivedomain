@@ -23,8 +23,6 @@ describe Specification::Interface do
         expect{ subject }.to raise_error(ArgumentError)
       end
     end
-
-
   end
 
   describe "#valid_response?" do
