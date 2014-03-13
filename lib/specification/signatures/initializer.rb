@@ -6,8 +6,8 @@ module Specification
     class Initializer
       include Signatures::Base
 
-      def initialize(arguments=[])
-        super(:initialize, arguments, nil)
+      def initialize(arguments=[], optional_arg_count=0)
+        super(:initialize, arguments, nil, optional_arg_count)
       end
 
       def idempotent?

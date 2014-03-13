@@ -3,8 +3,6 @@ require_dependency Rails.root.join('lib', 'specification').to_s
 
 shared_examples "a signature" do
   it("has a method symbol")          { expect(subject.method_symbol).to be }
-  it("has arguments")                { expect(subject.arguments).to be }
-  it("response to response")         { expect { subject.response }.to_not raise_error }
   it("responds to response_defined?"){ expect { subject.response_defined? }.to_not raise_error }
   it("responds to valid_response?")  { expect { subject.valid_response?('yada') }.to_not raise_error }
   it("responds to valid_arguments?") { expect { subject.valid_arguments?([1,2]) }.to_not raise_error }
@@ -19,30 +17,23 @@ shared_examples "an instance method signature" do
     context "with a list of argument requirements, and a return value requirement" do
       subject { described_class.new(:a_method, 
                                   [Specification::Only.string, Specification::Only.number],
-                                  Specification::Only.symbol
+                                  Specification::Only.symbol,
+                                  1
                                  ) }
 
       its(:method_symbol) { should eq(:a_method) }
-      its(:arguments) { should eq([Specification::Only.string, Specification::Only.number]) }
-      its(:response) { should eq(Specification::Only.symbol) }
     end
 
-    context "with no return value" do
-      subject { described_class.new(:a_method, []) }
-
-      its(:method_symbol) { should eq(:a_method) }
-      its(:arguments) { should eq([]) }
-      its(:response) { should eq(nil) }
+    context "valid arguments" do
+      it("just a method symbol")    { expect { described_class.new(:a) }.to_not raise_error }
+      it("with args")               { expect { described_class.new(:a, []) }.to_not raise_error }
+      it("with return value")       { expect { described_class.new(:a, [], double(:only)) }.to_not raise_error }
+      it("with optional args count"){ expect { described_class.new(:a, [double(:arg)], double(:only), 1) }.to_not raise_error }
     end
 
-    context "with arguments nor return value" do
-      subject { described_class.new(:a_method) }
-
-      its(:method_symbol) { should eq(:a_method) }
-      its(:arguments) { should eq([]) }
-      its(:response) { should eq(nil) }
+    context "invalid arguments" do
+      it("with optional args count"){ expect { described_class.new(:a, [], nil, 1) }.to raise_error }
     end
-
   end
     
   describe "#response_defined?" do
@@ -80,36 +71,38 @@ shared_examples "an instance method signature" do
   describe "#valid_arguments?" do
     let(:only_arg1) { double(:only_arg1, :valid? => true) }
     let(:only_arg2) { double(:only_arg2, :valid? => true) }
+    let(:only_arg3) { double(:only_arg3, :valid? => true) }
     let(:only_rv) { double(:only_rv, :valid? => true) }
 
-    subject { described_class.new(:a_method, [only_arg1, only_arg2], only_rv) }
+    subject { described_class.new(:a_method, [only_arg1, only_arg2, only_arg3], only_rv, 1) }
 
-    context "all arguments are valid" do
-      it "is true" do
+    context "correct arguments" do
+      it "required and optional supplied" do
+        expect(subject.valid_arguments?(['a', 'b', 'c'])).to be_true
+      end
+      it "only required supplied" do
         expect(subject.valid_arguments?(['a', 'b'])).to be_true
       end
-    end
-
-    context "insufficient arguments" do
-      it "is false" do
+      it "insufficient supplied" do
         expect(subject.valid_arguments?(['a'])).to be_false
+      end
+      it "too many supplied" do
+        expect(subject.valid_arguments?(['a', 'b', 'c', 'd'])).to be_false
       end
     end
 
-    context "too many arguments" do
-      it "is false" do
-        expect(subject.valid_arguments?(['a', 'b', 'c'])).to be_false
+    context "with no arguments initialized" do
+      subject { described_class.new(:a_method) }
+      it "checks the arguments" do
+        expect(subject.valid_arguments?([])).to be_true
+        expect(subject.valid_arguments?(['a'])).to be_false
       end
     end
 
     context "invalid argument" do
       let(:only_arg1) { double(:only_arg1, :valid? => false) }
-      it "is false" do
-        expect(subject.valid_arguments?(['invalid', 'b'])).to be_false
-      end
+      it("is false") { expect(subject.valid_arguments?(['invalid', 'b'])).to be_false }
     end
-
-
   end
 
   describe "#sample_response" do

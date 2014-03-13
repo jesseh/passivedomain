@@ -4,13 +4,20 @@ module Specification
   module Signatures
     module Base
 
-      def initialize(method_symbol, arguments=[], response=nil)
+      def initialize(method_symbol, arguments=[], response=nil, optional_arg_count=0)
+        if optional_arg_count > arguments.size
+          raise ArgumentError, "optional argument count (#{optional_arg_count}) exceeds length of argument list (#{arguments.size})"
+        end
+
         @method_symbol = method_symbol
         @arguments = arguments
         @response = response
+        @optional_arg_count = optional_arg_count
       end
 
-      attr_reader :method_symbol, :arguments, :response
+      def method_symbol
+        @method_symbol
+      end
 
       def sample_response
         response.standin_value if response_defined?
@@ -25,10 +32,10 @@ module Specification
       end
 
       def valid_arguments?(in_arguments)
-        return false unless in_arguments.length == arguments.length
+        return false unless valid_arity?(in_arguments.length)
 
-        arguments.each_with_index do |argument, i|
-          return false unless argument.valid?(in_arguments[i])
+        in_arguments.each_with_index do |in_argument, i|
+          return false unless arguments[i].valid?(in_argument)
         end
         true
       end
@@ -39,6 +46,18 @@ module Specification
 
       def idempotent?
         raise NotImplementedError
+      end
+
+      private
+
+      attr_reader :arguments, :response, :optional_arg_count
+
+      def valid_arity?(in_arity)
+        arg_count_range.include? in_arity
+      end
+
+      def arg_count_range
+        (arguments.length - optional_arg_count)..arguments.length
       end
 
     end
