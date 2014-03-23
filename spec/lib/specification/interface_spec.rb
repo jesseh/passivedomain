@@ -44,15 +44,15 @@ describe Specification::Interface do
     end
   end
 
-  describe "#valid_method_name?" do
+  describe "#valid_method?" do
     subject { described_class.new([Specification::Signatures::Query.new(:a, [], Specification::Only.number) ]) }
 
     it "it returns false for an invalid method" do
-      expect(subject.valid_method_name?(:a)).to be_true
+      expect(subject.valid_method?(:a)).to be_true
     end
 
     it "it returns true for a valid method" do
-      expect(subject.valid_method_name?(:nope)).to be_false
+      expect(subject.valid_method?(:nope)).to be_false
     end
   end
 

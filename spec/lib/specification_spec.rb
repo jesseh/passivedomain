@@ -8,20 +8,17 @@ describe 'Specification' do
     subject do
 
       Specification.create do
-        initialize [string, number]
+        initialize_with [string, number]
         
-        copy OtherClass1::INTERFACE
-        copy OtherClass2::INTERFACE.include [:initialize, :a, :b]
-        copy OtherClass3::INTERFACE.exclude [:x, :y, :z]
+        copy(OtherClass1::INTERFACE)
+        copy(OtherClass1::INTERFACE, [:x, :y, :z])
 
-        queries do
-          cool?    [string, string], number
-          another  [], number
-        end
+        querying(:cool?).with(a.string, a.string => :optional).returns(a.number)
+        querying(:a_query).returns(a.number)
 
-        commands do
-          do_this  [interface(yada)]
-        end
+        commanding(:do_this).with(an.object_conforming_to(yada)).returns(a.anything)
+        commanding(:a_command).returns(a.nil)
+
       end
 
     end
@@ -30,7 +27,11 @@ describe 'Specification' do
       expect( subject ).to be_instance_of(Specification::Interface)
     end
     
-    xit "has the right signatures"
+    it "has the query signatures" do
+      expect(subject.valid_method? :a_query).to be_true
+    end
+
+    xit "seperates queries and commands"
   end
 end
 
